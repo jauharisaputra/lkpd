@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --navy:#173f70; --blue:#2364a6; --pale:#eef5fc; --line:#d8e1ec; --ink:#182433; --muted:#64748b; --green:#157347; --red:#b42318; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#f3f6fa; color:var(--ink); font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+    header { background:linear-gradient(135deg,#173f70,#2364a6); color:#fff; padding:28px 16px 24px; }
+    .wrap { max-width:980px; margin:auto; padding:0 16px; }
+    .eyebrow { text-transform:uppercase; letter-spacing:.12em; font-size:.75rem; opacity:.85; font-weight:700; }
+    h1 { font-size:clamp(1.5rem,4vw,2.25rem); line-height:1.15; margin:.45rem 0; }
+    header p { margin:.35rem 0; opacity:.95; }
+    .meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .pill { border:1px solid #ffffff66; border-radius:999px; padding:5px 10px; font-size:.85rem; }
+    main { padding:22px 0 48px; }
+    .notice { background:#fff8e6; border:1px solid #f3d58b; border-radius:12px; padding:13px 15px; margin-bottom:16px; font-size:.92rem; }
+    .progress { background:#e2e8f0; height:7px; border-radius:9px; overflow:hidden; margin:14px 0 20px; }
+    .progress > div { height:100%; width:0; background:#2d8a62; transition:width .2s; }
+    form { display:grid; gap:15px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:15px; padding:19px; box-shadow:0 2px 7px #0f172a08; }
+    h2 { color:var(--navy); font-size:1.12rem; margin:0 0 14px; }
+    h3 { font-size:1rem; margin:16px 0 8px; color:#263f5e; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+    .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    label.field { display:block; font-size:.9rem; font-weight:650; margin-bottom:5px; }
+    input[type=text], input[type=date], input[type=url], select, textarea { width:100%; padding:10px 11px; border:1px solid #cbd5e1; border-radius:9px; font:inherit; color:var(--ink); background:#fff; }
+    textarea { min-height:88px; resize:vertical; }
+    input:focus,select:focus,textarea:focus { outline:3px solid #93c5fd70; border-color:#3b82f6; }
+    .members { display:grid; grid-template-columns:1fr; gap:8px; }
+    .checklist { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+    .check { display:flex; align-items:flex-start; gap:9px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:9px; padding:9px 10px; font-size:.9rem; }
+    input[type=checkbox] { width:18px; height:18px; margin-top:2px; accent-color:var(--blue); flex:0 0 auto; }
+    .hint { color:var(--muted); font-size:.84rem; margin:6px 0 0; }
+    .sub { border-top:1px solid #e7edf4; padding-top:12px; margin-top:12px; }
+    .btnrow { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
+    button { border:0; border-radius:10px; padding:12px 18px; font:inherit; font-weight:750; cursor:pointer; }
+    button[type=submit] { color:#fff; background:var(--blue); }
+    button[type=submit]:disabled { opacity:.55; cursor:wait; }
+    button.secondary { color:#1e3a5f; background:#e8eff7; }
+    #status { display:none; padding:13px 15px; border-radius:10px; margin-top:12px; }
+    #status.ok { display:block; color:#14532d; background:#dcfce7; border:1px solid #86efac; }
+    #status.err { display:block; color:#991b1b; background:#fee2e2; border:1px solid #fca5a5; }
+    footer { text-align:center; color:var(--muted); font-size:.82rem; padding:20px 0; }
+    .required { color:#b42318; }
+    @media(max-width:650px) { .grid,.grid.three,.checklist { grid-template-columns:1fr; } section { padding:15px; } header { padding-top:22px; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Lembar Kerja Peserta Didik • Sesi 1</div>
+    <h1>Praktik Keamanan Jaringan</h1>
+    <p>Simulasi Firewall Filtering menggunakan MikroTik RouterOS dan VirtualBox</p>
+    <div class="meta">
+      <span class="pill">Pengajar: Jauhari Saputra</span>
+      <span class="pill">Mata Pelajaran: Keamanan Jaringan</span>
+      <span class="pill">Formulir digital</span>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <div class="notice"><b>Petunjuk keselamatan:</b> gunakan lingkungan laboratorium yang diizinkan. Jangan mengunduh atau menjalankan file mencurigakan. Filter <code>Content</code> untuk <code>.exe</code>/<code>.bat</code> tidak andal untuk seluruh unduhan, terutama HTTPS. Catat hasil sebenarnya—jangan mengarang hasil.</div>
+  <div class="progress"><div id="progressBar"></div></div>
+  <form id="lkpdForm">
+    <section>
+      <h2>A. Identitas Kelompok</h2>
+      <div class="grid">
+        <div><label class="field" for="namaKetua">Nama ketua/penanggung jawab <span class="required">*</span></label><input id="namaKetua" name="namaKetua" type="text" maxlength="120" required></div>
+        <div><label class="field" for="kelas">Kelas <span class="required">*</span></label><input id="kelas" name="kelas" type="text" maxlength="80" required></div>
+        <div><label class="field" for="tanggalPraktik">Tanggal praktik <span class="required">*</span></label><input id="tanggalPraktik" name="tanggalPraktik" type="date" required></div>
+      </div>
+      <h3>Nama anggota kelompok (maksimal 5 orang)</h3>
+      <div class="members">
+        <input name="anggota1" type="text" maxlength="120" placeholder="1. Nama anggota">
+        <input name="anggota2" type="text" maxlength="120" placeholder="2. Nama anggota">
+        <input name="anggota3" type="text" maxlength="120" placeholder="3. Nama anggota">
+        <input name="anggota4" type="text" maxlength="120" placeholder="4. Nama anggota">
+        <input name="anggota5" type="text" maxlength="120" placeholder="5. Nama anggota">
+      </div>
+    </section>
+
+    <section>
+      <h2>B. Kegiatan 1 — Persiapan File</h2>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" name="prepVirtualBox">VirtualBox terpasang</label>
+        <label class="check"><input type="checkbox" name="prepMikrotikIso">ISO MikroTik tersedia</label>
+        <label class="check"><input type="checkbox" name="prepWindowsIso">ISO Windows tersedia</label>
+        <label class="check"><input type="checkbox" name="prepWinbox">Winbox 64-bit tersedia</label>
+        <label class="check"><input type="checkbox" name="prepFolder">Folder dokumentasi dibuat</label>
+      </div>
+      <div class="sub"><label class="field">1. Apa fungsi VirtualBox dalam praktik ini?</label><textarea name="jawaban1"></textarea></div>
+      <div class="sub"><label class="field">2. Mengapa MikroTik dan Windows dibuat sebagai mesin virtual terpisah?</label><textarea name="jawaban2"></textarea></div>
+    </section>
+
+    <section>
+      <h2>C. Kegiatan 2 — Instalasi MikroTik Virtual</h2>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" name="mtVm">VM MikroTik dibuat</label>
+        <label class="check"><input type="checkbox" name="mtIso">ISO MikroTik terpasang</label>
+        <label class="check"><input type="checkbox" name="mtAdapter1">Adapter 1 = Bridged Adapter</label>
+        <label class="check"><input type="checkbox" name="mtAdapter2">Adapter 2 = Internal Network intnet</label>
+        <label class="check"><input type="checkbox" name="mtInstall">Instalasi RouterOS selesai</label>
+        <label class="check"><input type="checkbox" name="mtRemoveIso">ISO dilepas setelah instalasi</label>
+        <label class="check"><input type="checkbox" name="mtBoot">RouterOS berhasil boot dan login</label>
+      </div>
+      <div class="grid sub">
+        <div><label class="field">URL bukti screenshot login MikroTik (opsional)</label><input name="buktiMtLogin" type="url" placeholder="https://drive.google.com/..."></div>
+        <div><label class="field">URL bukti screenshot Network MikroTik (opsional)</label><input name="buktiMtNetwork" type="url" placeholder="https://drive.google.com/..."></div>
+      </div>
+      <div class="sub"><label class="field">3. Apa fungsi Adapter 1 dan Adapter 2 pada MikroTik?</label><textarea name="jawaban3"></textarea></div>
+    </section>
+
+    <section>
+      <h2>D. Kegiatan 3 — Mesin Windows Klien</h2>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" name="winVm">VM Windows Klien dibuat</label>
+        <label class="check"><input type="checkbox" name="winInstall">Windows berhasil diinstal</label>
+        <label class="check"><input type="checkbox" name="winIntnet">Adapter Windows = Internal Network intnet</label>
+        <label class="check"><input type="checkbox" name="winWinbox">Winbox tersedia di Windows Klien</label>
+      </div>
+      <div class="grid sub">
+        <div><label class="field">URL screenshot desktop Windows (opsional)</label><input name="buktiWinDesktop" type="url" placeholder="https://drive.google.com/..."></div>
+        <div><label class="field">URL screenshot Network Windows (opsional)</label><input name="buktiWinNetwork" type="url" placeholder="https://drive.google.com/..."></div>
+      </div>
+      <div class="sub"><label class="field">4. Apa yang mungkin terjadi jika nama Internal Network Windows berbeda dari MikroTik?</label><textarea name="jawaban4"></textarea></div>
+    </section>
+
+    <section>
+      <h2>E. Kegiatan 4 — Koneksi Winbox</h2>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" name="winboxOpen">Winbox berhasil dibuka</label>
+        <label class="check"><input type="checkbox" name="winboxNeighbor">MikroTik muncul di Neighbors</label>
+        <label class="check"><input type="checkbox" name="winboxMac">MAC Address terlihat</label>
+        <label class="check"><input type="checkbox" name="winboxLogin">Login Winbox berhasil</label>
+        <label class="check"><input type="checkbox" name="winboxFirewall">Menu IP → Firewall dapat dibuka</label>
+      </div>
+      <div class="sub"><label class="field">URL screenshot koneksi Winbox (opsional)</label><input name="buktiWinbox" type="url" placeholder="https://drive.google.com/..."></div>
+      <div class="sub"><label class="field">5. Mengapa MAC Address dapat membantu menemukan perangkat lokal meskipun IP belum diketahui?</label><textarea name="jawaban5"></textarea></div>
+    </section>
+
+    <section>
+      <h2>F. Kegiatan 5 — Konfigurasi Firewall Filter Rules</h2>
+      <p class="hint">Isi konfigurasi yang benar-benar dibuat di Winbox.</p>
+      <div class="grid three">
+        <div><label class="field">Rule .exe — Chain</label><input name="exeChain" type="text" placeholder="forward"></div>
+        <div><label class="field">Rule .exe — Content</label><input name="exeContent" type="text" placeholder=".exe"></div>
+        <div><label class="field">Rule .exe — Action</label><input name="exeAction" type="text" placeholder="drop"></div>
+        <div><label class="field">Rule .bat — Chain</label><input name="batChain" type="text" placeholder="forward"></div>
+        <div><label class="field">Rule .bat — Content</label><input name="batContent" type="text" placeholder=".bat"></div>
+        <div><label class="field">Rule .bat — Action</label><input name="batAction" type="text" placeholder="drop"></div>
+      </div>
+      <div class="sub"><label class="field">URL screenshot Filter Rules (opsional)</label><input name="buktiRules" type="url" placeholder="https://drive.google.com/..."></div>
+      <div class="sub"><label class="field">6. Apa perbedaan fungsi accept dan drop?</label><textarea name="jawaban6"></textarea></div>
+      <div class="sub"><label class="field">7. Mengapa menggunakan chain forward, bukan input?</label><textarea name="jawaban7"></textarea></div>
+    </section>
+
+    <section>
+      <h2>G. Kegiatan 6 — Pengujian dan Analisis</h2>
+      <p class="hint">Gunakan file uji yang aman pada lingkungan yang diizinkan. Jangan jalankan file unduhan. Hasil HTTPS dapat berbeda karena trafik terenkripsi.</p>
+      <h3>Uji file .exe</h3>
+      <div class="grid three">
+        <div><label class="field">Protokol</label><select name="exeProtocol"><option value="">Pilih...</option><option>HTTP</option><option>HTTPS</option><option>Laboratorium lokal</option><option>Lainnya</option></select></div>
+        <div><label class="field">Hasil</label><select name="exeResult"><option value="">Pilih...</option><option>Berhasil diunduh</option><option>Transfer terputus/ditolak</option><option>Tidak dapat diuji</option></select></div>
+        <div><label class="field">Counter rule berubah?</label><select name="exeCounter"><option value="">Pilih...</option><option>Ya</option><option>Tidak</option><option>Tidak diperiksa</option></select></div>
+      </div>
+      <h3>Uji file .bat</h3>
+      <div class="grid three">
+        <div><label class="field">Protokol</label><select name="batProtocol"><option value="">Pilih...</option><option>HTTP</option><option>HTTPS</option><option>Laboratorium lokal</option><option>Lainnya</option></select></div>
+        <div><label class="field">Hasil</label><select name="batResult"><option value="">Pilih...</option><option>Berhasil diunduh</option><option>Transfer terputus/ditolak</option><option>Tidak dapat diuji</option></select></div>
+        <div><label class="field">Counter rule berubah?</label><select name="batCounter"><option value="">Pilih...</option><option>Ya</option><option>Tidak</option><option>Tidak diperiksa</option></select></div>
+      </div>
+      <h3>Uji kontrol (file lain)</h3>
+      <div class="grid three">
+        <div><label class="field">Protokol</label><select name="controlProtocol"><option value="">Pilih...</option><option>HTTP</option><option>HTTPS</option><option>Laboratorium lokal</option><option>Lainnya</option></select></div>
+        <div><label class="field">Hasil</label><select name="controlResult"><option value="">Pilih...</option><option>Berhasil diunduh</option><option>Transfer terputus/ditolak</option><option>Tidak dapat diuji</option></select></div>
+        <div><label class="field">Counter rule berubah?</label><select name="controlCounter"><option value="">Pilih...</option><option>Ya</option><option>Tidak</option><option>Tidak diperiksa</option></select></div>
+      </div>
+      <div class="sub"><label class="field">Analisis 1. Apakah aturan berhasil memblokir seluruh pengujian?</label><textarea name="analysis1"></textarea></div>
+      <div class="sub"><label class="field">Analisis 2. Apakah hasil HTTP dan HTTPS berbeda? Jelaskan.</label><textarea name="analysis2"></textarea></div>
+      <div class="sub"><label class="field">Analisis 3. Jika unduhan tetap berhasil, apa kemungkinan penyebabnya?</label><textarea name="analysis3"></textarea></div>
+      <div class="sub"><label class="field">Analisis 4. Mengapa inspeksi string tidak cukup sebagai satu-satunya perlindungan malware?</label><textarea name="analysis4"></textarea></div>
+      <div class="sub"><label class="field">Analisis 5. Sebutkan pendekatan yang lebih tepat untuk membatasi unduhan berbahaya.</label><textarea name="analysis5"></textarea></div>
+      <div class="sub"><label class="field">URL screenshot hasil pengujian/counter firewall (opsional)</label><input name="buktiTest" type="url" placeholder="https://drive.google.com/..."></div>
+    </section>
+
+    <section>
+      <h2>H. Kegiatan 7 — Pemecahan Masalah</h2>
+      <div class="sub"><label class="field">Masalah yang ditemukan</label><textarea name="troubleProblem"></textarea></div>
+      <div class="sub"><label class="field">Penyebab</label><textarea name="troubleCause"></textarea></div>
+      <div class="sub"><label class="field">Solusi yang dilakukan</label><textarea name="troubleSolution"></textarea></div>
+    </section>
+
+    <section>
+      <h2>I. Kesimpulan Praktik</h2>
+      <div class="sub"><label class="field">1. Hal yang berhasil dilakukan</label><textarea name="conclusionSuccess"></textarea></div>
+      <div class="sub"><label class="field">2. Kendala yang ditemukan</label><textarea name="conclusionObstacle"></textarea></div>
+      <div class="sub"><label class="field">3. Hal baru yang dipelajari tentang firewall</label><textarea name="conclusionLearning"></textarea></div>
+      <div class="sub"><label class="field">4. Rekomendasi perbaikan keamanan jaringan laboratorium</label><textarea name="conclusionRecommendation"></textarea></div>
+    </section>
+
+    <section>
+      <h2>J. Pernyataan Pengumpulan</h2>
+      <label class="check"><input type="checkbox" id="confirm" required> Saya menyatakan jawaban dan hasil pengujian yang dikirim sesuai dengan praktik yang benar-benar dilakukan.</label>
+      <p class="hint">Setelah dikirim, data akan masuk ke Google Sheet database pengajar. Hindari memasukkan kata sandi atau data pribadi sensitif pada formulir ini.</p>
+      <div class="btnrow">
+        <button type="submit" id="submitBtn">Kirim LKPD ke Google Sheet</button>
+        <button type="reset" class="secondary">Kosongkan formulir</button>
+      </div>
+      <div id="status" role="status" aria-live="polite"></div>
+    </section>
+  </form>
+  <footer>LKPD Praktik Keamanan Jaringan — Sesi 1 • Pengajar: Jauhari Saputra</footer>
+</main>
+<script>
+  const form = document.getElementById('lkpdForm');
+  const statusBox = document.getElementById('status');
+  const submitBtn = document.getElementById('submitBtn');
+
+  function updateProgress() {
+    const controls = [...form.querySelectorAll('input:not([type=checkbox]), textarea, select')];
+    const usable = controls.filter(el => el.type !== 'url' || el.value.trim());
+    const filled = usable.filter(el => el.value.trim()).length;
+    const pct = controls.length ? Math.round(filled / controls.length * 100) : 0;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+  form.addEventListener('input', updateProgress);
+  form.addEventListener('change', updateProgress);
+
+  form.addEventListener('reset', () => {
+    setTimeout(() => { statusBox.className=''; statusBox.textContent=''; updateProgress(); }, 0);
+  });
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const data = {};
+    for (const el of form.elements) {
+      if (!el.name) continue;
+      if (el.type === 'checkbox') data[el.name] = el.checked;
+      else data[el.name] = el.value.trim();
+    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Mengirim...';
+    statusBox.className = '';
+    statusBox.style.display = 'none';
+
+    if (typeof google === 'undefined' || !google.script || !google.script.run) {
+      showError('Halaman belum dibuka dari URL Google Apps Script Web App. Deploy sebagai Web App, lalu buka URL deployment.');
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler(function(result) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Kirim LKPD ke Google Sheet';
+        if (result && result.ok) {
+          statusBox.className = 'ok';
+          statusBox.textContent = result.message + ' ID pengumpulan: ' + result.id;
+          statusBox.style.display = 'block';
+          statusBox.scrollIntoView({behavior:'smooth',block:'center'});
+          submitBtn.textContent = 'Terkirim';
+          submitBtn.disabled = true;
+        } else {
+          showError('Data belum dapat dipastikan tersimpan. Silakan periksa Google Sheet atau coba kembali.');
+        }
+      })
+      .withFailureHandler(function(error) {
+        showError(error && error.message ? error.message : 'Terjadi kesalahan saat menyimpan data.');
+      })
+      .saveSubmission(data);
+  });
+
+  function showError(message) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Kirim LKPD ke Google Sheet';
+    statusBox.className = 'err';
+    statusBox.textContent = message;
+    statusBox.style.display = 'block';
+    statusBox.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+
+  // Set default date to local browser date.
+  const dateInput = document.getElementById('tanggalPraktik');
+  const now = new Date();
+  dateInput.value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  updateProgress();
+</script>
+</body>
+</html>
