@@ -2,605 +2,307 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISTEM LKPD FINAL | CYBER SECURITY LAB</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBER SECURITY LAB | Portal Praktikum Jaringan</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-        body {
-            font-family: 'Share Tech Mono', monospace;
-            background-color: #050b14;
-            color: #00ffcc;
-            padding: 20px;
-            line-height: 1.6;
-            background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
+    body {
+      font-family: 'Share Tech Mono', monospace;
+      background-color: #03070d;
+      color: #00ffcc;
+      padding: 0;
+      margin: 0;
+      line-height: 1.6;
+      background-image:
+        linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
 
-        .container {
-            max-width: 900px;
-            background: rgba(5, 15, 30, 0.95);
-            padding: 40px;
-            border-radius: 8px;
-            margin: auto;
-            border: 1px solid #00ffcc;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
-        }
+    .header {
+      text-align: center;
+      padding: 50px 20px 30px 20px;
+      background: linear-gradient(180deg, rgba(0, 255, 204, 0.1) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+      margin-bottom: 40px;
+    }
 
-        h1,
-        h2,
-        h3 {
-            color: #00ffcc;
-            text-transform: uppercase;
-        }
+    .header h1 {
+      font-size: 2.5em;
+      margin: 0;
+      color: #00ffcc;
+      text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+      letter-spacing: 3px;
+    }
 
-        h1 {
-            text-align: center;
-            text-shadow: 0 0 10px #00ffcc;
-            border-bottom: 2px dashed #00ffcc;
-            padding-bottom: 15px;
-        }
+    .header p {
+      color: #888;
+      font-size: 1.1em;
+      margin-top: 10px;
+    }
 
-        h2 {
-            background-color: rgba(0, 255, 204, 0.1);
-            padding: 10px;
-            border-left: 5px solid #00ffcc;
-            margin-top: 40px;
-        }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 0 20px 50px 20px;
+    }
 
-        .instruction-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 5px;
-            border: 1px solid #005544;
-            font-size: 0.95em;
-            margin-bottom: 20px;
-        }
+    .section-title {
+      border-left: 4px solid #00ffcc;
+      padding-left: 15px;
+      color: #fff;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
 
-        .step-box {
-            background: rgba(0, 0, 0, 0.6);
-            border-left: 4px solid #ffaa00;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            color: #ddd;
-        }
+    /* Module Cards */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 50px;
+    }
 
-        .step-box h4 {
-            margin-top: 0;
-            color: #ffaa00;
-            font-size: 1.1em;
-        }
+    .module-card {
+      background: rgba(5, 15, 30, 0.8);
+      border: 1px solid #005544;
+      border-radius: 8px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .step-box ol {
-            margin-bottom: 0;
-            padding-left: 20px;
-        }
+    .module-card:hover {
+      border-color: #00ffcc;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
+      transform: translateY(-5px);
+    }
 
-        .step-box li {
-            margin-bottom: 8px;
-        }
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #00ffcc;
+      opacity: 0;
+      transition: 0.3s;
+    }
 
-        .highlight {
-            color: #00ffcc;
-            font-weight: bold;
-        }
+    .module-card:hover::before {
+      opacity: 1;
+    }
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 20px;
-            color: #fff;
-        }
+    .module-badge {
+      display: inline-block;
+      background: rgba(0, 255, 204, 0.1);
+      color: #00ffcc;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      margin-bottom: 15px;
+      border: 1px solid rgba(0, 255, 204, 0.3);
+    }
 
-        input[type="text"],
-        input[type="file"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            background-color: #02060d;
-            color: #00ffcc;
-            border: 1px solid #005544;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
+    .badge-locked {
+      background: rgba(255, 0, 0, 0.1);
+      color: #ff3333;
+      border-color: rgba(255, 0, 0, 0.3);
+    }
 
-        input:focus,
-        textarea:focus {
-            border: 1px solid #00ffcc;
-            outline: none;
-            box-shadow: 0 0 8px rgba(0, 255, 204, 0.5);
-        }
+    .module-card h3 {
+      color: #fff;
+      margin: 0 0 10px 0;
+    }
 
-        input[type="file"]::file-selector-button {
-            background: #00ffcc;
-            color: #000;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-        }
+    .module-card p {
+      color: #aaa;
+      font-size: 0.9em;
+      margin-bottom: 25px;
+    }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
+    .btn {
+      display: block;
+      text-align: center;
+      background: transparent;
+      color: #00ffcc;
+      padding: 10px;
+      border: 1px solid #00ffcc;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: 0.3s;
+      font-weight: bold;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            background: rgba(0, 0, 0, 0.5);
-        }
+    .btn:hover {
+      background: #00ffcc;
+      color: #000;
+    }
 
-        th,
-        td {
-            border: 1px solid #005544;
-            padding: 10px;
-            text-align: left;
-        }
+    .btn-locked {
+      border-color: #555;
+      color: #555;
+      cursor: not-allowed;
+    }
 
-        th {
-            background-color: rgba(0, 255, 204, 0.1);
-            color: #00ffcc;
-        }
+    .btn-locked:hover {
+      background: transparent;
+      color: #555;
+    }
 
-        canvas {
-            border: 2px dashed #00ffcc;
-            background-color: #fff;
-            cursor: crosshair;
-            margin-top: 10px;
-            border-radius: 4px;
-            touch-action: none;
-        }
+    /* Teacher Area */
+    .teacher-area {
+      background: rgba(20, 5, 5, 0.8);
+      border: 1px dashed #ff3333;
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+    }
 
-        .clear-btn {
-            display: inline-block;
-            background: #cc0000;
-            color: #fff;
-            padding: 5px 10px;
-            cursor: pointer;
-            margin-top: 5px;
-            font-size: 14px;
-            border-radius: 3px;
-        }
+    .teacher-area h3 {
+      color: #ff3333;
+      margin-top: 0;
+    }
 
-        button.submit-btn {
-            background-color: transparent;
-            color: #00ffcc;
-            padding: 15px 20px;
-            border: 2px solid #00ffcc;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 40px;
-            font-size: 20px;
-            width: 100%;
-            font-weight: bold;
-            font-family: inherit;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
+    .admin-login {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
 
-        button.submit-btn:hover {
-            background-color: #00ffcc;
-            color: #000;
-            box-shadow: 0 0 15px #00ffcc;
-        }
+    .admin-login input {
+      background: #000;
+      border: 1px solid #ff3333;
+      color: #ff3333;
+      padding: 10px;
+      font-family: inherit;
+      border-radius: 4px;
+      width: 200px;
+    }
 
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            color: #00ffcc;
-            animation: blink 1s infinite;
-        }
+    .admin-login input:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+    }
 
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
-    </style>
+    .admin-login button {
+      background: #ff3333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-family: inherit;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .admin-login button:hover {
+      background: #cc0000;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #555;
+      font-size: 0.8em;
+      border-top: 1px solid rgba(0, 255, 204, 0.1);
+      margin-top: 50px;
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>LEMBAR KERJA PESERTA DIDIK (LKPD)</h1>
-        <p style="text-align:center; margin:0;">PRAKTIK KEAMANAN JARINGAN - SESI 1</p>
-        <p style="text-align:center; color:#aaa; font-size:0.9em; margin-top:5px;">Simulasi Firewall Filtering
-            Menggunakan MikroTik RouterOS dan VirtualBox</p>
-        <p style="text-align:center; margin-top:20px; border-bottom:1px solid #333; padding-bottom:10px;"><b>Pengajar:
-                Jauhari Saputra</b> | Mata Pelajaran: Keamanan Jaringan</p>
+  <div class="header">
+    <h1>[ CYBER_SECURITY_LAB ]</h1>
+    <p>Portal Lembar Kerja Peserta Didik (LKPD) - SMK Keamanan Jaringan</p>
+    <p style="color: #00ffcc; font-size: 0.9em; margin-top: 5px;">Instruktur: Jauhari Saputra</p>
+  </div>
 
-        <!-- PANDUAN AWAL -->
-        <div class="instruction-box">
-            <h3>> D. SKENARIO DAN TOPOLOGI</h3>
-            <p>Anda bertugas sebagai administrator jaringan laboratorium. Buat 1 router MikroTik dan 1 klien Windows
-                dalam lingkungan virtual. Router akan dikonfigurasi untuk bereksperimen dengan penyaringan (filtering)
-                string .exe dan .bat.</p>
-            <p><b>Topologi Jaringan:</b><br>
-                - <b>MikroTik Adapter 1:</b> Bridged Adapter (Terhubung ke internet/host)<br>
-                - <b>MikroTik Adapter 2:</b> Internal Network bernama <span class="highlight">intnet</span><br>
-                - <b>Windows Klien Adapter 1:</b> Internal Network bernama <span class="highlight">intnet</span></p>
-        </div>
+  <div class="container">
 
-        <form id="lkpdForm">
-            <!-- IDENTITAS -->
-            <h2>> A. IDENTITAS PESERTA DIDIK</h2>
-            <div class="grid-2">
-                <div><label>Nama Lengkap:</label><input type="text" name="Nama" required></div>
-                <div><label>Kelas:</label><input type="text" name="Kelas" required></div>
-                <div><label>Kelompok:</label><input type="text" name="Kelompok" required></div>
-                <div><label>Anggota 1:</label><input type="text" name="Anggota_1"></div>
-                <div><label>Anggota 2:</label><input type="text" name="Anggota_2"></div>
-                <div><label>Anggota 3:</label><input type="text" name="Anggota_3"></div>
-                <div><label>Anggota 4:</label><input type="text" name="Anggota_4"></div>
-                <div><label>Anggota 5:</label><input type="text" name="Anggota_5"></div>
-            </div>
+    <h2 class="section-title">> DAFTAR MODUL PRAKTIKUM</h2>
 
-            <!-- KEGIATAN 1 -->
-            <h2>> PRAKTIK 1: PERSIAPAN FILE</h2>
-            <div class="step-box">
-                <h4>Langkah Kerja Persiapan:</h4>
-                <ol>
-                    <li>Unduh dan pasang aplikasi <b>VirtualBox</b> di komputer Anda dari
-                        <i>https://www.virtualbox.org/</i>.</li>
-                    <li>Unduh file ISO <b>MikroTik RouterOS</b> dari <i>https://mikrotik.com/download</i> (Pilih paket
-                        x86).</li>
-                    <li>Unduh aplikasi <b>Winbox 64-bit</b> dari situs resmi MikroTik.</li>
-                    <li>Siapkan file <b>ISO Windows</b> (Gunakan versi berlisensi sesuai spesifikasi komputer).</li>
-                    <li>Buat satu <b>folder khusus</b> di komputer Anda, lalu masukkan keempat file di atas ke dalam
-                        folder tersebut agar rapi.</li>
-                </ol>
-            </div>
+    <div class="module-grid">
 
-            <label>1. Apa fungsi VirtualBox dalam praktik ini?</label>
-            <textarea name="P1_Fungsi_VirtualBox" rows="2" required></textarea>
+      <!-- MODUL 1 (Aktif) -->
+      <div class="module-card">
+        <span class="module-badge">SESI 01</span>
+        <h3>Firewall Filtering Basic</h3>
+        <p>Simulasi pemblokiran ekstensi file malware (.exe & .bat) menggunakan MikroTik RouterOS dan Windows Client di
+          VirtualBox.</p>
+        <!-- PASTIKAN ANDA MENGGANTI href DI BAWAH INI SESUAI DENGAN NAMA FILE LKPD ANDA -->
+        <a href="lkpd-sesi1.html" class="btn">> AKSES LKPD_</a>
+      </div>
 
-            <label>2. Mengapa MikroTik dan Windows dibuat sebagai mesin virtual terpisah?</label>
-            <textarea name="P2_Alasan_VM_Terpisah" rows="2" required></textarea>
+      <!-- MODUL 2 (Terkunci/Akan Datang) -->
+      <div class="module-card">
+        <span class="module-badge badge-locked">SESI 02 : TERKUNCI</span>
+        <h3>Proxy Server & Web Filter</h3>
+        <p>Konfigurasi Web Proxy pada MikroTik untuk memblokir akses situs tertentu berdasarkan domain dan kata kunci.
+        </p>
+        <a href="#" class="btn btn-locked" onclick="alert('Modul ini belum dibuka oleh Instruktur.'); return false;">>
+          ACCESS DENIED_</a>
+      </div>
 
-            <label>[UPLOAD] Bukti 1: Screenshot folder bahan instalasi yang sudah Anda buat</label>
-            <input type="file" accept="image/*" name="B1_Bukti_Bahan" required>
+      <!-- MODUL 3 (Terkunci/Akan Datang) -->
+      <div class="module-card">
+        <span class="module-badge badge-locked">SESI 03 : TERKUNCI</span>
+        <h3>Hotspot & Bandwidth Management</h3>
+        <p>Membangun sistem autentikasi user (Login Page) dan membatasi kecepatan internet menggunakan Simple Queue.</p>
+        <a href="#" class="btn btn-locked" onclick="alert('Modul ini belum dibuka oleh Instruktur.'); return false;">>
+          ACCESS DENIED_</a>
+      </div>
 
-            <!-- KEGIATAN 2 -->
-            <h2>> PRAKTIK 2: INSTALASI MIKROTIK VIRTUAL</h2>
-            <div class="step-box">
-                <h4>Langkah Kerja Instalasi MikroTik:</h4>
-                <ol>
-                    <li>Buka VirtualBox, klik <b>New</b>, beri nama mesin: <span class="highlight">MikroTik</span>.</li>
-                    <li>Pilih Type: <b>Linux</b> dan Version: <b>Other Linux (64-bit)</b>. Atur RAM menjadi <b>256
-                            MB</b>. Buat virtual hard disk secukupnya.</li>
-                    <li>Pilih mesin MikroTik, klik <b>Settings -> Storage</b>. Masukkan ISO MikroTik yang tadi Anda
-                        unduh ke gambar CD kosong.</li>
-                    <li>Klik <b>Settings -> Network</b>. Aktifkan Adapter 1 dan pilih <b>Bridged Adapter</b>. Aktifkan
-                        Adapter 2 dan pilih <b>Internal Network</b>, lalu beri nama <span
-                            class="highlight">intnet</span>.</li>
-                    <li>Klik <b>Start (Nyalakan VM)</b>. Pada layar hitam berbayang (instalasi), tekan huruf <b>a</b> di
-                        keyboard untuk memilih semua paket, lalu tekan <b>i</b> untuk menginstal.</li>
-                    <li>Jika ditanya <i>keep old configuration</i>, tekan <b>n</b>. Jika ditanya <i>continue</i>, tekan
-                        <b>y</b>.</li>
-                    <li>Setelah selesai dan muncul tulisan "Press ENTER to reboot", <b>JANGAN</b> tekan enter! Matikan
-                        mesin paksa dengan klik tanda silang jendela VM lalu pilih <b>Power off the machine</b>.</li>
-                    <li>Masuk lagi ke Settings -> Storage, <b>keluarkan (Remove) ISO MikroTik</b> dari optical drive.
-                        Lalu nyalakan kembali mesinnya.</li>
-                    <li>Saat diminta login, ketik <span class="highlight">admin</span> lalu tekan Enter. Untuk Password,
-                        kosongkan saja dan tekan Enter.</li>
-                </ol>
-            </div>
-
-            <label>3. Apa fungsi Adapter 1 dan Adapter 2 pada mesin MikroTik?</label>
-            <textarea name="P3_Fungsi_Adapter" rows="2" required></textarea>
-
-            <label>[UPLOAD] Bukti 2: Screenshot Terminal MikroTik setelah berhasil Login</label>
-            <input type="file" accept="image/*" name="B2_Bukti_Terminal" required>
-            <label>[UPLOAD] Bukti 3: Screenshot pengaturan Network MikroTik di VirtualBox</label>
-            <input type="file" accept="image/*" name="B3_Bukti_Network_MikroTik" required>
-
-            <!-- KEGIATAN 3 -->
-            <h2>> PRAKTIK 3: INSTALASI WINDOWS KLIEN</h2>
-            <div class="step-box">
-                <h4>Langkah Kerja Instalasi Windows:</h4>
-                <ol>
-                    <li>Buat VM baru di VirtualBox untuk Windows. Lakukan instalasi Windows seperti biasa menggunakan
-                        ISO Windows yang disiapkan.</li>
-                    <li>Pada pengaturan VM Windows, buka <b>Settings -> Network</b>. Aktifkan Adapter 1 saja, pilih
-                        <b>Internal Network</b>, lalu beri nama <span class="highlight">intnet</span> (harus sama persis
-                        dengan pengaturan MikroTik).</li>
-                    <li>Pindahkan file aplikasi <b>Winbox</b> yang sudah didownload dari komputer asli Anda ke dalam VM
-                        Windows (Bisa pakai Shared Folder Virtualbox atau Drag & Drop).</li>
-                </ol>
-            </div>
-
-            <label>4. Apa yang mungkin terjadi jika nama Internal Network pada Windows berbeda dari MikroTik?</label>
-            <textarea name="P4_Beda_Nama_Jaringan" rows="2" required></textarea>
-
-            <label>[UPLOAD] Bukti 4: Screenshot Desktop Windows Klien (Pastikan Winbox sudah ada di dalam)</label>
-            <input type="file" accept="image/*" name="B4_Bukti_Desktop_Win" required>
-            <label>[UPLOAD] Bukti 5: Screenshot Pengaturan Jaringan (Network) VM Windows Klien</label>
-            <input type="file" accept="image/*" name="B5_Bukti_Network_Win" required>
-
-            <!-- KEGIATAN 4 -->
-            <h2>> PRAKTIK 4: AKSES VIA WINBOX</h2>
-            <div class="step-box">
-                <h4>Langkah Kerja Akses Winbox:</h4>
-                <ol>
-                    <li>Pastikan VM MikroTik dan VM Windows Klien Anda menyala dua-duanya.</li>
-                    <li>Di dalam VM Windows, jalankan aplikasi <b>Winbox</b>.</li>
-                    <li>Pilih tab <b>Neighbors</b> dan tunggu hingga nama perangkat MikroTik muncul di daftar.</li>
-                    <li>Klik pada teks <b>MAC Address</b> MikroTik yang muncul.</li>
-                    <li>Isi kotak <i>Login</i> dengan <span class="highlight">admin</span> dan biarkan kotak
-                        <i>Password</i> kosong. Klik tombol <b>Connect</b>.</li>
-                </ol>
-            </div>
-
-            <label>5. Mengapa MAC Address dapat digunakan menemukan perangkat lokal meskipun IP belum diketahui?</label>
-            <textarea name="P5_MAC_Address" rows="2" required></textarea>
-
-            <label>[UPLOAD] Bukti 6: Screenshot Winbox saat berhasil terhubung/masuk ke dalam MikroTik</label>
-            <input type="file" accept="image/*" name="B6_Bukti_Winbox" required>
-
-            <!-- KEGIATAN 5 -->
-            <h2>> PRAKTIK 5: KONFIGURASI FIREWALL FILTER RULES</h2>
-            <div class="step-box">
-                <h4>Langkah Kerja Blokir File (.exe dan .bat):</h4>
-                <ol>
-                    <li>Di dalam Winbox, klik menu <b>IP</b> di sebelah kiri, lalu pilih <b>Firewall</b>.</li>
-                    <li>Pilih tab <b>Filter Rules</b> (paling kiri atas), lalu klik tombol tanda Tambah <span
-                            class="highlight">(+)</span> warna biru.</li>
-                    <li><b>Aturan Pertama (.exe):</b> Pada tab <i>General</i>, pastikan <b>Chain</b> terisi <span
-                            class="highlight">forward</span>. Klik tab <i>Advanced</i>, isi kolom <b>Content</b> dengan
-                        <span class="highlight">.exe</span>. Klik tab <i>Action</i>, ubah opsi menjadi <span
-                            class="highlight">drop</span>. Klik Apply lalu OK.</li>
-                    <li><b>Aturan Kedua (.bat):</b> Ulangi langkah no 2 di atas. <i>General -> Chain = forward</i>.
-                        <i>Advanced -> Content = <span class="highlight">.bat</span></i>. <i>Action -> Action =
-                            drop</i>. Klik Apply lalu OK.</li>
-                </ol>
-            </div>
-
-            <label>6. Apa perbedaan fungsi accept dan drop pada firewall?</label>
-            <textarea name="P6_Fungsi_Accept_Drop" rows="2" required></textarea>
-
-            <label>7. Mengapa aturan menggunakan chain forward, bukan input?</label>
-            <textarea name="P7_Chain_Forward" rows="2" required></textarea>
-
-            <label>[UPLOAD] Bukti 7: Screenshot Filter Rules yang memperlihatkan kedua aturan tersebut sudah
-                ditambahkan</label>
-            <input type="file" accept="image/*" name="B7_Bukti_Filter_Rules" required>
-
-            <!-- KEGIATAN 6 -->
-            <h2>> PRAKTIK 6: PENGUJIAN DAN ANALISIS</h2>
-            <div class="step-box">
-                <h4>Langkah Kerja Pengujian:</h4>
-                <ol>
-                    <li>Buka browser di dalam VM Windows Klien.</li>
-                    <li>Gunakan jaringan sekolah yang diizinkan untuk mencari/mendownload sembarang file berakhiran .exe
-                        (misal file instalasi ringan) secara HTTP (tanpa huruf 's').</li>
-                    <li>Coba juga download file berakhiran .bat.</li>
-                    <li>Amati di jendela Winbox MikroTik Anda pada bagian <b>Filter Rules</b>. Perhatikan angka pada
-                        kolom <b>Bytes / Packets</b> (Counter). Apakah angkanya bertambah jalan saat file mencoba
-                        di-download?</li>
-                </ol>
-            </div>
-
-            <table>
-                <tr>
-                    <th>Objek Uji</th>
-                    <th>Hasil (HTTP/HTTPS)</th>
-                    <th>Counter Berubah?</th>
-                </tr>
-                <tr>
-                    <td>Coba Download File .exe</td>
-                    <td><input type="text" name="U1_Exe_Hasil" placeholder="Terkirim / Terputus"></td>
-                    <td><select name="U1_Exe_Counter">
-                            <option>Ya</option>
-                            <option>Tidak</option>
-                        </select></td>
-                </tr>
-                <tr>
-                    <td>Coba Download File .bat</td>
-                    <td><input type="text" name="U2_Bat_Hasil" placeholder="Terkirim / Terputus"></td>
-                    <td><select name="U2_Bat_Counter">
-                            <option>Ya</option>
-                            <option>Tidak</option>
-                        </select></td>
-                </tr>
-                <tr>
-                    <td>File tanpa ekstensi (.exe/.bat)</td>
-                    <td><input type="text" name="U3_TanpaEks_Hasil" placeholder="Terkirim / Terputus"></td>
-                    <td><select name="U3_TanpaEks_Counter">
-                            <option>Ya</option>
-                            <option>Tidak</option>
-                        </select></td>
-                </tr>
-            </table>
-
-            <label>Analisis 1: Apakah aturan berhasil memblokir seluruh pengujian?</label>
-            <textarea name="A1_Blokir" rows="2" required></textarea>
-            <label>Analisis 2: Apakah hasil pengujian HTTP dan HTTPS berbeda? Mengapa?</label>
-            <textarea name="A2_Beda_HTTP" rows="2" required></textarea>
-            <label>Analisis 3: Jika unduhan tetap berhasil padahal sudah di-drop, apa kemungkinan penyebabnya?</label>
-            <textarea name="A3_Unduh_Berhasil" rows="2" required></textarea>
-            <label>Analisis 4: Mengapa inspeksi string (mengetik nama akhiran file) tidak bisa diandalkan sebagai
-                satu-satunya sistem blokir?</label>
-            <textarea name="A4_Kelemahan" rows="2" required></textarea>
-            <label>Analisis 5: Sebutkan pendekatan yang lebih baik untuk memblokir file berbahaya di lab
-                sekolah?</label>
-            <textarea name="A5_Pendekatan" rows="2" required></textarea>
-
-            <label>[UPLOAD] Bukti 8: Screenshot Hasil Pengujian / Counter Firewall di Winbox yang angkanya
-                bertambah</label>
-            <input type="file" accept="image/*" name="B8_Bukti_Pengujian" required>
-
-            <!-- KEGIATAN 7 -->
-            <h2>> PRAKTIK 7: PEMECAHAN MASALAH</h2>
-            <div class="step-box">
-                <h4>Bantuan Masalah (Troubleshooting):</h4>
-                <p>- <i>Jika MikroTik tidak muncul di Neighbors:</i> Pastikan VM MikroTik menyala, Adapter 2 aktif, dan
-                    namanya persis 'intnet'.<br>
-                    - <i>Jika Windows tak ada koneksi:</i> Cek IP, gateway, dan routing.<br>
-                    - <i>Jika Winbox gagal login:</i> Pastikan klik MAC Address, bukan IP Address. User 'admin' password
-                    kosong.</p>
-            </div>
-            <label>Apakah ada Masalah lain yang Anda temukan saat praktik?</label>
-            <textarea name="Masalah" rows="2" required placeholder="Tulis masalah di sini..."></textarea>
-            <label>Apa penyebabnya?</label>
-            <textarea name="Penyebab" rows="2" required placeholder="Tulis penyebabnya di sini..."></textarea>
-            <label>Bagaimana solusinya?</label>
-            <textarea name="Solusi" rows="2" required placeholder="Tulis solusi Anda di sini..."></textarea>
-
-            <!-- KESIMPULAN -->
-            <h2>> E. KESIMPULAN PRAKTIK</h2>
-            <label>1. Hal apa saja yang berhasil Anda selesaikan?</label>
-            <textarea name="K_Berhasil" rows="2" required></textarea>
-            <label>2. Kendala utama apa yang menyulitkan Anda?</label>
-            <textarea name="K_Kendala" rows="2" required></textarea>
-            <label>3. Hal atau ilmu baru apa yang dipelajari tentang firewall ini?</label>
-            <textarea name="K_Hal_Baru" rows="2" required></textarea>
-            <label>4. Rekomendasi perbaikan keamanan untuk lab jaringan kita:</label>
-            <textarea name="K_Rekomendasi" rows="2" required></textarea>
-
-            <!-- PENGESAHAN -->
-            <h2>> G. PENGESAHAN PESERTA DIDIK</h2>
-            <div class="step-box" style="border-left: 4px solid #00ffcc;">
-                <h4>Tahap Akhir:</h4>
-                <p>1. Cek kembali semua isian dan bukti screenshot.<br>2. Gambar tanda tangan Anda di kotak putih bawah
-                    ini dengan mouse/jari.<br>3. Klik tombol Transmit untuk menyerahkan tugas ke Pak Jauhari.</p>
-            </div>
-            <label>Tanda Tangan Digital Siswa:</label>
-            <canvas id="sigCanvas" width="400" height="200"></canvas><br>
-            <div class="clear-btn" id="clearBtn">Hapus / Ulangi Tanda Tangan</div>
-
-            <input type="hidden" name="Tanda_Tangan_Siswa" id="sigInput">
-
-            <button type="submit" class="submit-btn" id="btnSubmit">> TRANSMIT REPORT TO SERVER_</button>
-            <div class="loading" id="loadingText">> PROCESSING DATA & EXPORTING SIGNATURE... PLEASE WAIT_</div>
-        </form>
     </div>
 
-    <script>
-        // WEB APP URL TERINTEGRASI
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxnLn0ubvpeh01WrJpxA-WzFxHGZOoW0SSwiqtccgi2_nmjcGoh8Ub7fhXB27MwBKPx0w/exec';
-        const form = document.forms['lkpdForm'];
-        const btnSubmit = document.getElementById('btnSubmit');
-        const loadingText = document.getElementById('loadingText');
+    <h2 class="section-title" style="border-left-color: #ff3333; color: #ff3333;">> RESTRICTED AREA (INSTRUKTUR)</h2>
 
-        // SISTEM CANVAS TANDA TANGAN
-        const canvas = document.getElementById('sigCanvas');
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
-        ctx.lineWidth = 3;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#000000';
+    <div class="teacher-area">
+      <h3>[ DATABASE PENILAIAN & TUGAS SISWA ]</h3>
+      <p style="color: #aaa; font-size: 0.9em;">Area ini khusus untuk pengecekan dan penilaian tugas oleh
+        pengajar.<br>Silakan masukkan kode otorisasi untuk mengakses Spreadsheet.</p>
 
-        function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
-        }
+      <div class="admin-login">
+        <input type="password" id="adminPass" placeholder="Masukkan Password...">
+        <button onclick="checkPassword()">AUTHORIZE</button>
+      </div>
+      <p id="errorMsg" style="color: #ff3333; display: none; margin-top: 10px; font-size: 0.9em;">> ERROR: Kata sandi
+        salah!</p>
+    </div>
 
-        canvas.addEventListener('mousedown', e => { drawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
-        canvas.addEventListener('mousemove', e => { if (drawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } });
-        canvas.addEventListener('mouseup', () => { drawing = false; });
-        canvas.addEventListener('mouseout', () => { drawing = false; });
+  </div>
 
-        canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }, { passive: false });
-        canvas.addEventListener('touchmove', e => { e.preventDefault(); if (drawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } }, { passive: false });
-        canvas.addEventListener('touchend', e => { e.preventDefault(); drawing = false; }, { passive: false });
+  <div class="footer">
+    System Initialized. Copyright &copy; 2026 Jauhari Saputra - Cyber Security Lab.
+  </div>
 
-        document.getElementById('clearBtn').addEventListener('click', () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        });
+  <script>
+    function checkPassword() {
+      const passInput = document.getElementById('adminPass').value;
+      const errorMsg = document.getElementById('errorMsg');
 
-        // SISTEM KOMPRESI GAMBAR AUTO
-        async function processFile(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = event => {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = () => {
-                        const c = document.createElement('canvas');
-                        const MAX_WIDTH = 1200;
-                        let scaleSize = 1;
-                        if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
-                        c.width = img.width * scaleSize;
-                        c.height = img.height * scaleSize;
-                        const ctxC = c.getContext('2d');
-                        ctxC.drawImage(img, 0, 0, c.width, c.height);
-                        const dataUrl = c.toDataURL('image/jpeg', 0.7);
-                        let encoded = dataUrl.replace(/^data:(.*,)?/, '');
-                        resolve({ base64: encoded, mimeType: 'image/jpeg', filename: file.name + ".jpg" });
-                    }
-                };
-                reader.onerror = error => reject(error);
-            });
-        }
+      // --- GANTI PASSWORD DI BAWAH INI ---
+      // Saat ini passwordnya adalah "admin123"
+      const correctPassword = "admin123";
 
-        // PENGIRIMAN DATA KE SERVER GOOGLE SCRIPT
-        form.addEventListener('submit', async e => {
-            e.preventDefault();
-
-            const sigDataUrl = canvas.toDataURL('image/png');
-            const isBlank = !ctx.getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 0);
-            if (isBlank) {
-                alert('Mohon isi Tanda Tangan Digital terlebih dahulu!');
-                return;
-            }
-
-            let sigEncoded = sigDataUrl.replace(/^data:(.*,)?/, '');
-            const sigPayload = { base64: sigEncoded, mimeType: 'image/png', filename: "Tanda_Tangan_" + form.Nama.value + ".png" };
-
-            btnSubmit.style.display = 'none';
-            loadingText.style.display = 'block';
-
-            const formData = new FormData(form);
-            const payload = {};
-
-            try {
-                for (let [key, value] of formData.entries()) {
-                    if (key === 'Tanda_Tangan_Siswa') {
-                        payload[key] = sigPayload;
-                    } else if (value instanceof File && value.size > 0) {
-                        payload[key] = await processFile(value);
-                    } else if (!(value instanceof File)) {
-                        payload[key] = value;
-                    }
-                }
-
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                });
-
-                const result = await response.json();
-                if (result.result === 'success') {
-                    alert('DATA TRANSMITTED SUCCESSFULLY. Tugas dan Tanda Tangan Anda telah masuk ke Database Guru.');
-                    form.reset();
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                } else {
-                    throw new Error(result.error);
-                }
-            } catch (error) {
-                console.error(error);
-                alert('TRANSMISSION FAILED: ' + error.message);
-            } finally {
-                btnSubmit.style.display = 'block';
-                loadingText.style.display = 'none';
-            }
-        });
-    </script>
+      if (passInput === correctPassword) {
+        // Jika password benar, otomatis buka Google Sheet Database Final Anda di tab baru
+        window.open("https://docs.google.com/spreadsheets/d/1M7ooax708eL_1-nyIEiJtZo0AasBEHHhr9uZD991Aew/edit", "_blank");
+        errorMsg.style.display = "none";
+        document.getElementById('adminPass').value = ""; // Kosongkan input
+      } else {
+        // Jika salah
+        errorMsg.style.display = "block";
+      }
+    }
+  </script>
 
 </body>
 
