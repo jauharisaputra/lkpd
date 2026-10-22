@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEM LKPD | SESI 2 - PROXY SERVER</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        body { 
+            font-family: 'Share Tech Mono', monospace; 
+            background-color: #050b14; color: #00ffcc; 
+            padding: 20px; line-height: 1.6;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .container { 
+            max-width: 900px; background: rgba(5, 15, 30, 0.95); 
+            padding: 40px; border-radius: 8px; margin: auto; 
+            border: 1px solid #00ffcc; box-shadow: 0 0 20px rgba(0, 255, 204, 0.2); 
+        }
+        h1, h2, h3 { color: #00ffcc; text-transform: uppercase; }
+        h1 { text-align: center; text-shadow: 0 0 10px #00ffcc; border-bottom: 2px dashed #00ffcc; padding-bottom: 15px;}
+        h2 { background-color: rgba(0, 255, 204, 0.1); padding: 10px; border-left: 5px solid #00ffcc; margin-top: 40px;}
+        
+        .instruction-box { background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 5px; border: 1px solid #005544; font-size: 0.95em; margin-bottom: 20px;}
+        .step-box { background: rgba(0, 0, 0, 0.6); border-left: 4px solid #ffaa00; padding: 15px; margin-bottom: 20px; font-size: 0.9em; color: #ddd;}
+        .step-box h4 { margin-top: 0; color: #ffaa00; font-size: 1.1em;}
+        .step-box ol { margin-bottom: 0; padding-left: 20px; }
+        .step-box li { margin-bottom: 8px; }
+        .highlight { color: #00ffcc; font-weight: bold; }
+        
+        label { font-weight: bold; display: block; margin-top: 20px; color: #fff;}
+        input[type="text"], input[type="file"], textarea, select { 
+            width: 100%; padding: 12px; margin-top: 8px; background-color: #02060d; color: #00ffcc; 
+            border: 1px solid #005544; border-radius: 4px; box-sizing: border-box; font-family: inherit;
+        }
+        input:focus, textarea:focus { border: 1px solid #00ffcc; outline: none; box-shadow: 0 0 8px rgba(0, 255, 204, 0.5); }
+        input[type="file"]::file-selector-button { background: #00ffcc; color: #000; border: none; padding: 5px 10px; cursor: pointer; font-family: inherit; font-weight: bold;}
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(0,0,0,0.5); }
+        th, td { border: 1px solid #005544; padding: 10px; text-align: left; }
+        th { background-color: rgba(0, 255, 204, 0.1); color: #00ffcc; }
+        
+        canvas { border: 2px dashed #00ffcc; background-color: #fff; cursor: crosshair; margin-top: 10px; border-radius: 4px; touch-action: none;}
+        .clear-btn { display: inline-block; background: #cc0000; color: #fff; padding: 5px 10px; cursor: pointer; margin-top: 5px; font-size: 14px; border-radius: 3px;}
+        
+        button.submit-btn { 
+            background-color: transparent; color: #00ffcc; padding: 15px 20px; border: 2px solid #00ffcc; 
+            border-radius: 4px; cursor: pointer; margin-top: 40px; font-size: 20px; width: 100%; font-weight: bold; 
+            font-family: inherit; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        }
+        button.submit-btn:hover { background-color: #00ffcc; color: #000; box-shadow: 0 0 15px #00ffcc; }
+        
+        .loading { display: none; text-align: center; margin-top: 20px; color: #00ffcc; animation: blink 1s infinite;}
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .back-btn { color: #fff; text-decoration: none; font-size: 0.9em; display: inline-block; margin-bottom: 20px; border: 1px solid #00ffcc; padding: 5px 10px; border-radius: 4px;}
+        .back-btn:hover { background: #00ffcc; color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-btn">< KEMBALI KE MENU UTAMA</a>
+    
+    <h1>LEMBAR KERJA PESERTA DIDIK (LKPD)</h1>
+    <p style="text-align:center; margin:0;">PRAKTIK KEAMANAN JARINGAN - SESI 2</p>
+    <p style="text-align:center; color:#aaa; font-size:0.9em; margin-top:5px;">Konfigurasi Web Proxy & Filtering Menggunakan MikroTik</p>
+    <p style="text-align:center; margin-top:20px; border-bottom:1px solid #333; padding-bottom:10px;"><b>Pengajar: Jauhari Saputra</b> | Mata Pelajaran: Keamanan Jaringan</p>
+
+    <!-- PANDUAN AWAL -->
+    <div class="instruction-box">
+        <h3>> SKENARIO SESI 2</h3>
+        <p>Setelah berhasil memahami Firewall Filter dasar, Anda kini ditugaskan untuk mengamankan lalu lintas *web* klien. Aktifkan fitur Web Proxy di router MikroTik dan lakukan *Transparent Proxy* sehingga pengguna tidak perlu menseting proxy secara manual di *browser* mereka.</p>
+        <p>Anda akan melakukan pemblokiran terhadap: <br>1. Situs web tertentu (Contoh: linux.or.id)<br>2. Ekstensi file spesifik (Contoh: .mp3 / .mkv)</p>
+    </div>
+
+    <form id="lkpdForm">
+        <!-- IDENTITAS -->
+        <h2>> A. IDENTITAS PESERTA DIDIK</h2>
+        <div class="grid-2">
+            <div><label>Nama Lengkap:</label><input type="text" name="Nama" required></div>
+            <div><label>Kelas:</label><input type="text" name="Kelas" required></div>
+            <div><label>Kelompok:</label><input type="text" name="Kelompok" required></div>
+            <div><label>Anggota 1:</label><input type="text" name="Anggota_1"></div>
+            <div><label>Anggota 2:</label><input type="text" name="Anggota_2"></div>
+            <div><label>Anggota 3:</label><input type="text" name="Anggota_3"></div>
+            <div><label>Anggota 4:</label><input type="text" name="Anggota_4"></div>
+            <div><label>Anggota 5:</label><input type="text" name="Anggota_5"></div>
+        </div>
+
+        <!-- KEGIATAN 1 -->
+        <h2>> PRAKTIK 1: MENGAKTIFKAN WEB PROXY</h2>
+        <div class="step-box">
+            <h4>Langkah Kerja:</h4>
+            <ol>
+                <li>Pastikan MikroTik sudah mendapatkan koneksi Internet dan klien Windows sudah terhubung.</li>
+                <li>Di Winbox, buka menu <b>IP > Web Proxy</b>.</li>
+                <li>Centang kotak <b>Enable</b>.</li>
+                <li>Biarkan Port pada angka <b>8080</b>.</li>
+                <li>Ubah <b>Cache Administrator</b> dengan nama_kelompok@sekolah.sch.id.</li>
+                <li>Klik Apply lalu OK.</li>
+            </ol>
+        </div>
+        
+        <label>1. Apa fungsi utama dari Web Proxy pada sebuah Router?</label>
+        <textarea name="P1_Fungsi_Proxy" rows="2" required></textarea>
+        
+        <label>2. Secara default, port berapa yang digunakan oleh MikroTik untuk Web Proxy?</label>
+        <textarea name="P2_Port_Proxy" rows="2" required></textarea>
+        
+        <label>[UPLOAD] Bukti 1: Screenshot Jendela Web Proxy yang sudah di-Enable</label>
+        <input type="file" accept="image/*" name="B1_Bukti_Proxy_Enable" required>
+
+        <!-- KEGIATAN 2 -->
+        <h2>> PRAKTIK 2: MEMBUAT TRANSPARENT PROXY (NAT)</h2>
+        <div class="step-box">
+            <h4>Langkah Kerja:</h4>
+            <ol>
+                <li>Agar klien tidak perlu repot mensetting proxy di Windows, kita alihkan trafik HTTP.</li>
+                <li>Buka menu <b>IP > Firewall > NAT</b>, klik (+).</li>
+                <li><b>General:</b> Chain = <span class="highlight">dstnat</span> | Protocol = <span class="highlight">6 (tcp)</span> | Dst. Port = <span class="highlight">80</span>.</li>
+                <li><b>Action:</b> Action = <span class="highlight">redirect</span> | To Ports = <span class="highlight">8080</span>.</li>
+                <li>Klik Apply, OK.</li>
+            </ol>
+        </div>
+
+        <label>3. Mengapa kita perlu menggunakan fitur NAT Redirect (Transparent Proxy)?</label>
+        <textarea name="P3_Fungsi_NAT" rows="2" required></textarea>
+
+        <label>[UPLOAD] Bukti 2: Screenshot Rules NAT Redirect (Port 80 ke 8080)</label>
+        <input type="file" accept="image/*" name="B2_Bukti_NAT_Redirect" required>
+
+        <!-- KEGIATAN 3 -->
+        <h2>> PRAKTIK 3: BLOKIR SITUS (DOMAIN)</h2>
+        <div class="step-box">
+            <h4>Langkah Kerja:</h4>
+            <ol>
+                <li>Buka menu <b>IP > Web Proxy > Access</b>, klik (+).</li>
+                <li>Kosongkan bagian lain, cukup isi <b>Dst. Host:</b> <span class="highlight">*linux.or.id*</span> (Gunakan tanda bintang agar mencakup seluruh sub-domain).</li>
+                <li>Ubah <b>Action</b> menjadi <span class="highlight">deny</span>. Klik Apply & OK.</li>
+            </ol>
+        </div>
+
+        <label>4. Pada rule Web Proxy, apa perbedaan menggunakan Dst. Host dengan menggunakan Path?</label>
+        <textarea name="P4_Blokir_Situs" rows="2" required></textarea>
+
+        <label>[UPLOAD] Bukti 3: Screenshot Web Proxy Access untuk Blokir Situs</label>
+        <input type="file" accept="image/*" name="B3_Bukti_Blokir_Situs" required>
+
+        <!-- KEGIATAN 4 -->
+        <h2>> PRAKTIK 4: BLOKIR EKSTENSI FILE</h2>
+        <div class="step-box">
+            <h4>Langkah Kerja:</h4>
+            <ol>
+                <li>Buka menu <b>IP > Web Proxy > Access</b>, klik (+) untuk buat rule baru.</li>
+                <li>Kali ini kosongkan Dst. Host. Isi pada bagian <b>Path:</b> <span class="highlight">*.mp3*</span>.</li>
+                <li>Ubah <b>Action</b> menjadi <span class="highlight">deny</span>. Klik Apply & OK.</li>
+                <li>Lakukan hal yang sama jika ingin menambah rule blokir file *.mkv* atau *.iso*.</li>
+            </ol>
+        </div>
+
+        <label>5. Mengapa fitur blokir file di Web Proxy terkadang tidak bekerja jika target website menggunakan protokol HTTPS?</label>
+        <textarea name="P5_Blokir_File" rows="2" required></textarea>
+
+        <label>[UPLOAD] Bukti 4: Screenshot Web Proxy Access untuk Blokir File</label>
+        <input type="file" accept="image/*" name="B4_Bukti_Blokir_File" required>
+
+        <!-- KEGIATAN 5 -->
+        <h2>> PRAKTIK 5: PENGUJIAN DAN ANALISIS</h2>
+        <div class="step-box">
+            <h4>Langkah Kerja Pengujian:</h4>
+            <ol>
+                <li>Buka browser di dalam VM Windows Klien.</li>
+                <li>Ketik alamat http://linux.or.id (Pastikan http, BUKAN https).</li>
+                <li>Coba cari dan download file bertipe .mp3 di internet menggunakan HTTP.</li>
+                <li>Jika muncul halaman "ERROR: Forbidden" dan terdapat email Cache Administrator kelompok Anda di bawahnya, artinya sukses!</li>
+            </ol>
+        </div>
+        
+        <table>
+            <tr><th>Objek Uji</th><th>Hasil Tampilan Browser</th></tr>
+            <tr>
+                <td>Buka http://linux.or.id</td>
+                <td><input type="text" name="U1_Akses_Situs" placeholder="Contoh: Muncul Error Forbidden..."></td>
+            </tr>
+            <tr>
+                <td>Download file .mp3</td>
+                <td><input type="text" name="U2_Akses_File" placeholder="Contoh: ..."></td>
+            </tr>
+        </table>
+
+        <label>Analisis 1: Jelaskan mengapa situs yang diblokir menampilkan pesan peringatan dari MikroTik alih-alih koneksi putus tiba-tiba!</label>
+        <textarea name="A1_Analisis_Situs" rows="2" required></textarea>
+        <label>Analisis 2: Jelaskan bagaimana cache administrator yang Anda atur sebelumnya memengaruhi hasil pengujian ini.</label>
+        <textarea name="A2_Analisis_File" rows="2" required></textarea>
+
+        <label>[UPLOAD] Bukti 5: Screenshot Layar Windows saat menampilkan halaman ERROR FORBIDDEN</label>
+        <input type="file" accept="image/*" name="B5_Bukti_Pengujian" required>
+
+        <!-- KEGIATAN 6 -->
+        <h2>> PRAKTIK 6: PEMECAHAN MASALAH</h2>
+        <label>Apakah ada Masalah/Kendala yang Anda temukan saat praktik Sesi 2 ini?</label>
+        <textarea name="Masalah" rows="2" required placeholder="Tulis masalah di sini..."></textarea>
+        <label>Apa penyebabnya?</label>
+        <textarea name="Penyebab" rows="2" required placeholder="Tulis penyebabnya di sini..."></textarea>
+        <label>Bagaimana solusinya?</label>
+        <textarea name="Solusi" rows="2" required placeholder="Tulis solusi Anda di sini..."></textarea>
+
+        <!-- KESIMPULAN -->
+        <h2>> E. KESIMPULAN PRAKTIK SESI 2</h2>
+        <label>1. Hal apa saja yang berhasil Anda selesaikan?</label>
+        <textarea name="K_Berhasil" rows="2" required></textarea>
+        <label>2. Kendala utama apa yang menyulitkan Anda?</label>
+        <textarea name="K_Kendala" rows="2" required></textarea>
+        <label>3. Hal atau ilmu baru apa yang dipelajari tentang Proxy ini?</label>
+        <textarea name="K_Hal_Baru" rows="2" required></textarea>
+        <label>4. Rekomendasi perbaikan untuk lab jaringan:</label>
+        <textarea name="K_Rekomendasi" rows="2" required></textarea>
+
+        <!-- PENGESAHAN -->
+        <h2>> G. PENGESAHAN PESERTA DIDIK</h2>
+        <div class="step-box" style="border-left: 4px solid #00ffcc;">
+            <h4>Tahap Akhir:</h4>
+            <p>1. Pastikan semua file screenshot (Bukti 1 s/d 5) sudah terpilih dengan benar.<br>2. Gambar tanda tangan Anda sebagai bukti kehadiran dan penyelesaian.<br>3. Klik Transmit.</p>
+        </div>
+        <label>Tanda Tangan Digital Siswa:</label>
+        <canvas id="sigCanvas" width="400" height="200"></canvas><br>
+        <div class="clear-btn" id="clearBtn">Hapus / Ulangi Tanda Tangan</div>
+
+        <input type="hidden" name="Tanda_Tangan_Siswa" id="sigInput">
+
+        <button type="submit" class="submit-btn" id="btnSubmit">> TRANSMIT REPORT SESI 2_</button>
+        <div class="loading" id="loadingText">> PROCESSING DATA & EXPORTING SIGNATURE... PLEASE WAIT_</div>
+    </form>
+</div>
+
+<script>
+    // BAPAK/IBU GURU: MASUKKAN URL WEB APP SESI 2 ANDA DI BAWAH INI
+    const scriptURL = 'URL_WEB_APP_SESI_2_DI_SINI'; 
+    const form = document.forms['lkpdForm'];
+    const btnSubmit = document.getElementById('btnSubmit');
+    const loadingText = document.getElementById('loadingText');
+
+    // SISTEM CANVAS TANDA TANGAN
+    const canvas = document.getElementById('sigCanvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#000000';
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    canvas.addEventListener('mousedown', e => { drawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
+    canvas.addEventListener('mousemove', e => { if(drawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } });
+    canvas.addEventListener('mouseup', () => { drawing = false; });
+    canvas.addEventListener('mouseout', () => { drawing = false; });
+
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }, {passive: false});
+    canvas.addEventListener('touchmove', e => { e.preventDefault(); if(drawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } }, {passive: false});
+    canvas.addEventListener('touchend', e => { e.preventDefault(); drawing = false; }, {passive: false});
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    // SISTEM KOMPRESI GAMBAR AUTO
+    async function processFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = event => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const c = document.createElement('canvas');
+                    const MAX_WIDTH = 1200; 
+                    let scaleSize = 1;
+                    if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
+                    c.width = img.width * scaleSize;
+                    c.height = img.height * scaleSize;
+                    const ctxC = c.getContext('2d');
+                    ctxC.drawImage(img, 0, 0, c.width, c.height);
+                    const dataUrl = c.toDataURL('image/jpeg', 0.7);
+                    let encoded = dataUrl.replace(/^data:(.*,)?/, '');
+                    resolve({ base64: encoded, mimeType: 'image/jpeg', filename: file.name + ".jpg" });
+                }
+            };
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    // PENGIRIMAN DATA KE SERVER GOOGLE SCRIPT
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        
+        const sigDataUrl = canvas.toDataURL('image/png');
+        const isBlank = !ctx.getImageData(0,0,canvas.width,canvas.height).data.some(channel => channel !== 0);
+        if(isBlank) {
+            alert('Mohon isi Tanda Tangan Digital terlebih dahulu!');
+            return;
+        }
+        
+        let sigEncoded = sigDataUrl.replace(/^data:(.*,)?/, '');
+        const sigPayload = { base64: sigEncoded, mimeType: 'image/png', filename: "Tanda_Tangan_" + form.Nama.value + ".png" };
+        
+        btnSubmit.style.display = 'none';
+        loadingText.style.display = 'block';
+
+        const formData = new FormData(form);
+        const payload = {};
+
+        try {
+            for (let [key, value] of formData.entries()) {
+                if (key === 'Tanda_Tangan_Siswa') {
+                    payload[key] = sigPayload;
+                } else if (value instanceof File && value.size > 0) {
+                    payload[key] = await processFile(value);
+                } else if (!(value instanceof File)) {
+                    payload[key] = value;
+                }
+            }
+
+            const response = await fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            });
+
+            const result = await response.json();
+            if(result.result === 'success') {
+                alert('DATA TRANSMITTED SUCCESSFULLY. Tugas dan Tanda Tangan Sesi 2 Anda telah berhasil terkirim!');
+                form.reset();
+                ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            console.error(error);
+            alert('TRANSMISSION FAILED: ' + error.message);
+        } finally {
+            btnSubmit.style.display = 'block';
+            loadingText.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
