@@ -269,9 +269,23 @@
       <p style="color: #aaa; font-size: 0.9em;">Area ini khusus untuk pengecekan dan penilaian tugas oleh
         pengajar.<br>Silakan masukkan kode otorisasi untuk mengakses Spreadsheet.</p>
 
-      <div class="admin-login">
-        <input type="password" id="adminPass" placeholder="Masukkan Password...">
-        <button onclick="checkPassword()">AUTHORIZE</button>
+      <div class="admin-login" style="flex-direction: column; align-items: center;">
+        <!-- Dropdown Pilihan Database -->
+        <select id="dbSelect"
+          style="background: #000; border: 1px solid #ff3333; color: #ff3333; padding: 10px; font-family: inherit; border-radius: 4px; width: 100%; max-width: 320px; margin-bottom: 10px; outline: none;">
+          <option value="https://docs.google.com/spreadsheets/d/1M7ooax708eL_1-nyIEiJtZo0AasBEHHhr9uZD991Aew/edit">Database
+            Sesi 1 - Firewall Basic</option>
+          <option value="https://docs.google.com/spreadsheets/d/13chVCJmz_XnP4Yla32nVq84-iFCIecZu7sisceFvrB0/edit">Database
+            Sesi 2 - Proxy & Filter</option>
+          <option value="https://docs.google.com/spreadsheets/d/1ZDVQNco7djwwzoa8fu3rpQtQQbwVFO3S6p0vHTxTt0s/edit">Database
+            Sesi 3 - Hotspot & Bandwidth</option>
+        </select>
+      
+        <!-- Kolom Password & Tombol -->
+        <div style="display: flex; gap: 10px;">
+          <input type="password" id="adminPass" placeholder="Masukkan Password...">
+          <button onclick="checkPassword()">AUTHORIZE</button>
+        </div>
       </div>
       <p id="errorMsg" style="color: #ff3333; display: none; margin-top: 10px; font-size: 0.9em;">> ERROR: Kata sandi
         salah!</p>
@@ -283,26 +297,27 @@
     System Initialized. Copyright &copy; 2026 Jauhari Saputra - Cyber Security Lab.
   </div>
 
-  <script>
+ <script>
     function checkPassword() {
-      const passInput = document.getElementById('adminPass').value;
-      const errorMsg = document.getElementById('errorMsg');
+        const passInput = document.getElementById('adminPass').value;
+        const dbSelect = document.getElementById('dbSelect').value; // Mengambil URL dari dropdown
+        const errorMsg = document.getElementById('errorMsg');
 
-      // --- GANTI PASSWORD DI BAWAH INI ---
-      // Saat ini passwordnya adalah "Kasihkarunia5"
-      const correctPassword = "Kasihkarunia5";
+        // --- GANTI PASSWORD DI BAWAH INI ---
+        const correctPassword = "Kasihkarunia5";
 
-      if (passInput === correctPassword) {
-        // Jika password benar, otomatis buka Google Sheet Database Final Anda di tab baru
-        window.open("https://docs.google.com/spreadsheets/d/1M7ooax708eL_1-nyIEiJtZo0AasBEHHhr9uZD991Aew/edit", "_blank");
-        errorMsg.style.display = "none";
-        document.getElementById('adminPass').value = ""; // Kosongkan input
-      } else {
-        // Jika salah
-        errorMsg.style.display = "block";
-      }
+        if (passInput === correctPassword) {
+            // Membuka URL Google Sheet sesuai dengan sesi yang dipilih pada dropdown
+            window.open(dbSelect, "_blank");
+            
+            errorMsg.style.display = "none";
+            document.getElementById('adminPass').value = ""; // Kosongkan input
+        } else {
+            // Jika salah
+            errorMsg.style.display = "block";
+        }
     }
-  </script>
+</script>
 
 </body>
 
