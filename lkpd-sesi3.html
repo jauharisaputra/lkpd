@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEM LKPD | SESI 3 - HOTSPOT & BANDWIDTH</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        body { 
+            font-family: 'Share Tech Mono', monospace; 
+            background-color: #050b14; color: #00ffcc; 
+            padding: 20px; line-height: 1.6;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .container { 
+            max-width: 900px; background: rgba(5, 15, 30, 0.95); 
+            padding: 40px; border-radius: 8px; margin: auto; 
+            border: 1px solid #00ffcc; box-shadow: 0 0 20px rgba(0, 255, 204, 0.2); 
+        }
+        h1, h2, h3 { color: #00ffcc; text-transform: uppercase; }
+        h1 { text-align: center; text-shadow: 0 0 10px #00ffcc; border-bottom: 2px dashed #00ffcc; padding-bottom: 15px;}
+        h2 { background-color: rgba(0, 255, 204, 0.1); padding: 10px; border-left: 5px solid #00ffcc; margin-top: 40px;}
+        
+        .instruction-box { background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 5px; border: 1px solid #005544; font-size: 0.95em; margin-bottom: 20px;}
+        .step-box { background: rgba(0, 0, 0, 0.6); border-left: 4px solid #ffaa00; padding: 15px; margin-bottom: 20px; font-size: 0.9em; color: #ddd;}
+        .step-box h4 { margin-top: 0; color: #ffaa00; font-size: 1.1em;}
+        .step-box ol { margin-bottom: 0; padding-left: 20px; }
+        .step-box li { margin-bottom: 8px; }
+        .highlight { color: #00ffcc; font-weight: bold; }
+        
+        label { font-weight: bold; display: block; margin-top: 20px; color: #fff;}
+        input[type="text"], input[type="file"], textarea, select { 
+            width: 100%; padding: 12px; margin-top: 8px; background-color: #02060d; color: #00ffcc; 
+            border: 1px solid #005544; border-radius: 4px; box-sizing: border-box; font-family: inherit;
+        }
+        input:focus, textarea:focus { border: 1px solid #00ffcc; outline: none; box-shadow: 0 0 8px rgba(0, 255, 204, 0.5); }
+        input[type="file"]::file-selector-button { background: #00ffcc; color: #000; border: none; padding: 5px 10px; cursor: pointer; font-family: inherit; font-weight: bold;}
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(0,0,0,0.5); }
+        th, td { border: 1px solid #005544; padding: 10px; text-align: left; }
+        th { background-color: rgba(0, 255, 204, 0.1); color: #00ffcc; }
+        
+        canvas { border: 2px dashed #00ffcc; background-color: #fff; cursor: crosshair; margin-top: 10px; border-radius: 4px; touch-action: none;}
+        .clear-btn { display: inline-block; background: #cc0000; color: #fff; padding: 5px 10px; cursor: pointer; margin-top: 5px; font-size: 14px; border-radius: 3px;}
+        
+        button.submit-btn { 
+            background-color: transparent; color: #00ffcc; padding: 15px 20px; border: 2px solid #00ffcc; 
+            border-radius: 4px; cursor: pointer; margin-top: 40px; font-size: 20px; width: 100%; font-weight: bold; 
+            font-family: inherit; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        }
+        button.submit-btn:hover { background-color: #00ffcc; color: #000; box-shadow: 0 0 15px #00ffcc; }
+        
+        .loading { display: none; text-align: center; margin-top: 20px; color: #00ffcc; animation: blink 1s infinite;}
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .back-btn { color: #fff; text-decoration: none; font-size: 0.9em; display: inline-block; margin-bottom: 20px; border: 1px solid #00ffcc; padding: 5px 10px; border-radius: 4px;}
+        .back-btn:hover { background: #00ffcc; color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-btn">< KEMBALI KE MENU UTAMA</a>
+    
+    <h1>LEMBAR KERJA PESERTA DIDIK (LKPD)</h1>
+    <p style="text-align:center; margin:0;">PRAKTIK KEAMANAN JARINGAN - SESI 3</p>
+    <p style="text-align:center; color:#aaa; font-size:0.9em; margin-top:5px;">Membangun Sistem Autentikasi User (Hotspot) & Manajemen Bandwidth</p>
+    <p style="text-align:center; margin-top:20px; border-bottom:1px solid #333; padding-bottom:10px;"><b>Pengajar: Jauhari Saputra</b> | Mata Pelajaran: Keamanan Jaringan</p>
+
+    <!-- PANDUAN AWAL -->
+    <div class="instruction-box">
+        <h3>> SKENARIO SESI 3</h3>
+        <p>Anda ditugaskan merancang jaringan publik sekolah. Untuk mencegah akses tidak sah dan monopoli kecepatan internet, Anda harus mengaktifkan sistem <b>Captive Portal (Hotspot)</b> yang mewajibkan pengguna login, serta membatasi kecepatan internet klien menggunakan <b>Simple Queue</b>.</p>
+    </div>
+
+    <form id="lkpdForm">
+        <!-- IDENTITAS -->
+        <h2>> A. IDENTITAS PESERTA DIDIK</h2>
+        <div class="grid-2">
+            <div><label>Nama Lengkap:</label><input type="text" name="Nama" required></div>
+            <div><label>Kelas:</label><input type="text" name="Kelas" required></div>
+            <div><label>Kelompok:</label><input type="text" name="Kelompok" required></div>
+            <div><label>Anggota 1:</label><input type="text" name="Anggota_1"></div>
+            <div><label>Anggota 2:</label><input type="text" name="Anggota_2"></div>
+            <div><label>Anggota 3:</label><input type="text" name="Anggota_3"></div>
+            <div><label>Anggota 4:</label><input type="text" name="Anggota_4"></div>
+            <div><label>Anggota 5:</label><input type="text" name="Anggota_5"></div>
+        </div>
+
+        <!-- KEGIATAN 1 -->
+        <h2>> PRAKTIK 1: KONFIGURASI HOTSPOT SETUP</h2>
+        <div class="step-box">
+            <h4>Langkah Kerja:</h4>
+            <ol>
+                <li>Buka menu <b>IP > Hotspot</b> di Winbox, masuk ke tab <b>Servers</b>.</li>
+                <li>Klik tombol <b>Hotspot Setup</b>.</li>
+                <li>Pilih interface lokal yang terhubung ke klien Windows (Adapter 2 / intnet).</li>
+                <li>Ikuti instruksi Next, atur rentang IP, dan masukkan DNS Name (contoh: <span class="highlight">login.sekolah.sch.id</span>).</li>
+                <li>Selesaikan setup hingga muncul pesan <i>Setup has completed successfully</i>.</li>
+            </ol>
+        </div>
+        
+        <label>1. Apa fungsi DNS Name pada proses Hotspot Setup?</label>
+        <textarea name="P1_Fungsi_DNS_Name" rows="2" required></textarea>
+        
+        <label>[UPLOAD] Bukti 1: Screenshot notifikasi Hotspot Setup yang berhasil</label>
+        <input type="file" accept="image/*" name="B1_Bukti_Hotspot_Setup" required>
+
+        <!-- KEGIATAN 2 -->
+        <h2>> PRAKTIK 2: MANAJEMEN USER PROFILE & PENGGUNA</h2>
+        <div class="step-box">
+            <h4>Langkah Kerja:</h4>
+            <ol>
+                <li>Pindah ke tab <b>User Profiles</b>. Klik (+) untuk membuat profil baru (misal: <i>Profil-Siswa</i>).</li>
+                <li>Pada tab <b>Users</b>, klik (+) untuk membuat user baru.</li>
+                <li>Isi <b>Name</b> (username) dan <b>Password</b>, lalu pilih <b>Profile</b> yang baru Anda buat. Klik OK.</li>
+            </ol>
+        </div>
+
+        <label>2. Apa perbedaan pengaturan pada User Profiles dengan pengaturan pada Users?</label>
+        <textarea name="P2_Perbedaan_Profile_User" rows="2" required></textarea>
+
+        <label>[UPLOAD] Bukti 2: Screenshot daftar akun pada tab Users</label>
+        <input type="file" accept="image/*" name="B2_Bukti_Users" required>
+
+        <!-- KEGIATAN 3 -->
+        <h2>> PRAKTIK 3: PENGUJIAN LOGIN HOTSPOT</h2>
+        <div class="step-box">
+            <h4>Langkah Kerja:</h4>
+            <ol>
+                <li>Buka browser di Windows Klien.</li>
+                <li>Akses situs sembarang (HTTP), atau ketik DNS Name yang Anda atur sebelumnya.</li>
+                <li>Halaman login MikroTik akan muncul. Masukkan Username dan Password yang telah dibuat.</li>
+            </ol>
+        </div>
+
+        <label>[UPLOAD] Bukti 3: Screenshot layar Windows Klien menampilkan Halaman Login Hotspot</label>
+        <input type="file" accept="image/*" name="B3_Bukti_Login_Page" required>
+
+        <!-- KEGIATAN 4 -->
+        <h2>> PRAKTIK 4: LIMITASI BANDWIDTH (SIMPLE QUEUE)</h2>
+        <div class="step-box">
+            <h4>Langkah Kerja:</h4>
+            <ol>
+                <li>Buka menu <b>Queues</b>, pada tab <b>Simple Queues</b> klik (+).</li>
+                <li>Isi <b>Name</b> (contoh: <i>Limit-Klien</i>).</li>
+                <li>Pada <b>Target</b>, arahkan ke IP Address atau Interface klien Windows Anda.</li>
+                <li>Pada bagian <b>Max Limit</b>, atur <b>Target Upload</b> (misal: 512k) dan <b>Target Download</b> (misal: 1M). Klik OK.</li>
+            </ol>
+        </div>
+
+        <label>3. Jika Anda tidak mengisi IP pada kolom Target melainkan memilih interface (contoh: ether2), apa yang akan terjadi?</label>
+        <textarea name="P3_Target_Queue" rows="2" required></textarea>
+
+        <label>[UPLOAD] Bukti 4: Screenshot konfigurasi Simple Queue</label>
+        <input type="file" accept="image/*" name="B4_Bukti_Queue" required>
+
+        <!-- KEGIATAN 5 -->
+        <h2>> PRAKTIK 5: PENGUJIAN & ANALISIS BANDWIDTH</h2>
+        <label>Lakukan Speedtest di klien sebelum limitasi diaktifkan, dan sesudah limitasi diaktifkan. Tulis hasilnya di bawah ini:</label>
+        <table>
+            <tr><th>Kondisi Limitasi</th><th>Download (Mbps / Kbps)</th><th>Upload (Mbps / Kbps)</th></tr>
+            <tr>
+                <td>Sebelum Simple Queue Aktif</td>
+                <td><input type="text" name="U1_Down_Sebelum"></td>
+                <td><input type="text" name="U2_Up_Sebelum"></td>
+            </tr>
+            <tr>
+                <td>Sesudah Simple Queue Aktif</td>
+                <td><input type="text" name="U3_Down_Sesudah"></td>
+                <td><input type="text" name="U4_Up_Sesudah"></td>
+            </tr>
+        </table>
+
+        <label>Analisis: Apakah indikator warna pada aturan Simple Queue Anda berubah dari hijau menjadi kuning/merah saat Speedtest berjalan? Jelaskan mengapa.</label>
+        <textarea name="A1_Indikator_Queue" rows="2" required></textarea>
+
+        <label>[UPLOAD] Bukti 5: Screenshot hasil pengujian limitasi Bandwidth</label>
+        <input type="file" accept="image/*" name="B5_Bukti_Speedtest" required>
+
+        <!-- KESIMPULAN -->
+        <h2>> E. KESIMPULAN PRAKTIK SESI 3</h2>
+        <label>1. Hal baru apa yang Anda pelajari mengenai sistem autentikasi (Hotspot) dan limitasi (Queue)?</label>
+        <textarea name="K_Hal_Baru" rows="2" required></textarea>
+        <label>2. Masalah yang dihadapi saat praktik dan solusinya:</label>
+        <textarea name="K_Masalah_Solusi" rows="2" required></textarea>
+
+        <!-- PENGESAHAN -->
+        <h2>> G. PENGESAHAN PESERTA DIDIK</h2>
+        <label>Tanda Tangan Digital Siswa:</label>
+        <canvas id="sigCanvas" width="400" height="200"></canvas><br>
+        <div class="clear-btn" id="clearBtn">Hapus / Ulangi Tanda Tangan</div>
+
+        <input type="hidden" name="Tanda_Tangan_Siswa" id="sigInput">
+
+        <button type="submit" class="submit-btn" id="btnSubmit">> TRANSMIT REPORT SESI 3_</button>
+        <div class="loading" id="loadingText">> PROCESSING DATA & EXPORTING SIGNATURE... PLEASE WAIT_</div>
+    </form>
+</div>
+
+<script>
+    // MASUKKAN URL WEB APP SESI 3 ANDA DI SINI
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwKPdN_hT_D83A3eXbOqCInaThZugOJ-wbaS_h4HZLeqr-sHgnvEhijqjyr9vIfYcBxoQ/exec'; 
+    const form = document.forms['lkpdForm'];
+    const btnSubmit = document.getElementById('btnSubmit');
+    const loadingText = document.getElementById('loadingText');
+
+    const canvas = document.getElementById('sigCanvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#000000';
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    canvas.addEventListener('mousedown', e => { drawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
+    canvas.addEventListener('mousemove', e => { if(drawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } });
+    canvas.addEventListener('mouseup', () => { drawing = false; });
+    canvas.addEventListener('mouseout', () => { drawing = false; });
+
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }, {passive: false});
+    canvas.addEventListener('touchmove', e => { e.preventDefault(); if(drawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } }, {passive: false});
+    canvas.addEventListener('touchend', e => { e.preventDefault(); drawing = false; }, {passive: false});
+
+    document.getElementById('clearBtn').addEventListener('click', () => { ctx.clearRect(0, 0, canvas.width, canvas.height); });
+
+    async function processFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = event => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const c = document.createElement('canvas');
+                    const MAX_WIDTH = 1200; 
+                    let scaleSize = 1;
+                    if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
+                    c.width = img.width * scaleSize;
+                    c.height = img.height * scaleSize;
+                    const ctxC = c.getContext('2d');
+                    ctxC.drawImage(img, 0, 0, c.width, c.height);
+                    const dataUrl = c.toDataURL('image/jpeg', 0.7);
+                    let encoded = dataUrl.replace(/^data:(.*,)?/, '');
+                    resolve({ base64: encoded, mimeType: 'image/jpeg', filename: file.name + ".jpg" });
+                }
+            };
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const sigDataUrl = canvas.toDataURL('image/png');
+        const isBlank = !ctx.getImageData(0,0,canvas.width,canvas.height).data.some(channel => channel !== 0);
+        if(isBlank) { alert('Mohon isi Tanda Tangan Digital terlebih dahulu!'); return; }
+        
+        let sigEncoded = sigDataUrl.replace(/^data:(.*,)?/, '');
+        const sigPayload = { base64: sigEncoded, mimeType: 'image/png', filename: "Tanda_Tangan_" + form.Nama.value + ".png" };
+        
+        btnSubmit.style.display = 'none'; loadingText.style.display = 'block';
+        const formData = new FormData(form);
+        const payload = {};
+
+        try {
+            for (let [key, value] of formData.entries()) {
+                if (key === 'Tanda_Tangan_Siswa') { payload[key] = sigPayload; } 
+                else if (value instanceof File && value.size > 0) { payload[key] = await processFile(value); } 
+                else if (!(value instanceof File)) { payload[key] = value; }
+            }
+            const response = await fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
+            const result = await response.json();
+            if(result.result === 'success') {
+                alert('DATA TRANSMITTED SUCCESSFULLY. Tugas Sesi 3 telah berhasil terkirim!');
+                form.reset(); ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            } else { throw new Error(result.error); }
+        } catch (error) {
+            console.error(error); alert('TRANSMISSION FAILED: ' + error.message);
+        } finally {
+            btnSubmit.style.display = 'block'; loadingText.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
