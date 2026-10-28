@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEM LKPD | CYBER SECURITY LAB (FISIK)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #050b14;
+            color: #00ffcc;
+            padding: 20px;
+            line-height: 1.6;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            background: rgba(5, 15, 30, 0.95);
+            padding: 40px;
+            border-radius: 8px;
+            margin: auto;
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #00ffcc;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            text-align: center;
+            text-shadow: 0 0 10px #00ffcc;
+            border-bottom: 2px dashed #00ffcc;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            background-color: rgba(0, 255, 204, 0.1);
+            padding: 10px;
+            border-left: 5px solid #00ffcc;
+            margin-top: 40px;
+        }
+
+        .instruction-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #005544;
+            font-size: 0.95em;
+            margin-bottom: 20px;
+        }
+
+        .step-box {
+            background: rgba(0, 0, 0, 0.6);
+            border-left: 4px solid #ffaa00;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #ddd;
+        }
+
+        .step-box h4 {
+            margin-top: 0;
+            color: #ffaa00;
+            font-size: 1.1em;
+        }
+
+        .step-box ol {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+
+        .step-box li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+            color: #fff;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            background-color: #02060d;
+            color: #00ffcc;
+            border: 1px solid #005544;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus {
+            border: 1px solid #00ffcc;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 255, 204, 0.5);
+        }
+
+        input[type="file"]::file-selector-button {
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        th,
+        td {
+            border: 1px solid #005544;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgba(0, 255, 204, 0.1);
+            color: #00ffcc;
+        }
+
+        canvas {
+            border: 2px dashed #00ffcc;
+            background-color: #fff;
+            cursor: crosshair;
+            margin-top: 10px;
+            border-radius: 4px;
+            touch-action: none;
+        }
+
+        .clear-btn {
+            display: inline-block;
+            background: #cc0000;
+            color: #fff;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 5px;
+            font-size: 14px;
+            border-radius: 3px;
+        }
+
+        button.submit-btn {
+            background-color: transparent;
+            color: #00ffcc;
+            padding: 15px 20px;
+            border: 2px solid #00ffcc;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 40px;
+            font-size: 20px;
+            width: 100%;
+            font-weight: bold;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        button.submit-btn:hover {
+            background-color: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 15px #00ffcc;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #00ffcc;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid #00ffcc;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .back-btn:hover {
+            background: #00ffcc;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn">
+            < KEMBALI KE MENU UTAMA</a>
+
+                <h1>LEMBAR KERJA PESERTA DIDIK (LKPD)</h1>
+                <p style="text-align:center; margin:0;">PRAKTIK KEAMANAN JARINGAN - SESI 1 (PERANGKAT FISIK)</p>
+                <p style="text-align:center; color:#aaa; font-size:0.9em; margin-top:5px;">Konfigurasi Dasar & Firewall
+                    Filtering Menggunakan RouterBoard MikroTik</p>
+                <p style="text-align:center; margin-top:20px; border-bottom:1px solid #333; padding-bottom:10px;">
+                    <b>Pengajar: Jauhari Saputra</b> | Mata Pelajaran: Keamanan Jaringan</p>
+
+                <!-- PANDUAN AWAL -->
+                <div class="instruction-box">
+                    <h3>> D. SKENARIO DAN TOPOLOGI FISIK</h3>
+                    <p>Anda bertugas sebagai administrator jaringan laboratorium. Praktik ini menggunakan Router fisik
+                        (RouterBoard) dan PC/Laptop nyata.</p>
+                    <p><b>Pengkabelan (Topologi):</b><br>
+                        - <b>Port Ether1 MikroTik:</b> Dihubungkan ke sumber Internet (Modem/ISP/Switch Sekolah)
+                        menggunakan kabel UTP.<br>
+                        - <b>Port Ether2 MikroTik:</b> Dihubungkan ke port LAN PC/Laptop Anda menggunakan kabel UTP.</p>
+                </div>
+
+                <form id="lkpdForm">
+                    <!-- IDENTITAS -->
+                    <h2>> A. IDENTITAS PESERTA DIDIK</h2>
+                    <div class="grid-2">
+                        <div><label>Nama Lengkap:</label><input type="text" name="Nama" required></div>
+                        <div><label>Kelas:</label><input type="text" name="Kelas" required></div>
+                        <div><label>Kelompok:</label><input type="text" name="Kelompok" required></div>
+                        <div><label>Anggota 1:</label><input type="text" name="Anggota_1"></div>
+                        <div><label>Anggota 2:</label><input type="text" name="Anggota_2"></div>
+                        <div><label>Anggota 3:</label><input type="text" name="Anggota_3"></div>
+                        <div><label>Anggota 4:</label><input type="text" name="Anggota_4"></div>
+                        <div><label>Anggota 5:</label><input type="text" name="Anggota_5"></div>
+                    </div>
+
+                    <!-- KEGIATAN 1 -->
+                    <h2>> PRAKTIK 1: PENGKABELAN & AKSES AWAL</h2>
+                    <div class="step-box">
+                        <h4>Langkah Kerja:</h4>
+                        <ol>
+                            <li>Siapkan alat fisik: RouterBoard MikroTik, Adaptor daya, 2 buah Kabel UTP (LAN), dan
+                                PC/Laptop Klien.</li>
+                            <li>Colokkan kabel internet dari sekolah ke port <b>Ether1</b> pada MikroTik.</li>
+                            <li>Colokkan ujung kabel LAN kedua ke port <b>Ether2</b> MikroTik, dan ujung satunya ke
+                                PC/Laptop Anda.</li>
+                            <li>Nyalakan MikroTik, buka aplikasi <b>Winbox 64-bit</b> di PC Anda.</li>
+                            <li>Masuk ke tab <b>Neighbors</b>, klik <b>MAC Address</b> MikroTik yang muncul, login
+                                dengan user <i>admin</i> (password kosong), lalu Connect.</li>
+                            <li>Jika router bekas pakai, reset dengan cara buka menu <b>System > Reset
+                                    Configuration</b>, centang <i>No Default Configuration</i>, lalu klik Reset
+                                Configuration. Login kembali setelah router menyala.</li>
+                        </ol>
+                    </div>
+
+                    <label>1. Mengapa dalam topologi fisik ini kita memisahkan jalur Ether1 dan Ether2?</label>
+                    <textarea name="P1_Fungsi_Ether" rows="2" required></textarea>
+
+                    <label>2. Apa tujuan melakukan "Reset Configuration" sebelum memulai konfigurasi jaringan?</label>
+                    <textarea name="P2_Tujuan_Reset" rows="2" required></textarea>
+
+                    <label>[UPLOAD] Bukti 1: Foto perangkat nyata (Kabel tercolok ke MikroTik & PC)</label>
+                    <input type="file" accept="image/*" name="B1_Bukti_Fisik" required>
+
+                    <!-- KEGIATAN 2 -->
+                    <h2>> PRAKTIK 2: KONFIGURASI DASAR INTERNET</h2>
+                    <div class="step-box">
+                        <h4>Langkah Kerja (Membagikan Internet ke PC):</h4>
+                        <ol>
+                            <li><b>Internet Router:</b> Buka IP > DHCP Client > Klik (+) > Pilih Interface <b>ether1</b>
+                                > Apply > OK. (Pastikan statusnya <i>bound</i>).</li>
+                            <li><b>IP Lokal:</b> Buka IP > Addresses > Klik (+) > Isi Address <span
+                                    class="highlight">192.168.10.1/24</span> > Pilih Interface <b>ether2</b> > Apply >
+                                OK.</li>
+                            <li><b>DHCP untuk PC:</b> Buka IP > DHCP Server > Klik tombol <b>DHCP Setup</b> > Pilih
+                                Interface <b>ether2</b> > Klik <i>Next</i> terus hingga sukses.</li>
+                            <li><b>NAT (Sangat Penting):</b> Buka IP > Firewall > Tab NAT > Klik (+).<br>
+                                - Tab General: Chain = <span class="highlight">srcnat</span>, Out. Interface = <span
+                                    class="highlight">ether1</span><br>
+                                - Tab Action: Action = <span class="highlight">masquerade</span>. Klik Apply > OK.</li>
+                            <li>Cek koneksi internet di browser PC Anda. Jika gagal, cabut-pasang kabel LAN di PC agar
+                                mendapat IP otomatis.</li>
+                        </ol>
+                    </div>
+
+                    <label>3. Jelaskan fungsi dari fitur NAT (Masquerade) pada langkah ke-4!</label>
+                    <textarea name="P3_Fungsi_NAT" rows="2" required></textarea>
+
+                    <label>[UPLOAD] Bukti 2: Screenshot Firewall NAT pada aplikasi Winbox</label>
+                    <input type="file" accept="image/*" name="B2_Bukti_NAT" required>
+                    <label>[UPLOAD] Bukti 3: Screenshot PC Klien berhasil browsing internet</label>
+                    <input type="file" accept="image/*" name="B3_Bukti_Koneksi_PC" required>
+
+                    <!-- KEGIATAN 3 -->
+                    <h2>> PRAKTIK 3: KONFIGURASI FIREWALL FILTER RULES</h2>
+                    <div class="step-box">
+                        <h4>Langkah Kerja Blokir File (.exe dan .bat):</h4>
+                        <ol>
+                            <li>Buka menu <b>IP > Firewall</b>, lalu pilih tab <b>Filter Rules</b>. Klik tanda (+).</li>
+                            <li><b>Aturan .exe:</b> Tab <i>General</i> -> Chain = <span
+                                    class="highlight">forward</span>. Tab <i>Advanced</i> -> Content = <span
+                                    class="highlight">.exe</span>. Tab <i>Action</i> -> Action = <span
+                                    class="highlight">drop</span>. Klik Apply, OK.</li>
+                            <li><b>Aturan .bat:</b> Ulangi langkah di atas, namun isi Content dengan <span
+                                    class="highlight">.bat</span>. Klik Apply, OK.</li>
+                        </ol>
+                    </div>
+
+                    <label>4. Apa perbedaan antara action 'accept' dan 'drop' pada firewall?</label>
+                    <textarea name="P4_Accept_Drop" rows="2" required></textarea>
+
+                    <label>5. Mengapa kita memilih chain 'forward' (bukan input) untuk memblokir unduhan klien?</label>
+                    <textarea name="P5_Chain_Forward" rows="2" required></textarea>
+
+                    <label>[UPLOAD] Bukti 4: Screenshot Tab Filter Rules di Winbox dengan 2 aturan baru</label>
+                    <input type="file" accept="image/*" name="B4_Bukti_Rules" required>
+
+                    <!-- KEGIATAN 4 -->
+                    <h2>> PRAKTIK 4: PENGUJIAN DAN ANALISIS</h2>
+                    <div class="step-box">
+                        <h4>Langkah Kerja Pengujian:</h4>
+                        <ol>
+                            <li>Gunakan browser di PC Anda untuk mendownload file berakhiran .exe (Usahakan via HTTP).
+                            </li>
+                            <li>Coba juga download file script berakhiran .bat.</li>
+                            <li>Amati kolom <b>Bytes / Packets</b> (Counter) pada aturan Filter Rules di Winbox saat
+                                download berlangsung.</li>
+                        </ol>
+                    </div>
+
+                    <table>
+                        <tr>
+                            <th>Objek Uji</th>
+                            <th>Hasil Download</th>
+                            <th>Counter Winbox Berubah?</th>
+                        </tr>
+                        <tr>
+                            <td>Coba Download File .exe</td>
+                            <td><input type="text" name="U1_Exe_Hasil" placeholder="Terkirim / Terputus"></td>
+                            <td><select name="U1_Exe_Counter">
+                                    <option>Ya</option>
+                                    <option>Tidak</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>Coba Download File .bat</td>
+                            <td><input type="text" name="U2_Bat_Hasil" placeholder="Terkirim / Terputus"></td>
+                            <td><select name="U2_Bat_Counter">
+                                    <option>Ya</option>
+                                    <option>Tidak</option>
+                                </select></td>
+                        </tr>
+                    </table>
+
+                    <label>Analisis 1: Mengapa filter string kata (.exe) ini terkadang kebobolan jika websitenya
+                        HTTPS?</label>
+                    <textarea name="A1_Analisis_HTTPS" rows="2" required></textarea>
+                    <label>Analisis 2: Pendekatan apa yang lebih efektif digunakan untuk memblokir virus di
+                        jaringan?</label>
+                    <textarea name="A2_Solusi_Lain" rows="2" required></textarea>
+
+                    <label>[UPLOAD] Bukti 5: Screenshot Hasil Pengujian (Counter Winbox bertambah/terblokir)</label>
+                    <input type="file" accept="image/*" name="B5_Bukti_Pengujian" required>
+
+                    <!-- KEGIATAN 5 -->
+                    <h2>> PRAKTIK 5: PEMECAHAN MASALAH</h2>
+                    <label>Apakah ada Masalah/Kendala yang Anda temukan saat praktik alat fisik ini?</label>
+                    <textarea name="Masalah" rows="2" required
+                        placeholder="Contoh: Lampu mati, tidak dapat IP, dsb"></textarea>
+                    <label>Apa penyebabnya?</label>
+                    <textarea name="Penyebab" rows="2" required></textarea>
+                    <label>Bagaimana solusinya?</label>
+                    <textarea name="Solusi" rows="2" required></textarea>
+
+                    <!-- KESIMPULAN -->
+                    <h2>> E. KESIMPULAN PRAKTIK</h2>
+                    <label>1. Hal atau ilmu baru apa yang dipelajari dari praktik Fisik ini?</label>
+                    <textarea name="K_Hal_Baru" rows="2" required></textarea>
+
+                    <!-- PENGESAHAN -->
+                    <h2>> G. PENGESAHAN PESERTA DIDIK</h2>
+                    <div class="step-box" style="border-left: 4px solid #00ffcc;">
+                        <h4>Tahap Akhir:</h4>
+                        <p>1. Cek kembali semua isian dan foto fisik.<br>2. Gambar tanda tangan Anda.<br>3. Klik
+                            Transmit.</p>
+                    </div>
+                    <label>Tanda Tangan Digital Siswa:</label>
+                    <canvas id="sigCanvas" width="400" height="200"></canvas><br>
+                    <div class="clear-btn" id="clearBtn">Hapus / Ulangi Tanda Tangan</div>
+
+                    <input type="hidden" name="Tanda_Tangan_Siswa" id="sigInput">
+
+                    <button type="submit" class="submit-btn" id="btnSubmit">> TRANSMIT REPORT SESI 1 (FISIK)_</button>
+                    <div class="loading" id="loadingText">> PROCESSING DATA & EXPORTING SIGNATURE... PLEASE WAIT_</div>
+                </form>
+    </div>
+
+    <script>
+        // MASUKKAN URL WEB APP KHUSUS FISIK ANDA DI BAWAH INI
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw0IQk5izOgh_crjTMEdl6Xn1n86ueHCP4tkwu5wR6G_NKLUD8pRLd1o-gnX-a7FM51OQ/exec';
+        const form = document.forms['lkpdForm'];
+        const btnSubmit = document.getElementById('btnSubmit');
+        const loadingText = document.getElementById('loadingText');
+
+        // SISTEM CANVAS TANDA TANGAN
+        const canvas = document.getElementById('sigCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#00ffcc';
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        canvas.addEventListener('mousedown', e => { drawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
+        canvas.addEventListener('mousemove', e => { if (drawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } });
+        canvas.addEventListener('mouseup', () => { drawing = false; });
+        canvas.addEventListener('mouseout', () => { drawing = false; });
+
+        canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }, { passive: false });
+        canvas.addEventListener('touchmove', e => { e.preventDefault(); if (drawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } }, { passive: false });
+        canvas.addEventListener('touchend', e => { e.preventDefault(); drawing = false; }, { passive: false });
+
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        // SISTEM KOMPRESI GAMBAR AUTO
+        async function processFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = event => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const c = document.createElement('canvas');
+                        const MAX_WIDTH = 1200;
+                        let scaleSize = 1;
+                        if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
+                        c.width = img.width * scaleSize;
+                        c.height = img.height * scaleSize;
+                        const ctxC = c.getContext('2d');
+                        ctxC.drawImage(img, 0, 0, c.width, c.height);
+                        const dataUrl = c.toDataURL('image/jpeg', 0.7);
+                        let encoded = dataUrl.replace(/^data:(.*,)?/, '');
+                        resolve({ base64: encoded, mimeType: 'image/jpeg', filename: file.name + ".jpg" });
+                    }
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // PENGIRIMAN DATA
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            const sigDataUrl = canvas.toDataURL('image/png');
+            const isBlank = !ctx.getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 0);
+            if (isBlank) {
+                alert('Mohon isi Tanda Tangan Digital terlebih dahulu!');
+                return;
+            }
+
+            let sigEncoded = sigDataUrl.replace(/^data:(.*,)?/, '');
+            const sigPayload = { base64: sigEncoded, mimeType: 'image/png', filename: "Tanda_Tangan_" + form.Nama.value + ".png" };
+
+            btnSubmit.style.display = 'none';
+            loadingText.style.display = 'block';
+
+            const formData = new FormData(form);
+            const payload = {};
+
+            try {
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'Tanda_Tangan_Siswa') {
+                        payload[key] = sigPayload;
+                    } else if (value instanceof File && value.size > 0) {
+                        payload[key] = await processFile(value);
+                    } else if (!(value instanceof File)) {
+                        payload[key] = value;
+                    }
+                }
+
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+
+                const result = await response.json();
+                if (result.result === 'success') {
+                    alert('DATA TRANSMITTED SUCCESSFULLY. Tugas Fisik Sesi 1 telah terkirim!');
+                    form.reset();
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('TRANSMISSION FAILED: ' + error.message);
+            } finally {
+                btnSubmit.style.display = 'block';
+                loadingText.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
