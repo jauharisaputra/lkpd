@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UJIAN TEORI SESI 3 | CYBER SECURITY LAB</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #050b14;
+            color: #cc00ff;
+            padding: 20px;
+            line-height: 1.6;
+            background-image: linear-gradient(rgba(204, 0, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(204, 0, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            background: rgba(5, 15, 30, 0.95);
+            padding: 30px;
+            border-radius: 8px;
+            margin: auto;
+            border: 1px solid #cc00ff;
+            box-shadow: 0 0 20px rgba(204, 0, 255, 0.2);
+            position: relative;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #cc00ff;
+            text-transform: uppercase;
+            margin-top: 0;
+        }
+
+        h1 {
+            text-align: center;
+            text-shadow: 0 0 10px #cc00ff;
+            border-bottom: 2px dashed #cc00ff;
+            padding-bottom: 15px;
+        }
+
+        .timer-box {
+            position: sticky;
+            top: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #cc00ff;
+            color: #cc00ff;
+            padding: 10px 20px;
+            font-size: 1.5em;
+            text-align: center;
+            border-radius: 5px;
+            z-index: 100;
+            font-weight: bold;
+        }
+
+        .timer-box.warning {
+            color: #ff0000;
+            border-color: #ff0000;
+            animation: blink 1s infinite;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            color: #fff;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            background-color: #02060d;
+            color: #cc00ff;
+            border: 1px solid #660080;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 16px;
+        }
+
+        .question-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid #cc00ff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .options-list li {
+            background: rgba(204, 0, 255, 0.05);
+            margin-bottom: 8px;
+            padding: 10px;
+            border: 1px solid rgba(204, 0, 255, 0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .options-list li:hover {
+            background: rgba(204, 0, 255, 0.15);
+        }
+
+        .options-list input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+            accent-color: #cc00ff;
+        }
+
+        button.submit-btn {
+            background-color: transparent;
+            color: #cc00ff;
+            padding: 15px 20px;
+            border: 2px solid #cc00ff;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-size: 20px;
+            width: 100%;
+            font-weight: bold;
+            font-family: inherit;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        button.submit-btn:hover {
+            background-color: #cc00ff;
+            color: #000;
+            box-shadow: 0 0 15px #cc00ff;
+        }
+
+        #resultScreen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .score-display {
+            font-size: 5em;
+            color: #cc00ff;
+            text-shadow: 0 0 20px #cc00ff;
+            margin: 20px 0;
+        }
+
+        .result-details {
+            font-size: 1.2em;
+            color: #ddd;
+            margin-bottom: 30px;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #loadingMsg {
+            display: none;
+            text-align: center;
+            color: #cc00ff;
+            margin-top: 20px;
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>EVALUASI TEORI - SESI 3</h1>
+        <p style="text-align:center; color:#aaa;">Materi: Hotspot & Bandwidth Management</p>
+        <div class="timer-box" id="timerDisplay">WAKTU TERSISA: 60:00</div>
+        <div id="examScreen">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+                <div><label>Nama Lengkap:</label><input type="text" id="inputNama" required></div>
+                <div><label>Kelas:</label><input type="text" id="inputKelas" required></div>
+            </div>
+            <div id="questionsContainer"></div>
+            <button class="submit-btn" id="btnSubmit" onclick="manualSubmit()">> SUBMIT JAWABAN SESI 3_</button>
+            <div id="loadingMsg">> MENGEKSPOR DATA... PLEASE WAIT_</div>
+        </div>
+        <div id="resultScreen">
+            <h2>> TRANSMISSION COMPLETE_</h2>
+            <p>Data Ujian Sesi 3 berhasil terekam ke database sentral.</p>
+            <div class="score-display" id="finalScoreDisplay">100</div>
+            <div class="result-details"><span style="color: #00ffcc;">Benar: <b id="ansCorrect">0</b></span> | <span
+                    style="color: #ff3333;">Salah: <b id="ansWrong">0</b></span></div>
+            <a href="index.html"
+                style="color:#cc00ff; text-decoration:none; border:1px solid #cc00ff; padding:10px 20px; border-radius:4px;">>
+                KEMBALI KE MENU_</a>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================
+        // GUNAKAN URL WEB APP YANG SAMA DENGAN SESI 1 & SESI 2
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhLfgcX_LQ3NhMUA5sIWwZtY0h9FQfjmSUlg_IChtZXAdVcJrMqX6Fo9WwwZ3uh8rxYQ/exec';
+        // =========================================================
+
+        const NAMA_SESI = 'Sesi 3: Hotspot & Bandwidth Management'; // Variabel pembeda di Google Sheet
+        const DURASI_MENIT = 60;
+
+        const bankSoal = [
+            { q: "Apa fungsi utama fitur Hotspot pada MikroTik?", options: ["A. Mempercepat internet", "B. Mengenkripsi jaringan", "C. Memblokir ping", "D. Autentikasi pengguna (Login Page) sebelum mengakses internet"], answer: 3 },
+            { q: "Fungsi DNS Name saat melakukan Hotspot Setup adalah?", options: ["A. Sebagai IP publik", "B. Domain lokal untuk memunculkan halaman login", "C. Sebagai server DNS Google", "D. Memblokir situs"], answer: 1 },
+            { q: "Fitur untuk membatasi kecepatan maksimal (bandwidth) pengguna di MikroTik adalah?", options: ["A. Firewall Filter", "B. NAT Masquerade", "C. Simple Queue", "D. DHCP Server"], answer: 2 },
+            { q: "Jika Target pada Simple Queue diisi IP 192.168.10.0/24, apa yang terjadi?", options: ["A. Hanya IP 192.168.10.1 yang dibatasi", "B. Seluruh perangkat di segmen tersebut dibatasi kolektif", "C. Koneksi diblokir", "D. Kecepatan menjadi unlimited"], answer: 1 },
+            { q: "Ikon Simple Queue berubah menjadi merah, artinya?", options: ["A. Konfigurasi error", "B. Klien offline", "C. IP target tidak terdeteksi", "D. Penggunaan bandwidth sudah mencapai Max Limit"], answer: 3 }
+        ];
+
+        for (let i = 6; i <= 50; i++) {
+            bankSoal.push({ q: `Soal nomor ${i} (Sesi 3): Placeholder pertanyaan Hotspot.`, options: ["A", "B", "C", "D"], answer: 0 });
+        }
+
+        const qContainer = document.getElementById('questionsContainer');
+        let isSubmitted = false;
+
+        bankSoal.forEach((soal, index) => {
+            let optionsHTML = '';
+            soal.options.forEach((opt, optIndex) => {
+                optionsHTML += `<li><label style="display:flex; width:100%; cursor:pointer; color:#ccc; font-weight:normal;"><input type="radio" name="q${index}" value="${optIndex}">${opt}</label></li>`;
+            });
+            qContainer.innerHTML += `<div class="question-box"><div class="question-text">${index + 1}. ${soal.q}</div><ul class="options-list">${optionsHTML}</ul></div>`;
+        });
+
+        let timeLeft = DURASI_MENIT * 60;
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timer = setInterval(() => {
+            if (isSubmitted) { clearInterval(timer); return; }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60); let s = timeLeft % 60;
+            timerDisplay.innerText = `WAKTU TERSISA: ${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+            if (timeLeft <= 60) timerDisplay.classList.add('warning');
+            if (timeLeft <= 0) { clearInterval(timer); timerDisplay.innerText = "WAKTU HABIS!"; autoSubmit(); }
+        }, 1000);
+
+        function manualSubmit() {
+            const n = document.getElementById('inputNama').value.trim(), k = document.getElementById('inputKelas').value.trim();
+            if (!n || !k) return alert('Lengkapi Nama dan Kelas!');
+            if (confirm("Kirim jawaban sekarang?")) prosesEvaluasi(n, k);
+        }
+        function autoSubmit() {
+            alert("WAKTU HABIS! Mensubmit otomatis.");
+            prosesEvaluasi(document.getElementById('inputNama').value.trim() || "Anonim", document.getElementById('inputKelas').value.trim() || "Tidak Diisi");
+        }
+
+        async function prosesEvaluasi(nama, kelas) {
+            isSubmitted = true;
+            document.getElementById('btnSubmit').style.display = 'none';
+            document.getElementById('loadingMsg').style.display = 'block';
+            document.querySelectorAll('input').forEach(i => i.disabled = true);
+
+            let benar = 0, salah = 0;
+            bankSoal.forEach((soal, index) => {
+                const sel = document.querySelector(`input[name="q${index}"]:checked`);
+                if (sel && parseInt(sel.value) === soal.answer) benar++; else salah++;
+            });
+
+            let skorAkhir = Math.round((benar / bankSoal.length) * 100);
+            const payload = { "Nama": nama, "Kelas": kelas, "Sesi": NAMA_SESI, "Benar": benar, "Salah": salah, "Skor_Akhir": skorAkhir };
+
+            try {
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
+                const result = await response.json();
+                if (result.result === 'success') {
+                    document.getElementById('examScreen').style.display = 'none';
+                    document.getElementById('resultScreen').style.display = 'block';
+                    document.getElementById('finalScoreDisplay').innerText = skorAkhir;
+                    document.getElementById('ansCorrect').innerText = benar; document.getElementById('ansWrong').innerText = salah;
+                    timerDisplay.style.display = 'none';
+                } else throw new Error(result.error);
+            } catch (error) {
+                alert("GAGAL MENGIRIM! Pastikan koneksi internet stabil.");
+                document.getElementById('btnSubmit').style.display = 'block';
+                document.getElementById('loadingMsg').style.display = 'none';
+                document.querySelectorAll('input').forEach(i => i.disabled = false);
+                isSubmitted = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
