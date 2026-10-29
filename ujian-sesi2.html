@@ -93,18 +93,508 @@
     const NAMA_SESI = 'Sesi 2: Proxy Server & Web Filter'; // Variabel pembeda di Google Sheet
     const DURASI_MENIT = 60;
 
-    const bankSoal = [
-        { q: "Apa fungsi utama mengaktifkan Web Proxy pada MikroTik?", options: ["A. Membatasi bandwidth download klien", "B. Menyimpan halaman web sementara (cache) dan memfilter konten HTTP", "C. Mengenkripsi jaringan LAN", "D. Memblokir lalu lintas ICMP"], answer: 1 },
-        { q: "Port berapakah yang digunakan secara default oleh layanan Web Proxy MikroTik?", options: ["A. 80", "B. 443", "C. 8080", "D. 21"], answer: 2 },
-        { q: "Fitur untuk membelokkan trafik HTTP klien secara otomatis agar masuk ke Web Proxy disebut?", options: ["A. Transparent Proxy (NAT Redirect)", "B. Simple Queue", "C. DHCP Server", "D. Hotspot Server"], answer: 0 },
-        { q: "Pada NAT untuk Transparent Proxy, 'Chain' apa yang harus digunakan?", options: ["A. srcnat", "B. dstnat", "C. forward", "D. input"], answer: 1 },
-        { q: "Menu spesifik manakah di Web Proxy yang digunakan untuk memblokir ekstensi file .mp3?", options: ["A. Web Proxy > Cache", "B. Web Proxy > Direct", "C. Web Proxy > Connections", "D. Web Proxy > Access"], answer: 3 }
+ const bankSoal = [
+        {
+            q: "Apa fungsi utama dari fitur Web Proxy pada sebuah router MikroTik?",
+            options: [
+                "A. Mempercepat koneksi internet dengan membagi bandwidth secara merata",
+                "B. Menyimpan cache halaman web dan melakukan pemblokiran (filtering) akses ke situs tertentu",
+                "C. Menyembunyikan IP publik router dari intaian internet",
+                "D. Menggantikan fungsi Firewall Filter Rules sepenuhnya"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Secara default, port berapakah yang digunakan oleh fitur Web Proxy pada MikroTik?",
+            options: [
+                "A. 80",
+                "B. 443",
+                "C. 8080",
+                "D. 8291"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Untuk membuat Transparent Proxy (Proxy Transparan), kita harus membelokkan trafik web HTTP (Port 80) milik klien secara otomatis ke Port Web Proxy (Port 8080). Fitur MikroTik apa yang digunakan?",
+            options: [
+                "A. Firewall Filter Rules (Chain: Drop)",
+                "B. Firewall Mangle",
+                "C. Simple Queue",
+                "D. Firewall NAT (Action: Redirect)"
+            ],
+            answer: 3 // D
+        },
+        {
+            q: "Pada konfigurasi Firewall NAT untuk keperluan Transparent Proxy, Chain apakah yang harus digunakan?",
+            options: [
+                "A. srcnat",
+                "B. dstnat",
+                "C. input",
+                "D. prerouting"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Pada Firewall NAT untuk Transparent Proxy, setelah memilih Chain: dstnat dan Protocol: tcp, berapakah Dst. Port (Destination Port) yang harus diisi untuk menangkap trafik HTTP normal klien?",
+            options: [
+                "A. 8080",
+                "B. 443",
+                "C. 80",
+                "D. 21"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Menu apakah di Winbox yang digunakan untuk mengatur situs web (domain) apa saja yang boleh atau dilarang diakses oleh klien melalui Web Proxy?",
+            options: [
+                "A. IP > Web Proxy > Cache",
+                "B. IP > Web Proxy > Connections",
+                "C. IP > Web Proxy > Access",
+                "D. IP > Web Proxy > Direct"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Dalam pengaturan Web Proxy Access, kolom manakah yang harus diisi jika kita ingin memblokir akses ke sebuah nama domain/situs (misalnya: linux.or.id)?",
+            options: [
+                "A. Src. Address",
+                "B. Dst. Address",
+                "C. Path",
+                "D. Dst. Host"
+            ],
+            answer: 3 // D
+        },
+        {
+            q: "Dalam pengaturan Web Proxy Access, kolom manakah yang harus diisi jika kita ingin memblokir unduhan file spesifik berdasarkan ekstensinya (misalnya: file .mp3 atau .mkv)?",
+            options: [
+                "A. Src. Address",
+                "B. Dst. Host",
+                "C. Path",
+                "D. Action"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Action apakah yang harus dipilih pada Web Proxy Access agar akses klien menuju suatu situs atau file ditolak/diblokir?",
+            options: [
+                "A. Drop",
+                "B. Reject",
+                "C. Deny",
+                "D. Allow"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Jika Anda ingin memblokir seluruh situs web yang mengandung kata 'mikrotik' (contoh: mikrotik.com, forum.mikrotik.co.id), bagaimana format penulisan yang benar di kolom Dst. Host?",
+            options: [
+                "A. mikrotik",
+                "B. *mikrotik*",
+                "C. www.mikrotik.com",
+                "D. /mikrotik/"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Jika Anda ingin memblokir pengunduhan semua file berekstensi ISO melalui Web Proxy, bagaimana format penulisan yang benar di kolom Path?",
+            options: [
+                "A. .iso",
+                "B. *.iso*",
+                "C. /iso",
+                "D. file=iso"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Tanda bintang (*) pada pengisian Dst. Host atau Path di Web Proxy Access disebut juga sebagai karakter?",
+            options: [
+                "A. Wildcard",
+                "B. Hash",
+                "C. Slash",
+                "D. Escape"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Apa nama kolom pada setelan utama IP > Web Proxy yang berfungsi untuk menampilkan nama atau email administrator saat halaman blokir (Error: Forbidden) muncul di browser klien?",
+            options: [
+                "A. Src. Address",
+                "B. Max. Cache Size",
+                "C. Cache Administrator",
+                "D. Parent Proxy"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Pesan kesalahan (error) standar apa yang akan ditampilkan oleh browser klien (yang belum dikonfigurasi khusus) ketika ia mencoba mengakses situs HTTP yang diblokir oleh Web Proxy MikroTik?",
+            options: [
+                "A. 404 Not Found",
+                "B. 500 Internal Server Error",
+                "C. 502 Bad Gateway",
+                "D. 403 Forbidden"
+            ],
+            answer: 3 // D
+        },
+        {
+            q: "Fitur keamanan apa di Firewall Filter yang fungsinya hampir mirip dengan Web Proxy (memblokir situs) namun ia bekerja di Layer 7 dengan mendeteksi pola teks Regular Expression (RegEx) pada paket data?",
+            options: [
+                "A. Address List",
+                "B. Layer 7 Protocols",
+                "C. IP Bindings",
+                "D. NAT Redirect"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Mengapa pemblokiran menggunakan Web Proxy standar sering kali gagal bekerja pada situs-situs web modern saat ini (contoh: Google, Facebook, YouTube)?",
+            options: [
+                "A. Karena situs modern memiliki bandwidth yang lebih besar",
+                "B. Karena MikroTik tidak mendukung situs luar negeri",
+                "C. Karena situs tersebut menggunakan protokol HTTPS (terenkripsi) yang tidak bisa dibaca oleh Web Proxy biasa",
+                "D. Karena IP address klien disembunyikan"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "HTTPS (Hypertext Transfer Protocol Secure) yang banyak menyulitkan proses filtering Proxy konvensional, secara default beroperasi pada port berapa?",
+            options: [
+                "A. 80",
+                "B. 443",
+                "C. 8080",
+                "D. 21"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Jika Anda ingin memastikan Web Proxy menyimpan sementara gambar atau file yang sering diakses klien agar koneksi internet lebih hemat, kotak apa yang harus dicentang pada menu utama Web Proxy?",
+            options: [
+                "A. Enable",
+                "B. Cache On Disk",
+                "C. Always From Cache",
+                "D. Max. Connections"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Anda menemukan rule blokir di Web Proxy Access dengan Action: Deny, Dst. Host: (kosong), Path: (kosong), dan Src. Address: 192.168.10.50. Apa efek dari rule ini?",
+            options: [
+                "A. Klien dengan IP 192.168.10.50 tidak bisa mengakses internet (HTTP) sama sekali",
+                "B. Seluruh klien dilarang mengakses IP tujuan 192.168.10.50",
+                "C. Klien dengan IP 192.168.10.50 mendapatkan akses tanpa batas",
+                "D. Rule tersebut invalid dan tidak akan berfungsi"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Fasilitas pada MikroTik Web Proxy yang memungkinkan permintaan proxy dari klien diteruskan ke Proxy Server lain (misalnya Proxy milik ISP) disebut?",
+            options: [
+                "A. Reverse Proxy",
+                "B. Parent Proxy",
+                "C. Transparent Proxy",
+                "D. Proxy Chaining"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Saat klien A membuka detik.com, halaman tersebut diunduh dan disimpan di memori Web Proxy router. Saat klien B juga membuka detik.com, router akan memberikan halaman tersebut langsung dari memorinya tanpa mendownload ulang dari internet. Istilah untuk proses penyimpanan ini adalah?",
+            options: [
+                "A. Routing",
+                "B. Caching",
+                "C. Forwarding",
+                "D. Translating"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Pada rule Firewall NAT (Transparent Proxy): Chain=dstnat, Protocol=tcp, Dst.Port=80, Action=redirect, To.Ports=8080. Jika Anda lupa mengisi Dst. Port=80 dan membiarkannya kosong, apa masalah fatal yang akan terjadi?",
+            options: [
+                "A. Internet menjadi jauh lebih cepat",
+                "B. Seluruh trafik TCP apa pun bentuknya akan dibelokkan paksa ke port Web Proxy, menyebabkan banyak aplikasi selain web browser (seperti game online/Winbox) error",
+                "C. Router akan me-restart secara otomatis",
+                "D. Tidak ada efek apa-apa"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Di manakah posisi trafik Web Proxy lokal beroperasi jika ditinjau dari Firewall Filter MikroTik?",
+            options: [
+                "A. Trafik request klien akan masuk ke Chain Input, dan respon dari proxy ke internet menggunakan Chain Output",
+                "B. Seluruh trafik Web Proxy diproses melalui Chain Forward",
+                "C. Trafik Web Proxy kebal dari Firewall Filter",
+                "D. Trafik Web Proxy masuk ke Chain Prerouting"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Jika Anda ingin agar klien dengan IP Address pimpinan sekolah (misal: 192.168.10.254) TIDAK terkena blokir Web Proxy dan bebas mengakses internet, apa yang harus Anda lakukan di menu Web Proxy > Access?",
+            options: [
+                "A. Membuat rule baru dengan Action: Deny, Src.Address: 192.168.10.254 dan meletakkannya paling bawah",
+                "B. Membuat rule baru dengan Action: Allow, Src.Address: 192.168.10.254 dan meletakkannya di urutan paling ATAS (di atas rule Deny lainnya)",
+                "C. Menghapus IP Address pimpinan tersebut dari menu IP > Addresses",
+                "D. Mengubah Cache Administrator"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Dalam sistem pembacaan aturan di MikroTik (seperti pada Firewall Filter atau Web Proxy Access), bagaimanakah urutan MikroTik mengeksekusi rule tersebut?",
+            options: [
+                "A. Dibaca acak (Random)",
+                "B. Dibaca dari aturan yang paling bawah ke atas",
+                "C. Dibaca secara urut (Sequential) dari atas ke bawah. Rule yang cocok pertama kali akan langsung dieksekusi",
+                "D. Dibaca berdasarkan rule yang paling baru dibuat"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Apakah yang terjadi jika Anda mencentang (checklist) opsi 'Cache On Disk' pada RouterBoard MikroTik yang hanya memiliki memori internal (NAND Flash) berkapasitas sangat kecil (misal 16MB)?",
+            options: [
+                "A. Kecepatan internet akan meningkat drastis",
+                "B. Router akan berfungsi sebagai file server",
+                "C. Memori internal (storage) router akan cepat penuh, menyebabkan router hang, error, atau gagal booting ulang",
+                "D. Web Proxy otomatis memblokir situs porno"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Sebuah fitur pada DNS MikroTik yang fungsinya mirip pemblokiran situs Web Proxy, yaitu memalsukan IP tujuan dari sebuah nama domain (misalnya mengarahkan facebook.com ke IP lokal 127.0.0.1) disebut?",
+            options: [
+                "A. Static DNS (DNS Spoofing)",
+                "B. Dynamic DNS",
+                "C. DNS Cache",
+                "D. DNS Server"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Terkadang, halaman Error 403 Forbidden dari Web Proxy dapat kita kustomisasi (ubah tampilan HTML-nya) dengan cara mengedit file `error.html` yang berada pada menu?",
+            options: [
+                "A. System > Scripts",
+                "B. Files",
+                "C. Tools > Profile",
+                "D. Log"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Perintah CLI via Terminal untuk mengaktifkan Web Proxy pada MikroTik adalah?",
+            options: [
+                "A. /ip proxy set enabled=yes",
+                "B. /ip firewall proxy allow",
+                "C. /system proxy start",
+                "D. /ip service set proxy enabled=true"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Selain menggunakan Action 'Deny', pada Web Proxy Access terdapat pula fitur untuk membelokkan klien yang mengakses situs terlarang ke halaman website peringatan sekolah. Fitur tersebut dikonfigurasi dengan mengisi kolom?",
+            options: [
+                "A. Action: Allow",
+                "B. Redirect To (URL alternatif tujuan)",
+                "C. Local Address",
+                "D. Cache Administrator"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Ketika melakukan pengujian blokir .mp3 menggunakan Web Proxy pada browser klien, terkadang file tetap terunduh jika klien menggunakan aplikasi pengunduh seperti IDM (Internet Download Manager). Ini biasanya disebabkan oleh?",
+            options: [
+                "A. Web Proxy tidak mendukung IDM",
+                "B. IDM memutus koneksi LAN komputer",
+                "C. IDM memecah unduhan menjadi banyak koneksi simultan yang tidak mengandung header HTTP standar atau menggunakan protokol enkripsi",
+                "D. IDM menghapus rule di MikroTik"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Pada Filter Rules (IP > Firewall > Filter), Chain yang digunakan untuk menangkap/memfilter paket data yang hanya SEKADAR LEWAT MELINTASI router (dari klien ke internet atau sebaliknya) adalah?",
+            options: [
+                "A. Input",
+                "B. Output",
+                "C. Forward",
+                "D. Prerouting"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Jika seorang siswa cerdas menyadari bahwa akses HTTP port 80 dibelokkan ke proxy, lalu ia mengubah pengaturan browsernya menggunakan VPN atau ekstensi Proxy eksternal, tindakan pencegahan dasar apa yang bisa dilakukan administrator jaringan?",
+            options: [
+                "A. Mematikan fitur Web Proxy MikroTik",
+                "B. Membuat Firewall Filter Rule (Chain Forward) untuk Drop trafik klien menuju port-port VPN standar (misal PPTP, L2TP, OpenVPN)",
+                "C. Menambah kecepatan internet klien tersebut",
+                "D. Mematikan IP DHCP Server"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Pada konfigurasi awal jaringan MikroTik, agar Web Proxy bisa mengenali dan meresolusi nama domain (seperti google.com menjadi IP address), router MikroTik itu sendiri harus memiliki konfigurasi?",
+            options: [
+                "A. IP > DNS Servers yang valid",
+                "B. IP > DHCP Server yang aktif",
+                "C. Bridge Network",
+                "D. Bandwidth Management"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Port berapakah yang digunakan oleh protokol FTP (File Transfer Protocol), yang juga bisa diblokir file transfer-nya menggunakan fitur IP > Firewall Filter?",
+            options: [
+                "A. 20 dan 21",
+                "B. 22",
+                "C. 80",
+                "D. 443"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Fungsi dari tombol 'Clear Cache' yang terdapat pada menu IP > Web Proxy > Cache adalah?",
+            options: [
+                "A. Menghapus seluruh pengaturan Web Proxy",
+                "B. Menghapus log error router",
+                "C. Mengosongkan data situs web yang tersimpan sementara di memori proxy (berguna jika penyimpanan penuh)",
+                "D. Me-reset password Winbox"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Untuk melihat lalu lintas data yang sedang aktif terhubung melalui Web Proxy secara real-time, kita dapat membuka menu?",
+            options: [
+                "A. IP > Web Proxy > Connections",
+                "B. Tools > Torch",
+                "C. Interfaces",
+                "D. Queues"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Pada tab NAT, selain opsi Action 'Redirect' yang digunakan untuk Transparent Proxy, terdapat pula Action 'Masquerade' yang sangat penting. Fungsi Masquerade adalah?",
+            options: [
+                "A. Menyembunyikan port asli",
+                "B. Membuka akses remote Winbox dari luar",
+                "C. Menerjemahkan IP Private klien menjadi IP Public router agar klien bisa berinternet",
+                "D. Mematikan fungsi ping"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Manakah dari alamat berikut yang merupakan format penulisan IP Address versi 4 (IPv4)?",
+            options: [
+                "A. 00:1A:2B:3C:4D:5E",
+                "B. 192.168.10.1",
+                "C. fe80::2c6:3ff:fe9c:1c",
+                "D. admin@mikrotik"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Pada antarmuka Winbox, menu apa yang digunakan untuk mengatur waktu dan tanggal sistem agar log error Web Proxy menampilkan waktu kejadian yang valid?",
+            options: [
+                "A. System > Clock / System > SNTP Client",
+                "B. System > Scheduler",
+                "C. IP > Settings",
+                "D. Tools > Profile"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Jika Anda ingin memblokir akses klien ke internet pada jam-jam tertentu (misal: jam 22.00 s/d 06.00), opsi apa yang harus dikonfigurasi pada tab 'Extra' di Firewall Filter Rules?",
+            options: [
+                "A. Limit",
+                "B. Time",
+                "C. Dst. Limit",
+                "D. Connection Bytes"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Dalam Web Proxy Access, apakah perbedaan utama mendefinisikan blokir pada kolom 'Dst. Host' dengan mendefinisikannya di kolom 'Path'?",
+            options: [
+                "A. Dst. Host memblokir Nama Domain (Situs), sedangkan Path memblokir direktori/nama file di dalam situs tersebut",
+                "B. Dst. Host memblokir IP Address pengirim, sedangkan Path memblokir IP tujuan",
+                "C. Keduanya sama saja tidak ada bedanya",
+                "D. Dst. Host digunakan untuk koneksi kabel, Path untuk koneksi nirkabel (Wi-Fi)"
+            ],
+            answer: 0 // A
+        },
+        {
+            q: "Saat memblokir file video .mp4, selain mengisikan '*.mp4*' pada Path, administrator terkadang juga memfilter berdasarkan Tipe Data dengan mengisi tipe MIME pada kolom?",
+            options: [
+                "A. Dst. Port",
+                "B. Action",
+                "C. Src. Address",
+                "D. MIME Type"
+            ],
+            answer: 3 // D
+        },
+        {
+            q: "Apakah dampak negatif utama dari penggunaan Transparent Proxy (NAT Redirect) dibandingkan dengan mengonfigurasi Proxy secara manual (Explicit Proxy) di masing-masing browser klien?",
+            options: [
+                "A. Internet menjadi tidak stabil",
+                "B. Transparent Proxy memaksa router bekerja ekstra berat mengubah header paket (NATting), serta tidak mendukung koneksi HTTPS secara otomatis tanpa sertifikat tambahan",
+                "C. Browser klien akan selalu hang",
+                "D. Tidak bisa memblokir situs sama sekali"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Tanda centang biru (✓) pada jendela Winbox, baik pada menu Interface maupun Filter Rules, berfungsi untuk?",
+            options: [
+                "A. Menghapus konfigurasi",
+                "B. Menonaktifkan (Disable) aturan",
+                "C. Mengaktifkan (Enable) aturan atau antarmuka yang sebelumnya dimatikan",
+                "D. Menyimpan cadangan (Backup)"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Untuk mencadangkan seluruh pengaturan MikroTik (termasuk setting Proxy, Firewall, IP) ke dalam bentuk file skrip teks yang bisa dibaca manusia, perintah apa yang diketikkan di Terminal?",
+            options: [
+                "A. /system backup save",
+                "B. /export file=namafile",
+                "C. /ip proxy print",
+                "D. /tool fetch"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Sebuah perangkat Switch (Manageable) yang biasa dihubungkan ke Router MikroTik beroperasi pada OSI Layer ke?",
+            options: [
+                "A. Layer 1 (Physical)",
+                "B. Layer 2 (Data Link)",
+                "C. Layer 3 (Network)",
+                "D. Layer 4 (Transport)"
+            ],
+            answer: 1 // B
+        },
+        {
+            q: "Manakah pernyataan yang BENAR mengenai protokol TCP dan UDP?",
+            options: [
+                "A. TCP lebih cepat dari UDP, namun UDP lebih handal",
+                "B. TCP tidak memerlukan proses koneksi (Connectionless), UDP membutuhkan handshake",
+                "C. TCP menjamin paket sampai ke tujuan dengan utuh (Connection-oriented/Reliable), sedangkan UDP mengirim cepat tanpa peduli paket hilang (Connectionless)",
+                "D. TCP hanya digunakan untuk ping, UDP digunakan untuk browsing web"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Pada struktur IP Address 192.168.10.1/24, angka /24 menunjukkan Netmask/Subnet Mask sebesar?",
+            options: [
+                "A. 255.0.0.0",
+                "B. 255.255.0.0",
+                "C. 255.255.255.0",
+                "D. 255.255.255.255"
+            ],
+            answer: 2 // C
+        },
+        {
+            q: "Mengapa sebuah komputer/laptop (Klien) harus mendapatkan IP Address satu jaringan (segmen) yang sama dengan Router agar bisa saling berkomunikasi langsung (tanpa melalui routing tambahan)?",
+            options: [
+                "A. Agar router bisa mematikan komputer klien dari jarak jauh",
+                "B. Agar protokol ARP (Address Resolution Protocol) di Layer 2 bisa menerjemahkan IP tersebut menjadi MAC Address dan paket data bisa dikirim langsung melalui Switch/Kabel LAN",
+                "C. Agar komputer klien tidak terkena virus",
+                "D. Agar kecepatan internet menjadi ganda"
+            ],
+            answer: 1 // B
+        }
     ];
-
-    for(let i = 6; i <= 50; i++) {
-        bankSoal.push({ q: `Soal nomor ${i} (Sesi 2): Placeholder pertanyaan Web Proxy.`, options: ["A", "B", "C", "D"], answer: 0 });
-    }
-
     const qContainer = document.getElementById('questionsContainer');
     let isSubmitted = false;
 
