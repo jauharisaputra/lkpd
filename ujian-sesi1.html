@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UJIAN TEORI | CYBER SECURITY LAB</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #050b14;
+            color: #00ffcc;
+            padding: 20px;
+            line-height: 1.6;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            background: rgba(5, 15, 30, 0.95);
+            padding: 30px;
+            border-radius: 8px;
+            margin: auto;
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+            position: relative;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #00ffcc;
+            text-transform: uppercase;
+            margin-top: 0;
+        }
+
+        h1 {
+            text-align: center;
+            text-shadow: 0 0 10px #00ffcc;
+            border-bottom: 2px dashed #00ffcc;
+            padding-bottom: 15px;
+        }
+
+        /* Sticky Timer */
+        .timer-box {
+            position: sticky;
+            top: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ff3333;
+            color: #ff3333;
+            padding: 10px 20px;
+            font-size: 1.5em;
+            text-align: center;
+            border-radius: 5px;
+            z-index: 100;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .timer-box.warning {
+            color: #ff0000;
+            animation: blink 1s infinite;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            color: #fff;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            background-color: #02060d;
+            color: #00ffcc;
+            border: 1px solid #005544;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 16px;
+        }
+
+        /* Soal Styles */
+        .question-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid #00ffcc;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .options-list li {
+            background: rgba(0, 255, 204, 0.05);
+            margin-bottom: 8px;
+            padding: 10px;
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .options-list li:hover {
+            background: rgba(0, 255, 204, 0.15);
+        }
+
+        .options-list input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+            accent-color: #00ffcc;
+        }
+
+        button.submit-btn {
+            background-color: transparent;
+            color: #00ffcc;
+            padding: 15px 20px;
+            border: 2px solid #00ffcc;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-size: 20px;
+            width: 100%;
+            font-weight: bold;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        button.submit-btn:hover {
+            background-color: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 15px #00ffcc;
+        }
+
+        /* Result Screen */
+        #resultScreen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .score-display {
+            font-size: 5em;
+            color: #00ffcc;
+            text-shadow: 0 0 20px #00ffcc;
+            margin: 20px 0;
+        }
+
+        .result-details {
+            font-size: 1.2em;
+            color: #ddd;
+            margin-bottom: 30px;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #loadingMsg {
+            display: none;
+            text-align: center;
+            color: #ffaa00;
+            font-size: 1.2em;
+            margin-top: 20px;
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>EVALUASI TEORI - SESI 1</h1>
+        <p style="text-align:center; color:#aaa;">Pilih jawaban yang paling tepat. Sistem akan otomatis mensubmit
+            jawaban Anda jika waktu habis.</p>
+
+        <div class="timer-box" id="timerDisplay">WAKTU TERSISA: 60:00</div>
+
+        <!-- FORM IDENTITAS & UJIAN -->
+        <div id="examScreen">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+                <div><label>Nama Lengkap:</label><input type="text" id="inputNama" placeholder="Masukkan Nama..."
+                        required></div>
+                <div><label>Kelas:</label><input type="text" id="inputKelas" placeholder="Contoh: 12 TKJ 1" required>
+                </div>
+            </div>
+
+            <div id="questionsContainer">
+                <!-- Soal akan di-render menggunakan JavaScript di sini -->
+            </div>
+
+            <button class="submit-btn" id="btnSubmit" onclick="manualSubmit()">> SUBMIT JAWABAN_</button>
+            <div id="loadingMsg">> MENGEKSPOR DATA & MENGHITUNG SKOR... PLEASE WAIT_</div>
+        </div>
+
+        <!-- LAYAR HASIL SKOR -->
+        <div id="resultScreen">
+            <h2>> TRANSMISSION COMPLETE_</h2>
+            <p>Data Anda telah berhasil terekam ke dalam server pusat.</p>
+            <div class="score-display" id="finalScoreDisplay">100</div>
+            <div class="result-details">
+                <span style="color: #00ffcc;">Benar: <b id="ansCorrect">0</b></span> |
+                <span style="color: #ff3333;">Salah: <b id="ansWrong">0</b></span>
+            </div>
+            <a href="index.html"
+                style="color:#00ffcc; text-decoration:none; border:1px solid #00ffcc; padding:10px 20px; border-radius:4px;">>
+                KEMBALI KE MENU UTAMA_</a>
+        </div>
+
+    </div>
+
+    <script>
+        // ==========================================
+        // PENGATURAN GURU
+        // ==========================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhLfgcX_LQ3NhMUA5sIWwZtY0h9FQfjmSUlg_IChtZXAdVcJrMqX6Fo9WwwZ3uh8rxYQ/exec'; // <--- Ganti dengan URL Web App Sheet Ujian
+        const NAMA_SESI = 'Sesi 1: Firewall Basic';
+        const DURASI_MENIT = 60; // Durasi ujian dalam menit
+
+        // ==========================================
+        // BANK SOAL (Total 50 Soal)
+        // ==========================================
+        const bankSoal = [
+            {
+                q: "Apa fungsi utama dari fitur NAT (Network Address Translation) Masquerade pada MikroTik?",
+                options: [
+                    "A. Mempercepat koneksi internet jaringan lokal",
+                    "B. Menyembunyikan IP privat klien dan mengubahnya menjadi IP publik router",
+                    "C. Memblokir akses situs web tertentu",
+                    "D. Membagi bandwidth secara merata"
+                ],
+                answer: 1 // Index jawaban benar (Dimulai dari 0. B = 1)
+            },
+            {
+                q: "Chain apa yang harus digunakan pada Filter Rules jika kita ingin memblokir klien mengunduh file (.exe)?",
+                options: [
+                    "A. Input",
+                    "B. Output",
+                    "C. Forward",
+                    "D. Prerouting"
+                ],
+                answer: 2
+            },
+            {
+                q: "Saat mereset konfigurasi MikroTik melalui Winbox, apa fungsi opsi 'No Default Configuration'?",
+                options: [
+                    "A. Agar router kembali ke pengaturan pabrik MikroTik",
+                    "B. Agar router kosong dari pengaturan apapun sehingga dikonfigurasi dari nol",
+                    "C. Untuk menyimpan backup konfigurasi sebelumnya",
+                    "D. Agar router tidak bisa diakses sembarang orang"
+                ],
+                answer: 1
+            },
+            {
+                q: "Secara default, port berapakah yang digunakan oleh fitur Web Proxy pada MikroTik?",
+                options: [
+                    "A. 80",
+                    "B. 443",
+                    "C. 8080",
+                    "D. 8291"
+                ],
+                answer: 2
+            },
+            {
+                q: "Untuk membuat Transparent Proxy, kita harus membelokkan trafik HTTP (Port 80) ke Port Web Proxy. Fitur apa yang digunakan?",
+                options: [
+                    "A. Firewall Filter Rules (Drop)",
+                    "B. Firewall Mangle",
+                    "C. Simple Queue",
+                    "D. Firewall NAT (Redirect)"
+                ],
+                answer: 3
+            }
+        ];
+
+        // GENERATOR SOAL DUMMY (Untuk melengkapi menjadi 50 soal)
+        // HAPUS KODE LOOP INI JIKA ANDA SUDAH MEMASUKKAN 50 SOAL ASLI SECARA MANUAL DI ATAS
+        for (let i = 6; i <= 50; i++) {
+            bankSoal.push({
+                q: `Soal nomor ${i}: Ini adalah tempat (placeholder) untuk pertanyaan ke-${i}. Silakan ganti di kode sumber.`,
+                options: ["A. Pilihan 1", "B. Pilihan 2", "C. Pilihan 3", "D. Pilihan 4"],
+                answer: 0
+            });
+        }
+
+        // ==========================================
+        // LOGIK SISTEM
+        // ==========================================
+        const qContainer = document.getElementById('questionsContainer');
+        let isSubmitted = false;
+
+        // Render HTML Soal
+        bankSoal.forEach((soal, index) => {
+            let optionsHTML = '';
+            soal.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                <li>
+                    <label style="display:flex; align-items:center; width:100%; margin:0; cursor:pointer; color:#ccc; font-weight:normal;">
+                        <input type="radio" name="q${index}" value="${optIndex}">
+                        ${opt}
+                    </label>
+                </li>
+            `;
+            });
+
+            qContainer.innerHTML += `
+            <div class="question-box">
+                <div class="question-text">${index + 1}. ${soal.q}</div>
+                <ul class="options-list">${optionsHTML}</ul>
+            </div>
+        `;
+        });
+
+        // Sistem Timer
+        let timeLeft = DURASI_MENIT * 60;
+        const timerDisplay = document.getElementById('timerDisplay');
+
+        const timer = setInterval(() => {
+            if (isSubmitted) { clearInterval(timer); return; }
+
+            timeLeft--;
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+
+            timerDisplay.innerText = `WAKTU TERSISA: ${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (timeLeft <= 60) {
+                timerDisplay.classList.add('warning'); // Berkedip merah saat sisa 1 menit
+            }
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timerDisplay.innerText = "WAKTU HABIS!";
+                autoSubmit();
+            }
+        }, 1000);
+
+        function manualSubmit() {
+            const nama = document.getElementById('inputNama').value.trim();
+            const kelas = document.getElementById('inputKelas').value.trim();
+
+            if (!nama || !kelas) {
+                alert('Akses Ditolak: Mohon lengkapi Nama dan Kelas terlebih dahulu sebelum submit!');
+                return;
+            }
+
+            if (confirm("Apakah Anda yakin ingin mengirim jawaban sekarang? Data tidak dapat diubah setelah dikirim.")) {
+                prosesEvaluasi(nama, kelas);
+            }
+        }
+
+        function autoSubmit() {
+            alert("WAKTU HABIS! Sistem akan mengunci dan mengirimkan jawaban Anda secara otomatis.");
+            let nama = document.getElementById('inputNama').value.trim() || "Anonim (Auto-Submit)";
+            let kelas = document.getElementById('inputKelas').value.trim() || "Tidak Diisi";
+            prosesEvaluasi(nama, kelas);
+        }
+
+        async function prosesEvaluasi(nama, kelas) {
+            isSubmitted = true;
+            document.getElementById('btnSubmit').style.display = 'none';
+            document.getElementById('loadingMsg').style.display = 'block';
+
+            // Kunci semua input agar tidak bisa diubah saat proses
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(i => i.disabled = true);
+
+            // Perhitungan Skor
+            let benar = 0;
+            let salah = 0;
+
+            bankSoal.forEach((soal, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selectedOption && parseInt(selectedOption.value) === soal.answer) {
+                    benar++;
+                } else {
+                    salah++;
+                }
+            });
+
+            // Hitung skor skala 100
+            let skorAkhir = Math.round((benar / bankSoal.length) * 100);
+
+            // Siapkan data untuk dikirim ke Google Sheet
+            const payload = {
+                "Nama": nama,
+                "Kelas": kelas,
+                "Sesi": NAMA_SESI,
+                "Benar": benar,
+                "Salah": salah,
+                "Skor_Akhir": skorAkhir
+            };
+
+            // Kirim data (Fetch HTTP POST)
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    // Tampilkan Layar Hasil
+                    document.getElementById('examScreen').style.display = 'none';
+                    document.getElementById('resultScreen').style.display = 'block';
+                    document.getElementById('finalScoreDisplay').innerText = skorAkhir;
+                    document.getElementById('ansCorrect').innerText = benar;
+                    document.getElementById('ansWrong').innerText = salah;
+                    timerDisplay.style.display = 'none';
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                console.error(error);
+                alert("TRANSMISSION FAILED: Gagal mengirim nilai ke server. Pastikan Anda terkoneksi internet. Hubungi instruktur.");
+                document.getElementById('btnSubmit').style.display = 'block';
+                document.getElementById('loadingMsg').style.display = 'none';
+                inputs.forEach(i => i.disabled = false);
+                isSubmitted = false;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
