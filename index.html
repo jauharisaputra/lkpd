@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CYBER SECURITY LAB | Portal Praktikum Jaringan</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap');
 
     body {
       font-family: 'Share Tech Mono', monospace;
@@ -82,7 +82,7 @@
     }
 
     .module-card::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
@@ -108,12 +108,6 @@
       border: 1px solid rgba(0, 255, 204, 0.3);
     }
 
-    .badge-locked {
-      background: rgba(255, 0, 0, 0.1);
-      color: #ff3333;
-      border-color: rgba(255, 0, 0, 0.3);
-    }
-
     .module-card h3 {
       color: #fff;
       margin: 0 0 10px 0;
@@ -136,22 +130,12 @@
       border-radius: 4px;
       transition: 0.3s;
       font-weight: bold;
+      margin-bottom: 10px;
     }
 
     .btn:hover {
       background: #00ffcc;
       color: #000;
-    }
-
-    .btn-locked {
-      border-color: #555;
-      color: #555;
-      cursor: not-allowed;
-    }
-
-    .btn-locked:hover {
-      background: transparent;
-      color: #555;
     }
 
     /* Teacher Area */
@@ -170,11 +154,13 @@
 
     .admin-login {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
       gap: 10px;
       margin-top: 15px;
     }
 
+    .admin-login select,
     .admin-login input {
       background: #000;
       border: 1px solid #ff3333;
@@ -182,11 +168,12 @@
       padding: 10px;
       font-family: inherit;
       border-radius: 4px;
-      width: 200px;
+      width: 100%;
+      max-width: 320px;
+      outline: none;
     }
 
     .admin-login input:focus {
-      outline: none;
       box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
     }
 
@@ -226,129 +213,136 @@
   </div>
 
   <div class="container">
-
     <h2 class="section-title">> DAFTAR MODUL PRAKTIKUM</h2>
-
     <div class="module-grid">
-<!-- MODUL 1 (FISIK) -->
-<div class="module-card">
-  <span class="module-badge"
-    style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 01 -
-    FISIK</span>
-  <h3>RouterBoard Basic</h3>
-  <p>Simulasi pemblokiran file dan perakitan koneksi menggunakan PC dan Mikrotik fisik secara langsung.</p>
-  <a href="lkpd-sesi1-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD FISIK_</a>
-</div>
 
-<!-- MODUL 2 (FISIK) -->
-<div class="module-card">
-  <span class="module-badge"
-    style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 02 -
-    FISIK</span>
-  <h3>Firewall Filtering Basic</h3>
-  <p>Simulasi pemblokiran ekstensi file malware (.exe & .bat) menggunakan MikroTik RouterOS dan Windows Client di
-    VirtualBox.</p>
-  <!-- PASTIKAN ANDA MENGGANTI href DI BAWAH INI SESUAI DENGAN NAMA FILE LKPD ANDA -->
-  <a href="lkpd-sesi2-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD FISIK_</a>
-</div>
-
-<!-- MODUL 3 (FISIK) -->
-<div class="module-card">
-  <span class="module-badge"
-    style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 03 -
-    FISIK</span>
-  <h3>Hotspot & Bandwidth Management</h3>
-  <p>Membangun sistem autentikasi user (Login Page) dan membatasi kecepatan internet menggunakan Simple Queue.</p>
-  <a href="lkpd-sesi3-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD FISIK_</a>
-</div>
-
-<!-- MODUL 1 (Aktif) -->
+      <!-- MODUL 1 (FISIK) -->
       <div class="module-card">
-        <span class="module-badge">SESI 01</span>
-        <h3>Firewall Filtering Basic</h3>
-        <p>Simulasi pemblokiran ekstensi file malware (.exe & .bat) menggunakan MikroTik RouterOS dan Windows Client di
-          VirtualBox.</p>
-        <!-- PASTIKAN ANDA MENGGANTI href DI BAWAH INI SESUAI DENGAN NAMA FILE LKPD ANDA -->
-        <a href="lkpd-sesi1.html" class="btn">> AKSES LKPD_</a>
+        <span class="module-badge"
+          style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 01 -
+          FISIK</span>
+        <h3>RouterBoard Basic</h3>
+        <p>Simulasi pemblokiran file dan perakitan koneksi menggunakan PC dan Mikrotik fisik secara langsung.</p>
+        <a href="lkpd-sesi1-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD FISIK_</a>
+        <a href="ujian-sesi1.html" class="btn" style="border-color:#00ffcc; color:#00ffcc;">> AKSES UJIAN TEORI_</a>
       </div>
 
-      <!-- MODUL 2 (Terbuka) -->
+      <!-- MODUL 2 (FISIK) -->
       <div class="module-card">
-        <span class="module-badge">SESI 02</span>
+        <span class="module-badge"
+          style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 02 -
+          FISIK</span>
         <h3>Proxy Server & Web Filter</h3>
-        <p>Konfigurasi Web Proxy pada MikroTik untuk memblokir akses situs tertentu berdasarkan domain dan kata kunci.
-        </p>
-        <a href="lkpd-sesi2.html" class="btn">> AKSES LKPD_</a>
+        <p>Konfigurasi Web Proxy pada MikroTik fisik untuk memblokir akses situs tertentu berdasarkan domain dan
+          ekstensi file.</p>
+        <a href="lkpd-sesi2-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD FISIK_</a>
+        <a href="ujian-sesi2.html" class="btn" style="border-color:#00ffcc; color:#00ffcc;">> AKSES UJIAN TEORI_</a>
       </div>
 
-      <!-- MODUL 3 (Terbuka) -->
+      <!-- MODUL 3 (FISIK) -->
       <div class="module-card">
-        <span class="module-badge">SESI 03</span>
-        <h3>Hotspot & Bandwidth Management</h3>
-        <p>Membangun sistem autentikasi user (Login Page) dan membatasi kecepatan internet menggunakan Simple Queue.</p>
-        <a href="lkpd-sesi3.html" class="btn">> AKSES LKPD_</a>
+        <span class="module-badge"
+          style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 03 -
+          FISIK</span>
+        <h3>Hotspot & Bandwidth</h3>
+        <p>Membangun sistem autentikasi user (Login Page) dan membatasi kecepatan internet klien menggunakan Simple
+          Queue.</p>
+        <a href="lkpd-sesi3-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD FISIK_</a>
+        <a href="ujian-sesi3.html" class="btn" style="border-color:#cc00ff; color:#cc00ff;">> AKSES UJIAN TEORI_</a>
       </div>
-        
-      
+
+      <!-- MODUL 1 (VIRTUAL) -->
+      <div class="module-card">
+        <span class="module-badge">SESI 01 - VIRTUAL</span>
+        <h3>Firewall Filtering Basic</h3>
+        <p>Simulasi pemblokiran ekstensi file malware menggunakan MikroTik RouterOS dan Windows Client di VirtualBox.
+        </p>
+        <a href="lkpd-sesi1.html" class="btn">> AKSES LKPD VIRTUAL_</a>
+      </div>
+
+      <!-- MODUL 2 (VIRTUAL) -->
+      <div class="module-card">
+        <span class="module-badge">SESI 02 - VIRTUAL</span>
+        <h3>Proxy Server & Web Filter</h3>
+        <p>Konfigurasi Web Proxy pada MikroTik Virtual untuk memblokir akses situs tertentu berdasarkan domain.</p>
+        <a href="lkpd-sesi2.html" class="btn">> AKSES LKPD VIRTUAL_</a>
+      </div>
+
+      <!-- MODUL 3 (VIRTUAL) -->
+      <div class="module-card">
+        <span class="module-badge">SESI 03 - VIRTUAL</span>
+        <h3>Hotspot & Bandwidth Management</h3>
+        <p>Membangun sistem autentikasi user dan membatasi kecepatan internet pada lingkungan VirtualBox.</p>
+        <a href="lkpd-sesi3.html" class="btn">> AKSES LKPD VIRTUAL_</a>
+      </div>
 
     </div>
 
     <h2 class="section-title" style="border-left-color: #ff3333; color: #ff3333;">> RESTRICTED AREA (INSTRUKTUR)</h2>
-
     <div class="teacher-area">
       <h3>[ DATABASE PENILAIAN & TUGAS SISWA ]</h3>
       <p style="color: #aaa; font-size: 0.9em;">Area ini khusus untuk pengecekan dan penilaian tugas oleh
         pengajar.<br>Silakan masukkan kode otorisasi untuk mengakses Spreadsheet.</p>
 
-      <div class="admin-login" style="flex-direction: column; align-items: center;">
-        <!-- Dropdown Pilihan Database -->
-        <select id="dbSelect"
-          style="background: #000; border: 1px solid #ff3333; color: #ff3333; padding: 10px; font-family: inherit; border-radius: 4px; width: 100%; max-width: 320px; margin-bottom: 10px; outline: none;">
-          <option value="https://docs.google.com/spreadsheets/d/1M7ooax708eL_1-nyIEiJtZo0AasBEHHhr9uZD991Aew/edit">Database
-            Sesi 1 - Firewall Basic</option>
-          <option value="https://docs.google.com/spreadsheets/d/13chVCJmz_XnP4Yla32nVq84-iFCIecZu7sisceFvrB0/edit">Database
-            Sesi 2 - Proxy & Filter</option>
-          <option value="https://docs.google.com/spreadsheets/d/1ZDVQNco7djwwzoa8fu3rpQtQQbwVFO3S6p0vHTxTt0s/edit">Database
-            Sesi 3 - Hotspot & Bandwidth</option>
+      <div class="admin-login">
+        <!-- Dropdown Pilihan Database Lengkap -->
+        <select id="dbSelect">
+          <optgroup label="=== DATABASE UJIAN TEORI (CBT) ===">
+            <option value="https://docs.google.com/spreadsheets/d/1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY/edit?gid=0#gid=0">
+              Database Ujian Teori Sesi 1-3 (Gabungan)</option>
+          </optgroup>
+          <optgroup label="=== DATABASE LKPD PRAKTIK FISIK ===">
+            <option value="https://docs.google.com/spreadsheets/d/1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY/edit">
+              LKPD Fisik Sesi 1 - RouterBoard</option>
+            <option value="https://docs.google.com/spreadsheets/d/1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE/edit">
+              LKPD Fisik Sesi 2 - Web Proxy</option>
+            <option value="https://docs.google.com/spreadsheets/d/1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs/edit">
+              LKPD Fisik Sesi 3 - Hotspot</option>
+          </optgroup>
+          <optgroup label="=== DATABASE LKPD PRAKTIK VIRTUAL ===">
+            <option value="https://docs.google.com/spreadsheets/d/1M7ooax708eL_1-nyIEiJtZo0AasBEHHhr9uZD991Aew/edit">
+              LKPD Virtual Sesi 1 - Firewall</option>
+            <option value="https://docs.google.com/spreadsheets/d/13chVCJmz_XnP4Yla32nVq84-iFCIecZu7sisceFvrB0/edit">
+              LKPD Virtual Sesi 2 - Web Proxy</option>
+            <option value="https://docs.google.com/spreadsheets/d/1ZDVQNco7djwwzoa8fu3rpQtQQbwVFO3S6p0vHTxTt0s/edit">
+              LKPD Virtual Sesi 3 - Hotspot</option>
+          </optgroup>
         </select>
-      
+
         <!-- Kolom Password & Tombol -->
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px; width: 100%; max-width: 320px;">
           <input type="password" id="adminPass" placeholder="Masukkan Password...">
           <button onclick="checkPassword()">AUTHORIZE</button>
         </div>
       </div>
+
       <p id="errorMsg" style="color: #ff3333; display: none; margin-top: 10px; font-size: 0.9em;">> ERROR: Kata sandi
         salah!</p>
     </div>
-
   </div>
 
   <div class="footer">
     System Initialized. Copyright &copy; 2026 Jauhari Saputra - Cyber Security Lab.
   </div>
 
- <script>
+  <script>
     function checkPassword() {
-        const passInput = document.getElementById('adminPass').value;
-        const dbSelect = document.getElementById('dbSelect').value; // Mengambil URL dari dropdown
-        const errorMsg = document.getElementById('errorMsg');
+      const passInput = document.getElementById('adminPass').value;
+      const dbSelect = document.getElementById('dbSelect').value;
+      const errorMsg = document.getElementById('errorMsg');
 
-        // --- GANTI PASSWORD DI BAWAH INI ---
-        const correctPassword = "Kasihkarunia5";
+      //--- GANTI PASSWORD DI BAWAH INI JIKA PERLU
+      const correctPassword = "Kasihkarunia5";
 
-        if (passInput === correctPassword) {
-            // Membuka URL Google Sheet sesuai dengan sesi yang dipilih pada dropdown
-            window.open(dbSelect, "_blank");
-            
-            errorMsg.style.display = "none";
-            document.getElementById('adminPass').value = ""; // Kosongkan input
-        } else {
-            // Jika salah
-            errorMsg.style.display = "block";
-        }
+      if (passInput === correctPassword) {
+        window.open(dbSelect, "_blank");
+        errorMsg.style.display = "none";
+        document.getElementById('adminPass').value = "";
+      } else {
+        errorMsg.style.display = "block";
+      }
     }
-</script>
+  </script>
 
 </body>
 
