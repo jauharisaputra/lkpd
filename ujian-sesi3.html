@@ -218,18 +218,508 @@
         const NAMA_SESI = 'Sesi 3: Hotspot & Bandwidth Management'; // Variabel pembeda di Google Sheet
         const DURASI_MENIT = 60;
 
-        const bankSoal = [
-            { q: "Apa fungsi utama fitur Hotspot pada MikroTik?", options: ["A. Mempercepat internet", "B. Mengenkripsi jaringan", "C. Memblokir ping", "D. Autentikasi pengguna (Login Page) sebelum mengakses internet"], answer: 3 },
-            { q: "Fungsi DNS Name saat melakukan Hotspot Setup adalah?", options: ["A. Sebagai IP publik", "B. Domain lokal untuk memunculkan halaman login", "C. Sebagai server DNS Google", "D. Memblokir situs"], answer: 1 },
-            { q: "Fitur untuk membatasi kecepatan maksimal (bandwidth) pengguna di MikroTik adalah?", options: ["A. Firewall Filter", "B. NAT Masquerade", "C. Simple Queue", "D. DHCP Server"], answer: 2 },
-            { q: "Jika Target pada Simple Queue diisi IP 192.168.10.0/24, apa yang terjadi?", options: ["A. Hanya IP 192.168.10.1 yang dibatasi", "B. Seluruh perangkat di segmen tersebut dibatasi kolektif", "C. Koneksi diblokir", "D. Kecepatan menjadi unlimited"], answer: 1 },
-            { q: "Ikon Simple Queue berubah menjadi merah, artinya?", options: ["A. Konfigurasi error", "B. Klien offline", "C. IP target tidak terdeteksi", "D. Penggunaan bandwidth sudah mencapai Max Limit"], answer: 3 }
+      const bankSoal = [
+            {
+                q: "Apa fungsi utama fitur Hotspot (Login Page) pada sebuah jaringan publik MikroTik?",
+                options: [
+                    "A. Mempercepat koneksi internet klien",
+                    "B. Mengenkripsi seluruh paket data klien",
+                    "C. Memblokir akses ping dari luar jaringan",
+                    "D. Melakukan autentikasi pengguna (Login) sebelum mereka diizinkan mengakses internet"
+                ],
+                answer: 3 // D
+            },
+            {
+                q: "Menu apa di Winbox yang digunakan untuk memulai proses pembuatan server Hotspot secara otomatis dengan panduan langkah demi langkah?",
+                options: [
+                    "A. IP > Hotspot > User Profiles",
+                    "B. IP > Hotspot > Walled Garden",
+                    "C. IP > Hotspot > Servers > Hotspot Setup",
+                    "D. Tools > Bandwidth Test"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Dalam panduan Hotspot Setup, apa fungsi dari pengisian 'DNS Name' (misal: sekolah.net)?",
+                options: [
+                    "A. Sebagai IP publik pengganti ISP",
+                    "B. Menjadi domain lokal yang akan diketik pengguna untuk memunculkan halaman login di browser",
+                    "C. Sebagai server DNS utama Google",
+                    "D. Memblokir situs sekolah.net"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Pada konfigurasi Hotspot, fitur apa yang memungkinkan perangkat tertentu (seperti printer jaringan atau pimpinan) bisa mengakses internet tanpa perlu melewati halaman Login?",
+                options: [
+                    "A. IP Bindings",
+                    "B. Walled Garden",
+                    "C. User Profiles",
+                    "D. Hotspot Active"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Jika Anda ingin mengizinkan pengguna Hotspot yang belum login untuk bisa mengakses satu situs web tertentu saja (misal web kampus), fitur apa yang digunakan?",
+                options: [
+                    "A. IP Bindings",
+                    "B. Walled Garden",
+                    "C. Simple Queue",
+                    "D. Filter Rules Accept"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Menu apa yang digunakan untuk membatasi kecepatan download dan upload maksimal (Bandwidth) bagi pengguna klien di MikroTik?",
+                options: [
+                    "A. IP > Traffic Flow",
+                    "B. Queues > Simple Queues",
+                    "C. IP > Firewall > Mangle",
+                    "D. Tools > Bandwidth Test"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Pada fitur Simple Queue, opsi apa yang digunakan untuk mengatur batas kecepatan maksimal absolut yang tidak boleh dilampaui oleh klien?",
+                options: [
+                    "A. Limit At",
+                    "B. Max Limit",
+                    "C. Burst Limit",
+                    "D. Priority"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Jika Anda mengisi kolom 'Target' pada Simple Queue dengan alamat 192.168.10.0/24, apa yang akan terjadi?",
+                options: [
+                    "A. Hanya IP 192.168.10.1 yang dibatasi",
+                    "B. Hanya IP 192.168.10.24 yang dibatasi",
+                    "C. Seluruh perangkat yang berada di dalam segmen subnet tersebut akan dibatasi kecepatannya secara kolektif",
+                    "D. Aturan tidak berfungsi karena Target harus berupa satu IP spesifik"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Saat memantau daftar Simple Queues di Winbox, warna ikon antrean (queue) yang berubah menjadi MERAH menandakan bahwa?",
+                options: [
+                    "A. Konfigurasi Simple Queue mengalami error",
+                    "B. Penggunaan bandwidth pada target tersebut sudah mencapai atau sangat mendekati batas Max Limit yang ditentukan",
+                    "C. Komputer klien terputus dari jaringan",
+                    "D. Klien mencoba mengunduh file bervirus"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Berapa banyak perangkat yang diizinkan untuk login secara bersamaan menggunakan satu akun (username/password) Hotspot yang sama dapat diatur pada menu?",
+                options: [
+                    "A. Server Profile > Keepalive Timeout",
+                    "B. User Profiles > Shared Users",
+                    "C. Users > Limit Uptime",
+                    "D. IP Bindings"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Selain membatasi kecepatan, Simple Queue juga dapat memprioritaskan lalu lintas data. Jika Queue A memiliki Priority 1 dan Queue B memiliki Priority 8, manakah yang lebih didahulukan saat jaringan sibuk?",
+                options: [
+                    "A. Queue B, karena angkanya lebih besar",
+                    "B. Keduanya mendapat prioritas yang sama secara default",
+                    "C. Queue A, karena angka priority lebih kecil menandakan prioritas lebih tinggi",
+                    "D. MikroTik akan menonaktifkan fitur Priority jika Simple Queue digunakan"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Di menu Hotspot > Users, jika Anda menetapkan nilai 'Limit Uptime' sebesar 1h, apa maksudnya?",
+                options: [
+                    "A. Kecepatan maksimal user dibatasi menjadi 1 Mbps",
+                    "B. User tersebut hanya bisa terkoneksi ke Hotspot selama total 1 jam",
+                    "C. User tidak bisa login antara jam 1 siang hingga 1 malam",
+                    "D. MikroTik akan otomatis reboot setiap 1 jam"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Dalam konfigurasi MikroTik Hotspot, file-file HTML yang membentuk tampilan halaman login (login.html, logout.html, dll) disimpan di menu apa?",
+                options: [
+                    "A. System > Packages",
+                    "B. Files",
+                    "C. Log",
+                    "D. Tools > Profile"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Terkadang saat pengguna Hotspot berhasil login, muncul kotak pop-up kecil (Alogin) di browser yang menampilkan sisa waktu dan kuota. Kotak ini disebut?",
+                options: [
+                    "A. Walled Garden Window",
+                    "B. Status Page / Keepalive Box",
+                    "C. Winbox Web",
+                    "D. Simple Queue Monitor"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Fitur 'Burst' pada Simple Queue digunakan untuk?",
+                options: [
+                    "A. Memutus koneksi klien secara otomatis jika terlalu lama",
+                    "B. Memberikan kecepatan tambahan sementara melebihi Max Limit selama beberapa detik pertama (biasanya untuk loading web awal yang cepat)",
+                    "C. Menggabungkan kecepatan download dan upload",
+                    "D. Menyembunyikan IP pengunduh"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Pada saat melakukan Hotspot Setup, router biasanya akan secara otomatis menambahkan aturan blokir dan NAT di menu IP > Firewall. Fitur yang membelokkan DNS lokal agar pengguna masuk ke halaman login disebut?",
+                options: [
+                    "A. Transparent Proxy",
+                    "B. NAT Redirect ke port 80",
+                    "C. DNS Cache",
+                    "D. Static DNS (DNS Spoofing)"
+                ],
+                answer: 3 // D
+            },
+            {
+                q: "Jika Anda ingin membatasi kuota total data (misal maksimal 1 GB per pengguna), Anda bisa mengaturnya pada menu Hotspot > Users di kolom?",
+                options: [
+                    "A. Limit Uptime",
+                    "B. Shared Users",
+                    "C. Limit Bytes Total",
+                    "D. MAC Address"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Dalam tab 'Active' pada menu IP > Hotspot, administrator dapat melihat?",
+                options: [
+                    "A. Daftar paket software MikroTik yang aktif",
+                    "B. Daftar situs yang sedang diblokir",
+                    "C. Daftar pengguna (klien) yang saat ini sedang login dan menggunakan koneksi Hotspot",
+                    "D. Alamat IP dari modem ISP"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Untuk bypass pengguna pimpinan melalui IP Bindings agar bebas login, kita mengatur kolom 'Type' pada menu tersebut menjadi?",
+                options: [
+                    "A. Blocked",
+                    "B. Regular",
+                    "C. Bypassed",
+                    "D. Shared"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Apakah fungsi dari 'Limit At' (MIR/Minimum Information Rate) pada Simple Queue?",
+                options: [
+                    "A. Batas maksimum kecepatan mutlak",
+                    "B. Garansi kecepatan minimum yang pasti akan didapatkan oleh klien meskipun jaringan sedang sangat padat",
+                    "C. Waktu maksimal pengguna terkoneksi",
+                    "D. Jumlah port yang terbuka"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Pada kondisi default HTTP, mengapa halaman Login Hotspot MikroTik terkadang gagal muncul saat pengguna membuka situs web modern?",
+                options: [
+                    "A. Karena situs modern menggunakan protokol HTTPS yang tidak bisa dengan mudah dialihkan (redirect) oleh router tanpa peringatan keamanan",
+                    "B. Karena bandwidth klien terlalu rendah",
+                    "C. Karena router kehabisan memori RAM",
+                    "D. Karena Winbox belum ditutup"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Di Winbox, jika Anda tidak mengisi batasan Upload (Max Limit Upload) di Simple Queue dan hanya mengisi Target Download, apa yang terjadi pada kecepatan Upload klien?",
+                options: [
+                    "A. Upload dibatasi sama dengan Download",
+                    "B. Kecepatan Upload menjadi nol (tidak bisa upload)",
+                    "C. Kecepatan Upload tidak dibatasi (unlimited) sesuai kecepatan asli dari ISP",
+                    "D. Router akan menolak konfigurasi tersebut"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Dalam struktur antrean (Queue) MikroTik, Queue yang berkedudukan di bawah dan menginduk pada Queue utama di atasnya dikenal sebagai?",
+                options: [
+                    "A. Parent Queue",
+                    "B. Child Queue",
+                    "C. Global Queue",
+                    "D. Target Queue"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Metode pemecahan bandwidth otomatis secara merata (adil) kepada semua pengguna aktif tanpa perlu membuat limit IP satu-per-satu sering memanfaatkan fitur Queue Type yang bernama?",
+                options: [
+                    "A. FIFO (First In First Out)",
+                    "B. RED (Random Early Detection)",
+                    "C. PCQ (Per Connection Queue)",
+                    "D. SFQ (Stochastic Fairness Queuing)"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Jika seorang pengguna mengeluh ia sering ter-logout (diminta login kembali) padahal tidak sedang idle, salah satu pengaturan yang mungkin menyebabkan pemutusan sesi otomatis di Server Profile adalah?",
+                options: [
+                    "A. Walled Garden",
+                    "B. Session Timeout / Keepalive Timeout",
+                    "C. Simple Queue Priority",
+                    "D. HTTP Proxy"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Mode autentikasi standar (Login Method) pada Hotspot yang menyimpan kredensial pada memori browser (cookie) atau meminta form via HTTP dinamakan?",
+                options: [
+                    "A. MAC Auth",
+                    "B. HTTP PAP / HTTP CHAP",
+                    "C. HTTPS",
+                    "D. RADIUS"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Untuk mengintegrasikan Hotspot MikroTik dengan database pengguna tersentralisasi atau aplikasi billing pihak ketiga (seperti Mikhmon), protokol apa yang diaktifkan?",
+                options: [
+                    "A. SNMP",
+                    "B. RADIUS",
+                    "C. PPTP",
+                    "D. BGP"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Jika Anda ingin mengganti desain tampilan (logo dan background) pada halaman Login Hotspot sekolah, Anda harus mengganti file apa di menu Files?",
+                options: [
+                    "A. index.html",
+                    "B. rsc file",
+                    "C. login.html",
+                    "D. hotspot.iso"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Pada Simple Queue, jika ikon berubah menjadi warna kuning, ini mengindikasikan bahwa penggunaan bandwidth Target berada pada persentase?",
+                options: [
+                    "A. 0 - 50% dari Max Limit",
+                    "B. 51 - 75% dari Max Limit",
+                    "C. 76 - 100% dari Max Limit",
+                    "D. Lebih dari 100% (Error)"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Apabila IP lokal ether2 adalah 192.168.10.1/24, maka berapa rentang alokasi IP Address yang secara otomatis dibentuk oleh wizard Hotspot Setup (Address Pool)?",
+                options: [
+                    "A. 192.168.10.2 - 192.168.10.254",
+                    "B. 10.10.10.2 - 10.10.10.254",
+                    "C. 192.168.1.1 - 192.168.1.254",
+                    "D. 127.0.0.1 - 127.0.0.10"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Pada Hotspot MikroTik, fitur apa yang dapat mengikat alamat IP tertentu dengan MAC Address (hardware) perangkat sehingga alamatnya selalu tetap dan tidak bisa di-spoofing pengguna lain?",
+                options: [
+                    "A. Hotspot Active",
+                    "B. IP Bindings (MAC Binding)",
+                    "C. Walled Garden",
+                    "D. Simple Queue"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Ketika melakukan pengujian Speedtest, kecepatan Download 2 Mbps pada Simple Queue MikroTik (Max Limit: 2M) sering kali terbaca di browser sekitar 1.8 Mbps atau 1.9 Mbps karena?",
+                options: [
+                    "A. Winbox memakan banyak bandwidth",
+                    "B. Adanya penggunaan paket Overhead jaringan (Header TCP/IP) yang turut dikirim namun tidak dihitung sebagai data bersih (payload) oleh aplikasi Speedtest",
+                    "C. Provider internet mencuri kuota",
+                    "D. Router MikroTik rusak"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Apakah dampak jika Anda mengaktifkan Hotspot pada interface ether1 yang mana ether1 adalah port yang mengarah ke ISP/Internet?",
+                options: [
+                    "A. Kecepatan internet menjadi lebih stabil",
+                    "B. MikroTik Anda akan memblokir akses internetnya sendiri dan mungkin ISP Anda akan tertahan oleh halaman login Hotspot Anda",
+                    "C. Jaringan lokal (ether2) akan dilimit",
+                    "D. Hotspot akan terhubung langsung dengan satelit"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Fitur pada Hotspot yang menyimpan data login perangkat berdasarkan MAC Address-nya sehingga saat klien kembali ke area Hotspot ia tidak perlu mengetikkan username lagi disebut?",
+                options: [
+                    "A. HTTP CHAP",
+                    "B. MAC Cookie (MAC Authentication)",
+                    "C. Walled Garden",
+                    "D. User Profiles"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Jika Anda ingin pengguna (user) dari profil 'Guru' mendapatkan limit kecepatan 5 Mbps, dan pengguna profil 'Siswa' mendapat 2 Mbps secara dinamis tanpa perlu menyetel Simple Queue manual, di mana pengaturan ini diletakkan?",
+                options: [
+                    "A. User Profiles > Rate Limit (rx/tx)",
+                    "B. IP Bindings",
+                    "C. Server Profile",
+                    "D. Walled Garden"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Saat pengguna logout secara mandiri dari jendela status Hotspot, status IP pengguna di tab 'Active' akan hilang dan koneksinya diputus. Proses ini disebut?",
+                options: [
+                    "A. Session Reboot",
+                    "B. Session Terminate (Disconnect)",
+                    "C. Queue Drop",
+                    "D. Bypass"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Sistem operasional MikroTik bekerja dengan mengeksekusi aturan dari atas ke bawah. Pada daftar Simple Queue, jika terdapat dua rule: Rule#1 melimit 192.168.10.5 sebesar 1M, dan Rule#2 melimit keseluruhan 192.168.10.0/24 sebesar 5M. Berapa kecepatan maksimal yang didapat IP 192.168.10.5?",
+                options: [
+                    "A. 5M",
+                    "B. 6M",
+                    "C. 1M (Karena Rule#1 dieksekusi lebih dulu di urutan atas)",
+                    "D. Unlimited"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Menu apa yang digunakan untuk membuat atau menambah akun username dan password individu bagi masing-masing siswa yang ingin mengakses Hotspot?",
+                options: [
+                    "A. IP > Hotspot > User Profiles",
+                    "B. IP > Hotspot > Users",
+                    "C. System > Users",
+                    "D. PPP > Secrets"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Selain membatasi menggunakan IP Address (Target Address), fitur Simple Queue pada MikroTik v6 juga bisa membatasi target berdasarkan antarmuka (interface) langsung. Jika Target dipilih 'ether2', apa akibatnya?",
+                options: [
+                    "A. Hanya satu PC pertama di ether2 yang dilimit",
+                    "B. Seluruh trafik yang melewati ether2 akan dibatasi kecepatannya",
+                    "C. Ether2 akan dinonaktifkan (Disabled)",
+                    "D. Bandwidth internet ether2 akan digandakan"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Dalam praktik laboratorium, jika setelah klik 'Hotspot Setup' PC Klien tiba-tiba kehilangan koneksi internet (no internet access), hal ini merupakan ciri bahwa?",
+                options: [
+                    "A. Kabel LAN putus",
+                    "B. Hotspot telah berfungsi normal (Klien diblokir sebelum melakukan autentikasi login)",
+                    "C. Router MikroTik me-restart",
+                    "D. Ada virus di komputer"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Jika Anda ingin memperbolehkan aplikasi chatting seperti WhatsApp tetap berfungsi meskipun pengguna belum login Hotspot, teknik tingkat lanjut yang bisa diterapkan adalah membuka trafik port server WhatsApp pada fitur?",
+                options: [
+                    "A. IP Bindings",
+                    "B. Walled Garden IP List / Walled Garden",
+                    "C. Simple Queue Priority",
+                    "D. DHCP Relay"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Apa yang membedakan Queue Tree dari Simple Queue pada MikroTik?",
+                options: [
+                    "A. Queue Tree lebih mudah disetting dibanding Simple Queue",
+                    "B. Queue Tree hanya berfungsi untuk membatasi Upload",
+                    "C. Queue Tree membutuhkan penandaan paket (Packet Mark) di Mangle Firewall dan lebih kompleks namun fleksibel untuk hierarki rumit, sedangkan Simple Queue lebih praktis",
+                    "D. Queue Tree tidak memiliki batas kecepatan"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Singkatan dari apakah satuan bit rate 'Mbps' pada pengujian jaringan (seperti yang ditunjukkan oleh aplikasi Speedtest)?",
+                options: [
+                    "A. Mega Bytes Per System",
+                    "B. Mega Bits Per Second",
+                    "C. Micro Bands Per Session",
+                    "D. Multi Byte Process Speed"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Sistem satuan kecepatan pada MikroTik Simple Queue (misalnya '2M') diukur menggunakan hitungan?",
+                options: [
+                    "A. Byte",
+                    "B. Bit",
+                    "C. KiloByte",
+                    "D. Baud"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Jika batas 'Max Limit' adalah 10M, maka kecepatan maksimal pengunduhan murni yang mungkin tampil pada program Internet Download Manager klien (yang biasanya menggunakan ukuran MByte/s) adalah di kisaran?",
+                options: [
+                    "A. 10 MB/s",
+                    "B. 100 MB/s",
+                    "C. 1.25 MB/s (10 Mbps dibagi 8)",
+                    "D. 2 MB/s"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Dalam manajemen jaringan publik, membiarkan satu perangkat menguasai seluruh kapasitas bandwidth (misalnya untuk mengunduh film) sehingga menyebabkan ping tinggi pada pengguna lain dikenal sebagai fenomena?",
+                options: [
+                    "A. Broadcast Storm",
+                    "B. Bandwidth Hogging / Starvation",
+                    "C. DHCP Spoofing",
+                    "D. Proxy Cache Full"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Pengaturan IP Address MikroTik (misal: 192.168.10.1) dapat diakses melalui domain login Hotspot 'sekolah.net'. Proses resolusi nama menjadi IP di lingkup lokal ini ditangani otomatis oleh RouterOS melalui?",
+                options: [
+                    "A. Public DNS Google",
+                    "B. RouterOS Static DNS yang terbuat otomatis saat Hotspot Setup",
+                    "C. ARP Table",
+                    "D. Fitur Web Proxy Cache"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Setelah Anda membatasi Target Download sebesar 2M, namun hasil speedtest selalu jauh di atas 2M (misal 10 Mbps). Kemungkinan kesalahan konfigurasi terbesar adalah?",
+                options: [
+                    "A. Kabel LAN rusak",
+                    "B. IP Target yang diketik salah/tidak mencakup IP komputer penguji, atau ada rule lain di atasnya yang tidak dilimit (bypass)",
+                    "C. Komputer klien terlalu canggih",
+                    "D. Fitur Hotspot sedang menyala"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Ketika router MikroTik me-restart karena listrik padam, apakah data sisa limit waktu (Uptime) pada Hotspot User akan otomatis ter-reset kembali ke 0?",
+                options: [
+                    "A. Tidak, sisa uptime akan tersimpan dan diakumulasikan",
+                    "B. Ya, uptime akan kembali dari awal karena tersimpan di RAM yang hilang saat mati listrik",
+                    "C. Uptime akan menjadi negatif",
+                    "D. User tersebut otomatis dihapus permanen"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Pada Hotspot Setup, jika Anda memilih antarmuka yang salah (misal memilih ether1 padahal ether1 tersambung ke ISP), dan menyelesaikan proses wizard-nya, solusi perbaikan terbaik adalah?",
+                options: [
+                    "A. Membuang router",
+                    "B. Menghapus konfigurasi di menu Hotspot Servers, Profiles, dan men-disable DHCP Server yang baru tercipta, lalu mengulang setup di interface yang benar",
+                    "C. Memutus kabel LAN PC Klien",
+                    "D. Mematikan fitur Simple Queue"
+                ],
+                answer: 1 // B
+            }
         ];
-
-        for (let i = 6; i <= 50; i++) {
-            bankSoal.push({ q: `Soal nomor ${i} (Sesi 3): Placeholder pertanyaan Hotspot.`, options: ["A", "B", "C", "D"], answer: 0 });
-        }
-
         const qContainer = document.getElementById('questionsContainer');
         let isSubmitted = false;
 
