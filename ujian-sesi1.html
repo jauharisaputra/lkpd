@@ -243,7 +243,7 @@
         // ==========================================
         // BANK SOAL (Total 50 Soal)
         // ==========================================
-        const bankSoal = [
+      const bankSoal = [
             {
                 q: "Apa fungsi utama dari fitur NAT (Network Address Translation) Masquerade pada MikroTik?",
                 options: [
@@ -252,17 +252,17 @@
                     "C. Memblokir akses situs web tertentu",
                     "D. Membagi bandwidth secara merata"
                 ],
-                answer: 1 // Index jawaban benar (Dimulai dari 0. B = 1)
+                answer: 1 // B
             },
             {
-                q: "Chain apa yang harus digunakan pada Filter Rules jika kita ingin memblokir klien mengunduh file (.exe)?",
+                q: "Chain apa yang harus digunakan pada Filter Rules jika kita ingin memblokir klien mengunduh file berekstensi (.exe)?",
                 options: [
                     "A. Input",
                     "B. Output",
                     "C. Forward",
                     "D. Prerouting"
                 ],
-                answer: 2
+                answer: 2 // C
             },
             {
                 q: "Saat mereset konfigurasi MikroTik melalui Winbox, apa fungsi opsi 'No Default Configuration'?",
@@ -272,40 +272,480 @@
                     "C. Untuk menyimpan backup konfigurasi sebelumnya",
                     "D. Agar router tidak bisa diakses sembarang orang"
                 ],
-                answer: 1
+                answer: 1 // B
             },
             {
-                q: "Secara default, port berapakah yang digunakan oleh fitur Web Proxy pada MikroTik?",
+                q: "Pada Firewall Filter Rules, action 'Drop' berfungsi untuk?",
+                options: [
+                    "A. Mengizinkan paket data melewati router",
+                    "B. Menolak paket data dan mengirimkan pesan penolakan (ICMP)",
+                    "C. Membuang paket data secara diam-diam tanpa memberikan balasan ke pengirim",
+                    "D. Mengalihkan paket data ke port lain"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Chain 'Input' pada Firewall Filter Rules digunakan untuk memfilter trafik data yang...",
+                options: [
+                    "A. Melewati router (dari klien ke internet)",
+                    "B. Menuju atau masuk ke dalam router itu sendiri (contoh: akses Winbox)",
+                    "C. Keluar dari router menuju klien",
+                    "D. Berasal dari internet tanpa melewati router"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Menu apa yang digunakan untuk mengubah nama perangkat MikroTik (Hostname) agar mudah dikenali di jendela Winbox?",
+                options: [
+                    "A. System > Identity",
+                    "B. System > Users",
+                    "C. IP > Settings",
+                    "D. Tools > Profile"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Berapakah Port default yang digunakan oleh aplikasi Winbox untuk meremote MikroTik?",
+                options: [
+                    "A. 21",
+                    "B. 22",
+                    "C. 80",
+                    "D. 8291"
+                ],
+                answer: 3 // D
+            },
+            {
+                q: "Fitur yang berfungsi untuk membagikan alamat IP, Subnet, Gateway, dan DNS secara otomatis kepada komputer klien di jaringan disebut?",
+                options: [
+                    "A. DHCP Client",
+                    "B. DHCP Server",
+                    "C. DNS Server",
+                    "D. Web Proxy"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Jika MikroTik ingin mendapatkan alamat IP otomatis dari ISP (Internet Service Provider) atau modem, maka fitur yang harus diaktifkan pada interface yang mengarah ke ISP adalah?",
+                options: [
+                    "A. DHCP Client",
+                    "B. DHCP Server",
+                    "C. PPPoE Server",
+                    "D. IP Route"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Alamat IP default dari pabrik yang umumnya terpasang pada port ether1 atau ether2 RouterBoard MikroTik adalah?",
+                options: [
+                    "A. 192.168.1.1",
+                    "B. 192.168.0.1",
+                    "C. 192.168.88.1",
+                    "D. 10.10.10.1"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Saat pertama kali mengakses MikroTik baru atau setelah di-reset melalui Winbox, kombinasi username dan password default yang digunakan adalah?",
+                options: [
+                    "A. User: root, Password: (kosong)",
+                    "B. User: admin, Password: (kosong)",
+                    "C. User: admin, Password: admin",
+                    "D. User: mikrotik, Password: 123"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Jika kita belum mengetahui IP Address dari MikroTik, kita tetap bisa login ke dalam router menggunakan aplikasi Winbox dengan cara menghubungkannya melalui...",
+                options: [
+                    "A. Subnet Mask",
+                    "B. Default Gateway",
+                    "C. MAC Address",
+                    "D. DNS Server"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Sebuah jaringan klien menggunakan Subnet Mask 255.255.255.0. Dalam notasi Prefix (CIDR), nilai mask tersebut sama dengan?",
+                options: [
+                    "A. /16",
+                    "B. /22",
+                    "C. /24",
+                    "D. /32"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Perintah CLI untuk melakukan reset konfigurasi MikroTik melalui terminal adalah?",
+                options: [
+                    "A. /system reboot",
+                    "B. /system reset-configuration",
+                    "C. /system default",
+                    "D. /ip reset"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Tindakan apa yang harus dilakukan agar Router MikroTik memiliki jam dan tanggal yang selalu akurat dan sinkron dengan zona waktu internet?",
+                options: [
+                    "A. Konfigurasi IP Web Proxy",
+                    "B. Mengaktifkan dan mengatur fitur SNTP/NTP Client",
+                    "C. Mengubah pengaturan pada menu DHCP Server",
+                    "D. Mengatur Firewall NAT masquerade"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Ekstensi file yang dihasilkan ketika kita melakukan Backup konfigurasi melalui tombol 'Backup' di menu 'Files' MikroTik adalah?",
+                options: [
+                    "A. .backup",
+                    "B. .rsc",
+                    "C. .txt",
+                    "D. .iso"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Bila kita melakukan ekspor konfigurasi MikroTik yang dapat dibaca manusia melalui terminal dengan perintah 'export file=konfig', format file apa yang dihasilkan?",
+                options: [
+                    "A. .backup",
+                    "B. .rsc",
+                    "C. .xml",
+                    "D. .cfg"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Protokol apa yang digunakan oleh perangkat jaringan untuk menerjemahkan alamat IP logika menjadi alamat fisik (MAC Address) di dalam satu jaringan lokal?",
+                options: [
+                    "A. ICMP",
+                    "B. ARP",
+                    "C. DNS",
+                    "D. DHCP"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Fitur di Winbox yang sangat berguna untuk melihat beban trafik (bandwidth), IP sumber, dan IP tujuan yang melewati sebuah interface secara real-time adalah?",
+                options: [
+                    "A. Ping",
+                    "B. Traceroute",
+                    "C. Torch",
+                    "D. IP Scan"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Layer pada OSI Model yang berfungsi untuk proses IP routing (menentukan jalur pengiriman paket data antar jaringan yang berbeda) adalah?",
+                options: [
+                    "A. Layer 2 (Data Link)",
+                    "B. Layer 3 (Network)",
+                    "C. Layer 4 (Transport)",
+                    "D. Layer 7 (Application)"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Apa nama tombol keamanan (security mechanism) di antarmuka Winbox yang memungkinkan admin mengonfigurasi router tanpa khawatir perubahannya menyebabkan ia terputus (jika terputus, konfigurasi otomatis dibatalkan)?",
+                options: [
+                    "A. Safe Mode",
+                    "B. Stealth Mode",
+                    "C. Secure Boot",
+                    "D. Read-Only Mode"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Pilihan Chain 'dstnat' pada menu Firewall NAT umumnya digunakan untuk keperluan apa?",
+                options: [
+                    "A. Berbagi koneksi internet dari WAN ke LAN (Masquerade)",
+                    "B. Membuka akses port server lokal agar bisa diakses dari internet (Port Forwarding)",
+                    "C. Mencegah serangan ping dari luar",
+                    "D. Menghapus virus dari komputer klien"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Pada menu 'System > Users', tingkat hak akses (Group) apa yang hanya mengizinkan pengguna untuk melihat konfigurasi tanpa memiliki kemampuan untuk mengubahnya?",
+                options: [
+                    "A. Write",
+                    "B. Full",
+                    "C. Read",
+                    "D. Guest"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Sistem operasi mandiri yang dikembangkan dan digunakan khusus pada perangkat RouterBoard MikroTik adalah?",
+                options: [
+                    "A. Cisco IOS",
+                    "B. Linux Ubuntu",
+                    "C. RouterOS",
+                    "D. OpenWrt"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Untuk mengetahui jalur rute dan hop mana saja (router mana saja) yang dilewati oleh sebuah paket dari MikroTik hingga ke server tujuan di internet, tool apa yang digunakan?",
+                options: [
+                    "A. Ping",
+                    "B. Bandwidth Test",
+                    "C. Torch",
+                    "D. Traceroute"
+                ],
+                answer: 3 // D
+            },
+            {
+                q: "Fitur Firewall Filter dapat menyeleksi trafik berdasarkan protokol pengirimannya. Protokol apakah yang selalu digunakan oleh layanan akses web HTTP/HTTPS?",
+                options: [
+                    "A. UDP",
+                    "B. TCP",
+                    "C. ICMP",
+                    "D. GRE"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Terkadang pemblokiran string .exe atau .bat menggunakan Firewall Filter Rules (Content) gagal jika situs target menggunakan koneksi yang dienkripsi. Enkripsi standar pada website (HTTPS) beroperasi di port?",
                 options: [
                     "A. 80",
                     "B. 443",
                     "C. 8080",
-                    "D. 8291"
+                    "D. 21"
                 ],
-                answer: 2
+                answer: 1 // B
             },
             {
-                q: "Untuk membuat Transparent Proxy, kita harus membelokkan trafik HTTP (Port 80) ke Port Web Proxy. Fitur apa yang digunakan?",
+                q: "Jika Anda ingin membuat pengelompokan banyak IP Address untuk diterapkan pada satu buah rule Firewall saja (agar tidak perlu membuat banyak rule untuk IP yang berbeda), fitur apa yang digunakan?",
                 options: [
-                    "A. Firewall Filter Rules (Drop)",
-                    "B. Firewall Mangle",
-                    "C. Simple Queue",
-                    "D. Firewall NAT (Redirect)"
+                    "A. Address List",
+                    "B. Mangle",
+                    "C. Layer 7 Protocols",
+                    "D. IP Bindings"
                 ],
-                answer: 3
+                answer: 0 // A
+            },
+            {
+                q: "Apa kepanjangan dari MAC Address pada antarmuka jaringan fisik?",
+                options: [
+                    "A. Media Access Control Address",
+                    "B. Machine Access Center Address",
+                    "C. Main Address Configuration",
+                    "D. MikroTik Access Code"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Pada daftar interface di Winbox, jika baris sebuah interface memiliki huruf 'R' di sebelah kirinya, itu menandakan bahwa interface tersebut berstatus?",
+                options: [
+                    "A. Rejected (Ditolak)",
+                    "B. Running (Sedang digunakan/Terkoneksi)",
+                    "C. Reset (Sedang dimulai ulang)",
+                    "D. Routing (Menjadi jalur utama)"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Pada tabel DHCP Server > Leases, jika seorang klien sudah berhasil mendapatkan alokasi IP Address, maka status (state) perolehan alamat tersebut dinamakan?",
+                options: [
+                    "A. Offered",
+                    "B. Bound",
+                    "C. Waiting",
+                    "D. Released"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Manakah dari alamat IP berikut ini yang termasuk ke dalam rentang IP Private kelas C yang umum digunakan untuk jaringan LAN?",
+                options: [
+                    "A. 10.10.10.5",
+                    "B. 172.16.0.10",
+                    "C. 192.168.1.100",
+                    "D. 8.8.8.8"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Proses kesalahan konfigurasi jaringan fisik (seperti mencolokkan kedua ujung kabel LAN ke switch yang sama) yang mengirim ulang paket secara looping tanpa batas waktu dan melumpuhkan jaringan disebut?",
+                options: [
+                    "A. Bandwidth Bottleneck",
+                    "B. Broadcast Storm / Switching Loop",
+                    "C. Denial of Service",
+                    "D. DHCP Rogue"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Menu IP > Routes berfungsi untuk menambahkan entri rute perlintasan data. Entri rute '0.0.0.0/0' di mana gateway diarahkan ke ISP dikenal juga sebagai?",
+                options: [
+                    "A. Dynamic Route",
+                    "B. Gateway Default (Default Route)",
+                    "C. Loopback Route",
+                    "D. Local Route"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Apakah fungsi utama dari Layer 7 Protocols pada menu IP > Firewall MikroTik?",
+                options: [
+                    "A. Mengatur kecepatan port fisik Gigabit",
+                    "B. Menyaring paket pada layer aplikasi berdasarkan pola Regular Expression (RegEx)",
+                    "C. Mengarahkan port 80 (HTTP) ke port 8080 (Proxy)",
+                    "D. Mengubah hak akses baca/tulis administrator jaringan"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Saat mengonfigurasi IP Address pada antarmuka MikroTik di Winbox, penulisan '192.168.10.1/24' disebut menggunakan format notasi?",
+                options: [
+                    "A. Biner",
+                    "B. Heksadesimal",
+                    "C. CIDR (Classless Inter-Domain Routing)",
+                    "D. Subnet dotted-decimal"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Dalam konfigurasi praktik Sesi 1, agar VM Windows Klien dapat mendownload file dari internet, koneksinya diterjemahkan menggunakan NAT pada MikroTik. Proses penerjemahan ini terjadi pada tabel NAT di bagian chain apa?",
+                options: [
+                    "A. dstnat",
+                    "B. srcnat",
+                    "C. input",
+                    "D. prerouting"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Pada Rule Firewall Filter (Drop), jika Anda ingin spesifik menolak paket ping (ICMP) agar router tidak bisa diping dari luar, maka opsi Protocol yang dipilih adalah?",
+                options: [
+                    "A. tcp",
+                    "B. udp",
+                    "C. icmp",
+                    "D. igmp"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Di menu DHCP Server, fitur yang memungkinkan kita untuk mengunci IP Address tertentu kepada MAC Address spesifik agar klien selalu mendapatkan IP yang sama adalah?",
+                options: [
+                    "A. Make Static",
+                    "B. Address Pool",
+                    "C. Network Default",
+                    "D. Add ARP For Leases"
+                ],
+                answer: 0 // A
+            },
+            {
+                q: "Pada kondisi normal, perangkat klien akan mencoba memperbarui (renew) masa pinjaman IP address dari DHCP Server ketika waktu peminjamannya mencapai?",
+                options: [
+                    "A. 10%",
+                    "B. 50%",
+                    "C. 90%",
+                    "D. 100%"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Tanda 'D' (Dynamic) yang muncul di samping kiri alamat IP pada menu IP > Addresses menandakan bahwa IP tersebut...",
+                options: [
+                    "A. Dibuat secara manual oleh admin",
+                    "B. Diperoleh secara otomatis dari fitur DHCP Client atau interface otomatis lain",
+                    "C. Dinonaktifkan (Disabled) sementara",
+                    "D. Ditolak (Dropped) oleh Firewall"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Jika Anda keliru membuat aturan firewall 'Chain: Input, Action: Drop' tanpa menentukan IP spesifik apa pun, apa yang akan terjadi?",
+                options: [
+                    "A. Internet klien akan langsung terputus",
+                    "B. Anda akan langsung terputus dari Winbox dan tidak bisa meremote router lagi menggunakan IP",
+                    "C. Router akan otomatis me-restart dirinya",
+                    "D. Router akan menghapus IP address-nya sendiri"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Fitur pada tab 'Action' di Firewall Filter yang berguna untuk mencatat (menyimpan ke memori log) paket-paket data yang cocok dengan aturan tanpa menghentikan paket tersebut adalah?",
+                options: [
+                    "A. accept",
+                    "B. reject",
+                    "C. log",
+                    "D. tarpit"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Protokol apa yang digunakan untuk mengecek konektivitas dua perangkat jaringan secara mendasar menggunakan aplikasi Ping?",
+                options: [
+                    "A. TCP",
+                    "B. UDP",
+                    "C. ICMP",
+                    "D. HTTP"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Alamat IP 127.0.0.1 memiliki fungsi khusus di dalam jaringan (sering digunakan untuk ping alat itu sendiri), alamat ini dikenal sebagai?",
+                options: [
+                    "A. IP Broadcast",
+                    "B. IP Multicast",
+                    "C. IP Localhost (Loopback)",
+                    "D. IP Public gateway"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Tanda silang (X) berwarna abu-abu pada sebuah rule firewall di Winbox menunjukkan bahwa aturan tersebut berstatus?",
+                options: [
+                    "A. Running",
+                    "B. Error",
+                    "C. Disabled (Dimatikan sementara)",
+                    "D. Invalid"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Ketika membuat mesin virtual MikroTik di VirtualBox untuk praktik keamanan jaringan, tipe Operating System (OS) apa yang umumnya dipilih pada setelan awal VirtualBox?",
+                options: [
+                    "A. Microsoft Windows",
+                    "B. Mac OS X",
+                    "C. Linux (Other Linux 64-bit/32-bit)",
+                    "D. IBM OS/2"
+                ],
+                answer: 2 // C
+            },
+            {
+                q: "Dalam praktik menggunakan perangkat fisik (RouterBoard), port pada komputer PC/Laptop penguji harus dikonfigurasi sebagai DHCP Client agar bisa menerima IP otomatis dari port mana di MikroTik?",
+                options: [
+                    "A. ether1",
+                    "B. ether2",
+                    "C. wlan1",
+                    "D. serial"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Jika indikator paket (Bytes/Packets) pada aturan pemblokiran .exe di Firewall Anda tidak bertambah nilainya saat klien mendownload file, kemungkinan terbesar penyebabnya adalah?",
+                options: [
+                    "A. Kabel LAN putus",
+                    "B. Target website menggunakan enkripsi HTTPS sehingga paket tidak terdeteksi oleh rule inspeksi teks string biasa",
+                    "C. Winbox versi lama",
+                    "D. Komputer klien terkena virus malware"
+                ],
+                answer: 1 // B
+            },
+            {
+                q: "Untuk mengamankan router agar tidak sembarang orang bisa mengakses Winbox menggunakan MAC Address dari port klien (ether2), fitur apa yang harus dimatikan atau dikonfigurasi pada menu Tools?",
+                options: [
+                    "A. MAC Server",
+                    "B. IP Service List",
+                    "C. Bandwidth Test Server",
+                    "D. RoMON"
+                ],
+                answer: 0 // A
             }
         ];
-
-        // GENERATOR SOAL DUMMY (Untuk melengkapi menjadi 50 soal)
-        // HAPUS KODE LOOP INI JIKA ANDA SUDAH MEMASUKKAN 50 SOAL ASLI SECARA MANUAL DI ATAS
-        for (let i = 6; i <= 50; i++) {
-            bankSoal.push({
-                q: `Soal nomor ${i}: Ini adalah tempat (placeholder) untuk pertanyaan ke-${i}. Silakan ganti di kode sumber.`,
-                options: ["A. Pilihan 1", "B. Pilihan 2", "C. Pilihan 3", "D. Pilihan 4"],
-                answer: 0
-            });
-        }
-
+      
         // ==========================================
         // LOGIK SISTEM
         // ==========================================
