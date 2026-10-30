@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSTRUCTOR DASHBOARD | CYBER SECURITY LAB</title>
+    <!-- Library untuk Parsing CSV & Export PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #050b14;
+            color: #00ffcc;
+            padding: 20px;
+            margin: 0;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px dashed #00ffcc;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 15, 30, 0.9);
+            padding: 20px;
+            border: 1px solid #005544;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        select {
+            background-color: #02060d;
+            color: #00ffcc;
+            border: 1px solid #00ffcc;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 60%;
+        }
+
+        .btn {
+            background: transparent;
+            color: #00ffcc;
+            border: 1px solid #00ffcc;
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+
+        .btn-export {
+            border-color: #ffaa00;
+            color: #ffaa00;
+        }
+
+        .btn-export:hover {
+            background: #ffaa00;
+            color: #000;
+            box-shadow: 0 0 10px #ffaa00;
+        }
+
+        .table-wrapper {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            color: #000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: sans-serif;
+            font-size: 0.85em;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #005544;
+            color: #fff;
+            white-space: nowrap;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #loading {
+            display: none;
+            color: #ffaa00;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .back-btn {
+            margin-right: 15px;
+        }
+
+        /* Tampilan khusus untuk PDF export (menghilangkan background hitam) */
+        .pdf-mode {
+            background: #fff !important;
+            color: #000 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>> DATABASE_MONITORING_SYSTEM</h1>
+        <p style="color: #aaa; margin-top: 5px;">Secure Instructor Dashboard - Cyber Security Lab</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <a href="index.html" class="btn back-btn">
+                < BACK</a>
+                    <select id="dbSelector">
+                        <option value="">-- PILIH DATABASE UNTUK DITAMPILKAN --</option>
+                        <optgroup label="LKPD KELAS 10">
+                            <option value="1L_oLjNJqgZEwF66y1UsftKuW-fNjRBTvji_VLxBUnJo">LKPD Dasar Jaringan Kelas 10
+                            </option>
+                        </optgroup>
+                        <optgroup label="LKPD FISIK (REAL DEVICE)">
+                            <option value="1M7ooax708eL_1-nylEiJtZoOAasBEHHhr9uZD991Aew">LKPD Sesi 1 - Firewall Fisik
+                            </option>
+                            <option value="13chVCJmz_XnP4Yla32nVq84-iFClecZu7sisceFvrB0">LKPD Sesi 2 - Web Proxy Fisik
+                            </option>
+                            <option value="1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs">LKPD Sesi 3 - Hotspot Fisik
+                            </option>
+                        </optgroup>
+                        <optgroup label="LKPD VIRTUAL (VIRTUALBOX)">
+                            <option value="106cwQg2pVz34mdDz1TgE-Vu8UzLu-9SwdgLzA2HDVRs">LKPD Sesi 1 - Firewall Virtual
+                            </option>
+                            <option value="13chVCJmz_XnP4Yla32nVq84-iFCIecZu7sisceFvrB0">LKPD Sesi 2 - Web Proxy Virtual
+                            </option>
+                            <option value="1ZDVQNco7djwwzoa8fu3rpQtQQbwVFO3S6p0vHTxTt0s">LKPD Sesi 3 - Hotspot Virtual
+                            </option>
+                        </optgroup>
+                        <optgroup label="UJIAN CBT">
+                            <option value="1c4GFsP_kqJ5NIRNgq3P0Fto5cpMY8bdvG99KRVbrdyY">Nilai Ujian CBT Sesi 1-3
+                            </option>
+                        </optgroup>
+                    </select>
+        </div>
+        <button class="btn btn-export" id="exportBtn" disabled>> EXPORT TO PDF</button>
+    </div>
+
+    <div id="loading">> MENGAKSES DATABASE GOOGLE SHEET... HARAP TUNGGU_</div>
+
+    <div class="table-wrapper" id="printArea">
+        <div id="reportTitle"
+            style="display:none; text-align:center; margin-bottom:15px; font-weight:bold; font-family:sans-serif; color:#005544; font-size:1.2em;">
+            LAPORAN DATABASE LKPD</div>
+        <table id="dataTable">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const dbSelector = document.getElementById('dbSelector');
+        const exportBtn = document.getElementById('exportBtn');
+        const loading = document.getElementById('loading');
+        const tableHead = document.getElementById('tableHead');
+        const tableBody = document.getElementById('tableBody');
+        const reportTitle = document.getElementById('reportTitle');
+
+        dbSelector.addEventListener('change', function () {
+            const sheetId = this.value;
+            const sheetNameText = this.options[this.selectedIndex].text;
+
+            tableHead.innerHTML = '';
+            tableBody.innerHTML = '';
+            exportBtn.disabled = true;
+            reportTitle.style.display = 'none';
+
+            if (!sheetId) return;
+
+            loading.style.display = 'block';
+
+            // Membaca Sheet sebagai CSV
+            const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+
+            Papa.parse(csvUrl, {
+                download: true,
+                header: false,
+                complete: function (results) {
+                    loading.style.display = 'none';
+                    if (results.data && results.data.length > 0) {
+                        renderTable(results.data);
+                        exportBtn.disabled = false;
+                        reportTitle.innerText = "LAPORAN: " + sheetNameText.toUpperCase();
+                    } else {
+                        alert('Data tidak ditemukan atau Sheet belum diset "Anyone with the link can view".');
+                    }
+                },
+                error: function (err) {
+                    loading.style.display = 'none';
+                    alert('Gagal mengambil data. Pastikan Google Sheet Anda memiliki hak akses "Siapa saja yang memiliki tautan dapat melihat".');
+                }
+            });
+        });
+
+        function renderTable(data) {
+            // Render Header
+            const headers = data[0];
+            let theadHtml = '<tr>';
+            headers.forEach(header => {
+                theadHtml += `<th>${header || '-'}</th>`;
+            });
+            theadHtml += '</tr>';
+            tableHead.innerHTML = theadHtml;
+
+            // Render Body
+            let tbodyHtml = '';
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+                // Skip baris kosong
+                if (row.length === 1 && !row[0]) continue;
+
+                tbodyHtml += '<tr>';
+                row.forEach(cell => {
+                    // Buat link bisa diklik jika teksnya URL
+                    if (cell && cell.toString().startsWith('http')) {
+                        tbodyHtml += `<td><a href="${cell}" target="_blank" style="color:#0056b3;">Buka Tautan</a></td>`;
+                    } else {
+                        tbodyHtml += `<td>${cell || ''}</td>`;
+                    }
+                });
+                tbodyHtml += '</tr>';
+            }
+            tableBody.innerHTML = tbodyHtml;
+        }
+
+        // Fungsi Export PDF
+        exportBtn.addEventListener('click', function () {
+            const element = document.getElementById('printArea');
+            reportTitle.style.display = 'block'; // Tampilkan judul saat di-PDF
+
+            const opt = {
+                margin: 0.2,
+                filename: reportTitle.innerText + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'legal', orientation: 'landscape' }
+            };
+
+            // Export tabel ke PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                reportTitle.style.display = 'none'; // Sembunyikan kembali judul
+            });
+        });
+    </script>
+
+</body>
+
+</html>
