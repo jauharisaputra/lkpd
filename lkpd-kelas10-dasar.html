@@ -89,6 +89,27 @@
             margin-bottom: 15px;
         }
 
+        /* CSS KHUSUS UNTUK VIDEO YOUTUBE AGAR RESPONSIVE */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* Rasio 16:9 */
+            height: 0;
+            overflow: hidden;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         label {
             font-weight: bold;
             display: block;
@@ -197,12 +218,12 @@
                         <b>3. Kabel LAN (UTP) dengan RJ-45:</b><br>
                         Ini adalah hasil akhir kabel yang akan Anda rakit. Perhatikan ujung plastiknya bening (Konektor
                         RJ-45).<br>
-                        <img src="kabel_lan.jpg" class="img-preview" alt="Kabel LAN UTP">
+                        <img src="kabel_LAN.jpg" class="img-preview" alt="Kabel LAN UTP">
                     </div>
                     <div>
                         <b>4. Alat Penguji (LAN Tester & Wire Tracker):</b><br>
                         Digunakan untuk menguji apakah kabel yang Anda rakit sudah tersambung dengan benar. <br>
-                        <img src="lan_tester.jpg" class="img-preview" alt="LAN Tester dan Wire Tracker">
+                        <img src="LAN_TESTER.jpg" class="img-preview" alt="LAN Tester dan Wire Tracker">
                     </div>
                 </div>
             </div>
@@ -210,7 +231,19 @@
             <!-- PRAKTIK 1 -->
             <h2>C. PRAKTIK 1: MEMBUAT KABEL LAN (CRIMPING)</h2>
             <div class="instruction-box">
-                <h4>Langkah Kerja (Kabel Straight-Through):</h4>
+                <h4>Video Panduan Praktik Crimping:</h4>
+                <p style="margin-top: 0; color: #555;">Tonton video singkat di bawah ini sebelum memotong dan menyusun
+                    kabel LAN (UTP).</p>
+
+                <!-- EMBED YOUTUBE VIDEO -->
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/6Oad-4om8h8" title="Tutorial Crimping Kabel UTP/LAN"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                </div>
+
+                <h4 style="margin-top:20px;">Langkah Kerja (Kabel Straight-Through):</h4>
                 <ol>
                     <li>Kupas ujung kulit luar kabel UTP sekitar 2 cm menggunakan pemotong pada <b>Tang Crimping</b>.
                     </li>
