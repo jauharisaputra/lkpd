@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD Dasar Jaringan - Kelas 10</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 850px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            margin: auto;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-top: 6px solid #0056b3;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #0056b3;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            background-color: #e6f0fa;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 35px;
+        }
+
+        .instruction-box {
+            background: #fff8e1;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #ffc107;
+            font-size: 1em;
+            margin-bottom: 25px;
+        }
+
+        .instruction-box h4 {
+            margin-top: 0;
+            color: #d39e00;
+            font-size: 1.2em;
+        }
+
+        .instruction-box ol {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+
+        .instruction-box li {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .highlight {
+            color: #d9534f;
+            font-weight: bold;
+        }
+
+        .img-preview {
+            width: 100%;
+            max-width: 380px;
+            display: block;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .img-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+            color: #444;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccd1d9;
+            border-radius: 6px;
+            box-sizing: border-box;
+            background-color: #fdfdfd;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border: 1px solid #0056b3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button.submit-btn {
+            background-color: #0056b3;
+            color: #ffffff;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 40px;
+            font-size: 18px;
+            width: 100%;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button.submit-btn:hover {
+            background-color: #004494;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #0056b3;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>LKPD DASAR JARINGAN (KELAS 10)</h1>
+        <p style="text-align:center; color:#666; margin-top:-5px;">Membuat Kabel LAN, Pengujian Alat, dan Login MikroTik
+        </p>
+
+        <form id="lkpdForm">
+            <!-- IDENTITAS -->
+            <h2>A. IDENTITAS SISWA</h2>
+            <div class="grid-2">
+                <div><label>Nama Lengkap:</label><input type="text" name="Nama" placeholder="Ketik nama lengkapmu..."
+                        required></div>
+                <div><label>Kelas:</label><input type="text" name="Kelas" placeholder="Contoh: X TKJ 1" required></div>
+                <div><label>Kelompok:</label><input type="text" name="Kelompok" required></div>
+                <div><label>Nama Anggota Lain (Jika ada):</label><input type="text" name="Anggota"></div>
+            </div>
+
+            <!-- PENGENALAN ALAT -->
+            <h2>B. PENGENALAN ALAT</h2>
+            <div class="instruction-box">
+                <h4>Alat yang akan digunakan:</h4>
+                <div class="img-grid">
+                    <div>
+                        <b>1. Tang Crimping:</b><br>
+                        Alat ini digunakan untuk memotong, mengupas kabel, dan menjepit konektor RJ-45 agar pin
+                        kuningannya menembus kabel.<br>
+                        <img src="tang_crimping.jpg" class="img-preview" alt="Tang Crimping OUBAO TOOL">
+                    </div>
+                    <div>
+                        <b>2. RouterBoard MikroTik (hAP lite):</b><br>
+                        Ini adalah perangkat router utama (Tampak Depan dengan port LAN dan Tampak Atas).<br>
+                        <div style="display:flex; gap:10px;">
+                            <img src="mikrotik_port.jpg" style="width: 48%; border: 1px solid #ccc; border-radius: 4px;"
+                                alt="MikroTik hAP lite Port">
+                            <img src="mikrotik_atas.jpg" style="width: 48%; border: 1px solid #ccc; border-radius: 4px;"
+                                alt="MikroTik RouterBOARD atas">
+                        </div>
+                    </div>
+                </div>
+                <div class="img-grid" style="margin-top:20px;">
+                    <div>
+                        <b>3. Kabel LAN (UTP) dengan RJ-45:</b><br>
+                        Ini adalah hasil akhir kabel yang akan Anda rakit. Perhatikan ujung plastiknya bening (Konektor
+                        RJ-45).<br>
+                        <img src="kabel_lan.jpg" class="img-preview" alt="Kabel LAN UTP">
+                    </div>
+                    <div>
+                        <b>4. Alat Penguji (LAN Tester & Wire Tracker):</b><br>
+                        Digunakan untuk menguji apakah kabel yang Anda rakit sudah tersambung dengan benar. <br>
+                        <img src="lan_tester.jpg" class="img-preview" alt="LAN Tester dan Wire Tracker">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRAKTIK 1 -->
+            <h2>C. PRAKTIK 1: MEMBUAT KABEL LAN (CRIMPING)</h2>
+            <div class="instruction-box">
+                <h4>Langkah Kerja (Kabel Straight-Through):</h4>
+                <ol>
+                    <li>Kupas ujung kulit luar kabel UTP sekitar 2 cm menggunakan pemotong pada <b>Tang Crimping</b>.
+                    </li>
+                    <li>Urai lilitan kabel, lalu susun warnanya berurutan dari kiri ke kanan: <br>
+                        <b>Putih-Orange, Orange, Putih-Hijau, Biru, Putih-Biru, Hijau, Putih-Coklat, Coklat</b>.
+                    </li>
+                    <li>Ratakan ujung kabel dengan memotongnya lurus menggunakan tang crimping.</li>
+                    <li>Masukkan ujung kabel yang sudah rata ke dalam konektor RJ-45 (pastikan pin kuningan menghadap ke
+                        atas dan semua kabel mentok ke ujung).</li>
+                    <li>Jepit konektor RJ-45 menggunakan tang crimping dengan kuat pada lubang <b>8P</b> hingga berbunyi
+                        "klik". Ulangi untuk ujung kabel satunya.</li>
+                </ol>
+                <img src="susunan_warna_kabel.jpg"
+                    class="img-preview" alt="Susunan Warna Kabel" style="margin-top:10px;">
+            </div>
+
+            <label>1. Mengapa susunan warna kabel harus sesuai standar (T568B) dan tidak boleh diacak sesuka
+                hati?</label>
+            <textarea name="P1_Alasan_Warna" rows="2" placeholder="Tulis jawabanmu..." required></textarea>
+
+            <label>📸 [UPLOAD] Foto hasil crimping kabel buatanmu (perlihatkan ujung konektor RJ-45 secara
+                jelas):</label>
+            <input type="file" accept="image/*" name="Foto_Hasil_Crimping" required>
+
+            <!-- PRAKTIK 2 -->
+            <h2>D. PRAKTIK 2: MENGUJI KABEL (LAN TESTER)</h2>
+            <div class="instruction-box">
+                <h4>Langkah Kerja Pengujian:</h4>
+                <ol>
+                    <li>Ambil alat <b>LAN Tester/Wire Tracker</b> berwarna kuning.</li>
+                    <li>Colokkan salah satu ujung kabel buatanmu ke lubang RJ-45 di alat sebelah kiri
+                        (Transmitter/Master).</li>
+                    <li>Colokkan ujung kabel satunya lagi ke lubang RJ-45 di alat sebelah kanan (Receiver/Remote).</li>
+                    <li>Nyalakan alat. Pastikan lampu indikator nomor 1 sampai 8 menyala berurutan dan menyala pada
+                        angka yang sama di kedua alat.</li>
+                </ol>
+            </div>
+
+            <label>2. Apa hasil pengamatanmu saat menguji kabel menggunakan LAN Tester?</label>
+            <select name="P2_Hasil_Tester" required>
+                <option value="">-- Pilih Hasil --</option>
+                <option value="Sukses">Sukses (Lampu 1-8 menyala berurutan pada kedua sisi)</option>
+                <option value="Gagal_Acak">Gagal (Lampu menyala acak/tertukar urutannya)</option>
+                <option value="Gagal_Mati">Gagal (Ada lampu nomor tertentu yang mati/tidak menyala)</option>
+            </select>
+
+            <label>3. Jika lampu nomor 3 dan 6 pada LAN Tester tidak menyala, apa kemungkinan kesalahan saat kamu
+                membuat kabel tadi?</label>
+            <textarea name="P3_Analisa_Lampu_Mati" rows="2" required></textarea>
+
+            <label>📸 [UPLOAD] Foto alat LAN Tester saat sedang menyala menguji kabel buatanmu:</label>
+            <input type="file" accept="image/*" name="Foto_LAN_Tester" required>
+
+            <!-- PRAKTIK 3 -->
+            <h2>E. PRAKTIK 3: MENYAMBUNGKAN KE MIKROTIK & WINBOX</h2>
+            <div class="instruction-box">
+                <h4>Langkah Kerja:</h4>
+                <ol>
+                    <li>Gunakan kabel LAN buatanmu yang sudah sukses diuji.</li>
+                    <li>Colokkan satu ujung kabel ke port <span class="highlight">Ether2</span> pada MikroTik <b>hAP
+                            lite</b>, dan ujung satunya ke port LAN di PC/Laptopmu.</li>
+                    <li>Colokkan adaptor listrik MikroTik ke stopkontak.</li>
+                    <li>Buka aplikasi <b>Winbox</b> di PC. Klik tab <span class="highlight">Neighbors</span> di bagian
+                        bawah.</li>
+                    <li>Tunggu beberapa saat. Klik tulisan <b>MAC Address</b> MikroTik yang muncul.</li>
+                    <li>Isi Login dengan <span class="highlight">admin</span> (Password biarkan kosong), lalu klik
+                        tombol <b>Connect</b>.</li>
+                </ol>
+            </div>
+
+            <label>4. Pada MikroTik hAP lite di gambar, terdapat berapa port LAN yang tersedia secara berurutan?</label>
+            <textarea name="P4_Jumlah_Port" rows="1" placeholder="Lihat gambar alat nomor 2..." required></textarea>
+
+            <label>5. Tuliskan MAC Address (Contoh: 00:0C:42:XX:XX:XX) atau SN (Serial Number) MikroTik milikmu!</label>
+            <input type="text" name="P5_MAC_Address" placeholder="Bisa dilihat di Winbox atau label bawah alat..."
+                required>
+
+            <label>📸 [UPLOAD] Screenshot layar komputermu saat berhasil masuk (login) ke dalam menu MikroTik
+                Winbox:</label>
+            <input type="file" accept="image/*" name="Foto_Winbox" required>
+
+            <!-- KESIMPULAN -->
+            <h2>F. KESIMPULAN BELAJAR HARI INI</h2>
+            <label>Sebutkan hal tersulit yang kamu alami saat belajar mengupas/merakit kabel dan menyambungkannya hari
+                ini?</label>
+            <textarea name="Kesimpulan" rows="3" required></textarea>
+
+            <button type="submit" class="submit-btn" id="btnSubmit">KIRIM TUGAS PRAKTIK</button>
+            <div class="loading" id="loadingText">MENGIRIM DATA... MOHON TUNGGU SEBENTAR...</div>
+        </form>
+    </div>
+
+    <script>
+        // MASUKKAN URL WEB APP GOOGLE SCRIPT ANDA DI SINI
+        const scriptURL = 'URL_WEB_APP_ANDA_DI_SINI';
+        const form = document.forms['lkpdForm'];
+        const btnSubmit = document.getElementById('btnSubmit');
+        const loadingText = document.getElementById('loadingText');
+
+        async function processFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = event => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const c = document.createElement('canvas');
+                        const MAX_WIDTH = 1000;
+                        let scaleSize = 1;
+                        if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
+                        c.width = img.width * scaleSize;
+                        c.height = img.height * scaleSize;
+                        const ctx = c.getContext('2d');
+                        ctx.drawImage(img, 0, 0, c.width, c.height);
+                        const dataUrl = c.toDataURL('image/jpeg', 0.6);
+                        let encoded = dataUrl.replace(/^data:(.*,)?/, '');
+                        resolve({ base64: encoded, mimeType: 'image/jpeg', filename: file.name + ".jpg" });
+                    }
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            btnSubmit.style.display = 'none';
+            loadingText.style.display = 'block';
+
+            const formData = new FormData(form);
+            const payload = {};
+
+            try {
+                for (let [key, value] of formData.entries()) {
+                    if (value instanceof File && value.size > 0) {
+                        payload[key] = await processFile(value);
+                    } else if (!(value instanceof File)) {
+                        payload[key] = value;
+                    }
+                }
+
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+
+                const result = await response.json();
+                if (result.result === 'success') {
+                    alert('Tugas berhasil dikirim! Kerja bagus!');
+                    form.reset();
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Gagal mengirim: ' + error.message);
+            } finally {
+                btnSubmit.style.display = 'block';
+                loadingText.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
