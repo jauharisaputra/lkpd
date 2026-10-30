@@ -4,69 +4,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CYBER SECURITY LAB | Portal Praktikum Jaringan</title>
+  <title>CYBER SECURITY LAB | Portal Praktikum</title>
   <style>
     @import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap');
 
     body {
       font-family: 'Share Tech Mono', monospace;
-      background-color: #03070d;
+      background-color: #050b14;
       color: #00ffcc;
       padding: 0;
       margin: 0;
       line-height: 1.6;
-      background-image:
-        linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
-      background-size: 30px 30px;
+      background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
     }
 
     .header {
+      background: rgba(0, 255, 204, 0.1);
+      border-bottom: 2px solid #00ffcc;
+      padding: 20px;
       text-align: center;
-      padding: 50px 20px 30px 20px;
-      background: linear-gradient(180deg, rgba(0, 255, 204, 0.1) 0%, transparent 100%);
-      border-bottom: 1px solid rgba(0, 255, 204, 0.2);
-      margin-bottom: 40px;
+      position: relative;
     }
 
-    .header h1 {
-      font-size: 2.5em;
+    h1 {
       margin: 0;
-      color: #00ffcc;
-      text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
-      letter-spacing: 3px;
+      font-size: 2.5em;
+      text-shadow: 0 0 10px #00ffcc;
+      letter-spacing: 2px;
     }
 
-    .header p {
-      color: #888;
-      font-size: 1.1em;
-      margin-top: 10px;
+    p.subtitle {
+      color: #aaa;
+      margin: 5px 0 0 0;
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
+      padding: 40px 20px;
       margin: auto;
-      padding: 0 20px 50px 20px;
     }
 
-    .section-title {
-      border-left: 4px solid #00ffcc;
-      padding-left: 15px;
-      color: #fff;
-      margin-bottom: 20px;
-      font-size: 1.5em;
-    }
-
-    /* Module Cards */
     .module-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-bottom: 50px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
     }
 
     .module-card {
-      background: rgba(5, 15, 30, 0.8);
+      background: rgba(5, 15, 30, 0.9);
       border: 1px solid #005544;
       border-radius: 8px;
       padding: 25px;
@@ -77,46 +64,40 @@
 
     .module-card:hover {
       border-color: #00ffcc;
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
       transform: translateY(-5px);
     }
 
-    .module-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: #00ffcc;
-      opacity: 0;
-      transition: 0.3s;
-    }
-
-    .module-card:hover::before {
-      opacity: 1;
-    }
-
     .module-badge {
-      display: inline-block;
+      position: absolute;
+      top: 10px;
+      right: 10px;
       background: rgba(0, 255, 204, 0.1);
       color: #00ffcc;
-      padding: 4px 10px;
-      border-radius: 4px;
+      padding: 3px 8px;
       font-size: 0.8em;
-      margin-bottom: 15px;
-      border: 1px solid rgba(0, 255, 204, 0.3);
+      border-radius: 4px;
+      border: 1px solid #005544;
     }
 
     .module-card h3 {
+      margin-top: 0;
       color: #fff;
-      margin: 0 0 10px 0;
+      border-bottom: 1px dashed #005544;
+      padding-bottom: 10px;
     }
 
     .module-card p {
-      color: #aaa;
+      color: #bbb;
       font-size: 0.9em;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
+      height: 60px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
     }
 
     .btn {
@@ -124,97 +105,193 @@
       text-align: center;
       background: transparent;
       color: #00ffcc;
+      text-decoration: none;
       padding: 10px;
       border: 1px solid #00ffcc;
-      text-decoration: none;
       border-radius: 4px;
-      transition: 0.3s;
       font-weight: bold;
-      margin-bottom: 10px;
+      transition: 0.3s;
+      text-transform: uppercase;
+      font-size: 0.9em;
     }
 
     .btn:hover {
       background: #00ffcc;
       color: #000;
+      box-shadow: 0 0 10px #00ffcc;
     }
 
-    /* Teacher Area */
-    .teacher-area {
-      background: rgba(20, 5, 5, 0.8);
-      border: 1px dashed #ff3333;
-      padding: 30px;
+    .btn-ujian {
+      border-color: #ff0055;
+      color: #ff0055;
+    }
+
+    .btn-ujian:hover {
+      background: #ff0055;
+      color: #fff;
+      box-shadow: 0 0 10px #ff0055;
+      border-color: #ff0055;
+    }
+
+    /* STYLING UNTUK PROFIL PENGEMBANG */
+    .developer-profile {
+      margin-top: 50px;
+      background: rgba(0, 255, 204, 0.05);
+      border: 1px solid #005544;
+      padding: 25px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      transition: 0.3s;
+    }
+
+    .developer-profile:hover {
+      border-color: #00ffcc;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+    }
+
+    .dev-img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 2px dashed #00ffcc;
+      object-fit: cover;
+      padding: 5px;
+    }
+
+    .dev-info h4 {
+      margin: 0 0 5px 0;
+      color: #00ffcc;
+      font-size: 1.4em;
+    }
+
+    .dev-info .role {
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.95em;
+      margin: 0 0 10px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #005544;
+    }
+
+    .dev-info p {
+      color: #aaa;
+      font-size: 0.9em;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* STYLING UNTUK MENU INSTRUKTUR */
+    .instructor-panel {
+      margin-top: 40px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed #555;
+      padding: 20px;
       border-radius: 8px;
       text-align: center;
     }
 
-    .teacher-area h3 {
-      color: #ff3333;
+    .instructor-panel h4 {
       margin-top: 0;
+      color: #888;
     }
 
-    .admin-login {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .admin-login select,
-    .admin-login input {
-      background: #000;
-      border: 1px solid #ff3333;
-      color: #ff3333;
-      padding: 10px;
-      font-family: inherit;
-      border-radius: 4px;
-      width: 100%;
-      max-width: 320px;
-      outline: none;
-    }
-
-    .admin-login input:focus {
-      box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
-    }
-
-    .admin-login button {
-      background: #ff3333;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      font-family: inherit;
-      font-weight: bold;
-      border-radius: 4px;
+    #dbAccessBtn {
+      background: #222;
+      color: #888;
+      border: 1px solid #444;
+      padding: 8px 15px;
       cursor: pointer;
-      transition: 0.3s;
+      font-family: inherit;
     }
 
-    .admin-login button:hover {
-      background: #cc0000;
+    #dbAccessBtn:hover {
+      border-color: #00ffcc;
+      color: #00ffcc;
     }
 
-    .footer {
-      text-align: center;
-      padding: 20px;
-      color: #555;
-      font-size: 0.8em;
-      border-top: 1px solid rgba(0, 255, 204, 0.1);
-      margin-top: 50px;
+    .hidden-links {
+      display: none;
+      margin-top: 15px;
+      background: #02060d;
+      padding: 15px;
+      border: 1px solid #00ffcc;
+      border-radius: 4px;
+      text-align: left;
+    }
+
+    .hidden-links a {
+      display: block;
+      color: #00ffcc;
+      text-decoration: none;
+      padding: 8px 0;
+      border-bottom: 1px solid #005544;
+    }
+
+    .hidden-links a:hover {
+      color: #fff;
     }
   </style>
 </head>
 
 <body>
-
   <div class="header">
     <h1>[ CYBER_SECURITY_LAB ]</h1>
-    <p>Portal Lembar Kerja Peserta Didik (LKPD) - SMK Keamanan Jaringan</p>
-    <p style="color: #00ffcc; font-size: 0.9em; margin-top: 5px;">Instruktur: Jauhari Saputra</p>
+    <p class="subtitle">Portal Praktikum Jaringan - Sistem LKPD & CBT Terintegrasi</p>
   </div>
 
   <div class="container">
-    <h2 class="section-title">> DAFTAR MODUL PRAKTIKUM</h2>
+    <!-- PENGUMUMAN / INFO -->
+    <div
+      style="background: rgba(0,0,0,0.6); padding: 15px; border-left: 4px solid #00ffcc; margin-bottom: 30px; font-size: 0.9em;">
+      <span style="color:#00ffcc; font-weight:bold;">> SYSTEM_LOG:</span> Pilih modul yang ditugaskan oleh instruktur.
+      Pastikan Anda menyelesaikan tugas praktik sebelum mengikuti Ujian CBT.
+    </div>
+
     <div class="module-grid">
+      <!-- MODUL 0 (DASAR KELAS 10) -->
+      <div class="module-card">
+        <span class="module-badge"
+          style="background: rgba(100, 200, 255, 0.1); color: #64c8ff; border-color: rgba(100, 200, 255, 0.3);">KELAS 10
+          - DASAR</span>
+        <h3>Dasar Jaringan</h3>
+        <p>Membuat kabel LAN, pengujian alat crimping, dan login dasar ke MikroTik.</p>
+        <div class="btn-group">
+          <a href="lkpd-kelas10-dasar.html" class="btn" style="border-color:#64c8ff; color:#64c8ff;">> AKSES LKPD </a>
+        </div>
+      </div>
+
+      <!-- MODUL 1 (VIRTUAL) -->
+      <div class="module-card">
+        <span class="module-badge">SESI 01 - VIRTUAL</span>
+        <h3>Firewall Filtering</h3>
+        <p>Simulasi pemblokiran akses file berbahaya menggunakan MikroTik dan Klien Windows di dalam VirtualBox.</p>
+        <div class="btn-group">
+          <a href="lkpd-sesi1.html" class="btn">> AKSES LKPD VIRTUAL_</a>
+        </div>
+      </div>
+
+      <!-- MODUL 2 (VIRTUAL) -->
+      <div class="module-card">
+        <span class="module-badge">SESI 02 - VIRTUAL</span>
+        <h3>Proxy Server & Web Filter</h3>
+        <p>Konfigurasi Web Proxy pada MikroTik Virtual untuk memblokir akses situs tertentu berdasarkan domain.</p>
+        <div class="btn-group">
+          <a href="lkpd-sesi2.html" class="btn">> AKSES LKPD VIRTUAL_</a>
+        </div>
+      </div>
+
+      <!-- MODUL 3 (VIRTUAL) -->
+      <div class="module-card">
+        <span class="module-badge">SESI 03 - VIRTUAL</span>
+        <h3>Hotspot & Bandwidth</h3>
+        <p>Membangun sistem autentikasi user dan membatasi kecepatan internet pada lingkungan VirtualBox.</p>
+        <div class="btn-group">
+          <a href="lkpd-sesi3.html" class="btn">> AKSES LKPD VIRTUAL_</a>
+        </div>
+      </div>
 
       <!-- MODUL 1 (FISIK) -->
       <div class="module-card">
@@ -223,8 +300,11 @@
           FISIK</span>
         <h3>RouterBoard Basic</h3>
         <p>Simulasi pemblokiran file dan perakitan koneksi menggunakan PC dan Mikrotik fisik secara langsung.</p>
-        <a href="lkpd-sesi1-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD FISIK_</a>
-        <a href="ujian-sesi1.html" class="btn" style="border-color:#00ffcc; color:#00ffcc;">> AKSES UJIAN TEORI_</a>
+        <div class="btn-group">
+          <a href="lkpd-sesi1-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD
+            FISIK_</a>
+          <a href="ujian-sesi1.html" class="btn btn-ujian">> UJIAN CBT SESI 1_</a>
+        </div>
       </div>
 
       <!-- MODUL 2 (FISIK) -->
@@ -232,11 +312,13 @@
         <span class="module-badge"
           style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 02 -
           FISIK</span>
-        <h3>Proxy Server & Web Filter</h3>
-        <p>Konfigurasi Web Proxy pada MikroTik fisik untuk memblokir akses situs tertentu berdasarkan domain dan
-          ekstensi file.</p>
-        <a href="lkpd-sesi2-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD FISIK_</a>
-        <a href="ujian-sesi2.html" class="btn" style="border-color:#00ffcc; color:#00ffcc;">> AKSES UJIAN TEORI_</a>
+        <h3>Web Proxy Server</h3>
+        <p>Konfigurasi Transparent Proxy dan pembatasan akses ke situs web (domain) serta file ekstensi spesifik.</p>
+        <div class="btn-group">
+          <a href="lkpd-sesi2-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD
+            FISIK_</a>
+          <a href="ujian-sesi2.html" class="btn btn-ujian">> UJIAN CBT SESI 2_</a>
+        </div>
       </div>
 
       <!-- MODUL 3 (FISIK) -->
@@ -247,103 +329,78 @@
         <h3>Hotspot & Bandwidth</h3>
         <p>Membangun sistem autentikasi user (Login Page) dan membatasi kecepatan internet klien menggunakan Simple
           Queue.</p>
-        <a href="lkpd-sesi3-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD FISIK_</a>
-        <a href="ujian-sesi3.html" class="btn" style="border-color:#cc00ff; color:#cc00ff;">> AKSES UJIAN TEORI_</a>
-      </div>
-
-      <!-- MODUL 1 (VIRTUAL) -->
-      <div class="module-card">
-        <span class="module-badge">SESI 01 - VIRTUAL</span>
-        <h3>Firewall Filtering Basic</h3>
-        <p>Simulasi pemblokiran ekstensi file malware menggunakan MikroTik RouterOS dan Windows Client di VirtualBox.
-        </p>
-        <a href="lkpd-sesi1.html" class="btn">> AKSES LKPD VIRTUAL_</a>
-      </div>
-
-      <!-- MODUL 2 (VIRTUAL) -->
-      <div class="module-card">
-        <span class="module-badge">SESI 02 - VIRTUAL</span>
-        <h3>Proxy Server & Web Filter</h3>
-        <p>Konfigurasi Web Proxy pada MikroTik Virtual untuk memblokir akses situs tertentu berdasarkan domain.</p>
-        <a href="lkpd-sesi2.html" class="btn">> AKSES LKPD VIRTUAL_</a>
-      </div>
-
-      <!-- MODUL 3 (VIRTUAL) -->
-      <div class="module-card">
-        <span class="module-badge">SESI 03 - VIRTUAL</span>
-        <h3>Hotspot & Bandwidth Management</h3>
-        <p>Membangun sistem autentikasi user dan membatasi kecepatan internet pada lingkungan VirtualBox.</p>
-        <a href="lkpd-sesi3.html" class="btn">> AKSES LKPD VIRTUAL_</a>
-      </div>
-
-    </div>
-
-    <h2 class="section-title" style="border-left-color: #ff3333; color: #ff3333;">> RESTRICTED AREA (INSTRUKTUR)</h2>
-    <div class="teacher-area">
-      <h3>[ DATABASE PENILAIAN & TUGAS SISWA ]</h3>
-      <p style="color: #aaa; font-size: 0.9em;">Area ini khusus untuk pengecekan dan penilaian tugas oleh
-        pengajar.<br>Silakan masukkan kode otorisasi untuk mengakses Spreadsheet.</p>
-
-      <div class="admin-login">
-        <!-- Dropdown Pilihan Database Lengkap -->
-        <select id="dbSelect">
-          <optgroup label="=== DATABASE UJIAN TEORI (CBT) ===">
-            <option value="https://docs.google.com/spreadsheets/d/1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY/edit?gid=0#gid=0">
-              Database Ujian Teori Sesi 1-3 (Gabungan)</option>
-          </optgroup>
-          <optgroup label="=== DATABASE LKPD PRAKTIK FISIK ===">
-            <option value="https://docs.google.com/spreadsheets/d/1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY/edit">
-              LKPD Fisik Sesi 1 - RouterBoard</option>
-            <option value="https://docs.google.com/spreadsheets/d/1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE/edit">
-              LKPD Fisik Sesi 2 - Web Proxy</option>
-            <option value="https://docs.google.com/spreadsheets/d/1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs/edit">
-              LKPD Fisik Sesi 3 - Hotspot</option>
-          </optgroup>
-          <optgroup label="=== DATABASE LKPD PRAKTIK VIRTUAL ===">
-            <option value="https://docs.google.com/spreadsheets/d/1M7ooax708eL_1-nyIEiJtZo0AasBEHHhr9uZD991Aew/edit">
-              LKPD Virtual Sesi 1 - Firewall</option>
-            <option value="https://docs.google.com/spreadsheets/d/13chVCJmz_XnP4Yla32nVq84-iFCIecZu7sisceFvrB0/edit">
-              LKPD Virtual Sesi 2 - Web Proxy</option>
-            <option value="https://docs.google.com/spreadsheets/d/1ZDVQNco7djwwzoa8fu3rpQtQQbwVFO3S6p0vHTxTt0s/edit">
-              LKPD Virtual Sesi 3 - Hotspot</option>
-          </optgroup>
-        </select>
-
-        <!-- Kolom Password & Tombol -->
-        <div style="display: flex; gap: 10px; width: 100%; max-width: 320px;">
-          <input type="password" id="adminPass" placeholder="Masukkan Password...">
-          <button onclick="checkPassword()">AUTHORIZE</button>
+        <div class="btn-group">
+          <a href="lkpd-sesi3-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD
+            FISIK_</a>
+          <a href="ujian-sesi3.html" class="btn btn-ujian">> UJIAN CBT SESI 3_</a>
         </div>
       </div>
-
-      <p id="errorMsg" style="color: #ff3333; display: none; margin-top: 10px; font-size: 0.9em;">> ERROR: Kata sandi
-        salah!</p>
     </div>
-  </div>
 
-  <div class="footer">
-    System Initialized. Copyright &copy; 2026 Jauhari Saputra - Cyber Security Lab.
+    <!-- PROFIL PENGEMBANG -->
+    <div class="developer-profile">
+      <img src="foto profil.png" alt="Foto Profil Jauhari Saputra" class="dev-img">
+      <div class="dev-info">
+        <h4>> JAUHARI SAPUTRA</h4>
+        <p class="role">IT Professional | Kepala Program TKJ | Pengembang Teknologi Pendidikan</p>
+        <p>Mahasiswa S.Kom Informatika Universitas Siber Asia dengan prestasi akademis unggul (IPK 3.95). Berpengalaman
+          mengintegrasikan teknologi pendidikan seperti Sistem CBT Anti-Curang dan E-Rapor Digital. Memiliki
+          spesialisasi di bidang Infrastruktur Jaringan, Keamanan Siber (Penetration Testing), dan Pengembangan Web.
+          Turut aktif sebagai penerjemah trilingual (Jepang-Inggris-Indonesia) dalam misi kemanusiaan internasional.</p>
+      </div>
+    </div>
+
+    <!-- PANEL KHUSUS INSTRUKTUR -->
+    <div class="instructor-panel">
+      <h4>> INSTRUCTOR_AREA</h4>
+      <p style="font-size: 0.85em; color: #666;">Area ini dibatasi hanya untuk staf pengajar. Sistem akan meminta kode
+        otorisasi.</p>
+      <button id="dbAccessBtn">> ACCESS DATABASES</button>
+      <div class="hidden-links" id="dbLinks">
+        <div style="color:#fff; margin-bottom:10px; font-weight:bold;">> SECURE CONNECTION ESTABLISHED.</div>
+
+        <p style="color:#64c8ff; margin:15px 0 5px 0; font-size:0.9em; font-weight:bold;">[ DATABASE LKPD KELAS 10]</p>
+        <a href="https://docs.google.com/spreadsheets/d/1L_oLjNJqgZEwF66y1UsftKuW-fNjRBTvji_VLxBUnJo/edit"
+          target="_blank">1. Database LKPD Dasar Jaringan Kelas 10 (Utama)</a>
+
+        <p style="color:#ffaa00; margin:15px 0 5px 0; font-size:0.9em; font-weight:bold;">[ DATABASE LKPD FISIK (REAL
+          DEVICE)]</p>
+        <a href="https://docs.google.com/spreadsheets/d/1M7ooax708eL_1-nylEiJtZoOAasBEHHhr9uZD991Aew/edit"
+          target="_blank">1. Database LKPD Sesi 1 - Firewall Fisik</a>
+        <a href="https://docs.google.com/spreadsheets/d/13chVCJmz_XnP4Yla32nVq84-iFClecZu7sisceFvrB0/edit"
+          target="_blank">2. Database LKPD Sesi 2 - Web Proxy Fisik</a>
+        <a href="https://docs.google.com/spreadsheets/d/1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs/edit"
+          target="_blank">3. Database LKPD Sesi 3 - Hotspot Fisik</a>
+
+        <p style="color:#00ffcc; margin: 15px 0 5px 0; font-size:0.9em; font-weight:bold;">[ DATABASE LKPD VIRTUAL
+          (VIRTUALBOX) ]</p>
+        <a href="https://docs.google.com/spreadsheets/d/106cwQg2pVz34mdDz1TgE-Vu8UzLu-9SwdgLzA2HDVRs/edit"
+          target="_blank">1. Database LKPD Sesi 1 - Firewall Virtual</a>
+        <a href="https://docs.google.com/spreadsheets/d/13chVCJmz_XnP4Yla32nVq84-iFCIecZu7sisceFvrB0/edit"
+          target="_blank">2. Database LKPD Sesi 2 - Web Proxy Virtual</a>
+        <a href="https://docs.google.com/spreadsheets/d/1ZDVQNco7djwwzoa8fu3rpQtQQbwVFO3S6p0vHTxTt0s/edit"
+          target="_blank">3. Database LKPD Sesi 3 - Hotspot Virtual</a>
+
+        <p style="color:#ff0055; margin:15px 0 5px 0; font-size:0.9em; font-weight:bold;">[ DATABASE UJIAN CBT ]</p>
+        <a href="https://docs.google.com/spreadsheets/d/1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY/edit?gid=0#gid=0"
+          target="_blank">1. Database Nilai Ujian CBT Sesi 1-3 (Gabungan)</a>
+      </div>
+    </div>
   </div>
 
   <script>
-    function checkPassword() {
-      const passInput = document.getElementById('adminPass').value;
-      const dbSelect = document.getElementById('dbSelect').value;
-      const errorMsg = document.getElementById('errorMsg');
-
-      //--- GANTI PASSWORD DI BAWAH INI JIKA PERLU
-      const correctPassword = "Kasihkarunia5";
-
-      if (passInput === correctPassword) {
-        window.open(dbSelect, "_blank");
-        errorMsg.style.display = "none";
-        document.getElementById('adminPass').value = "";
-      } else {
-        errorMsg.style.display = "block";
+    // Script Sederhana untuk Proteksi Menu Instruktur
+    document.getElementById('dbAccessBtn').addEventListener('click', function () {
+      var password = prompt("ENTER OVERRIDE PASSCODE:");
+      // Password bawaan adalah: admin123
+      if (password === "admin123") {
+        document.getElementById('dbLinks').style.display = "block";
+        this.style.display = "none";
+      } else if (password !== null) {
+        alert("ACCESS DENIED. INVALID PASSCODE.");
       }
-    }
+    });
   </script>
-
 </body>
 
 </html>
