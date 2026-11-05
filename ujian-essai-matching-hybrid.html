@@ -391,6 +391,73 @@
                 isSubmitted = false;
             }
         }
+        // tambahkan fitur anti-keyboard shortcut untuk mencegah copy-paste dan screenshot
+        document.addEventListener('keydown', function (e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 's')) {
+                e.preventDefault();
+                alert('Fitur ini dinonaktifkan selama ujian untuk mencegah copy-paste.');
+            }
+            if (e.key === 'PrintScreen') {
+                e.preventDefault();
+                alert('Fitur screenshot dinonaktifkan selama ujian.');
+            }
+        });
+        // tambahkan fitur anti-right click
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            alert('Klik kanan dinonaktifkan selama ujian.');
+        });
+        // tambahkan fitur anti-select text
+        document.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+            alert('Seleksi teks dinonaktifkan selama ujian.');
+        });
+        // tambahkan fitur anti-drag
+        document.addEventListener('dragstart', function (e) {
+            e.preventDefault();
+            alert('Drag dinonaktifkan selama ujian.');
+        });
+        // tambahkan fitur anti-copy
+        document.addEventListener('copy', function (e) {
+            e.preventDefault();
+            alert('Copy dinonaktifkan selama ujian.');
+        });
+        // tambahkan fitur anti-paste
+        document.addEventListener('paste', function (e) {
+            e.preventDefault();
+            alert('Paste dinonaktifkan selama ujian.');
+        });
+        // tambahkan fitur addEventListener untuk mencegah penggunaan tombol F12 (DevTools)
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'F12') {
+                e.preventDefault();
+                alert('Penggunaan DevTools dinonaktifkan selama ujian.');
+            }
+        });
+        // tambahkan fitur addEventListener untuk mencegah penggunaan tombol Alt+Tab
+        document.addEventListener('keydown', function (e) {
+            if (e.altKey && e.key === 'Tab') {
+                e.preventDefault();
+                alert('Penggunaan Alt+Tab dinonaktifkan selama ujian.');
+            }
+        });
+        // tambahkan fitur addEventListener untuk mencegah penggunaan tombol Ctrl+Shift+I (DevTools)
+        document.addEventListener('keydown', function (e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                e.preventDefault();
+                alert('Penggunaan DevTools dinonaktifkan selama ujian.');
+            }
+        });
+        // jika pindah tab, maka auto reset ulang jawaban dan mulai dari awal dan tampilkan alert
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                alert('Anda telah berpindah tab atau meminimalkan jendela. Sistem akan mengunci jawaban dan mengirimkan essai secara otomatis.');
+                autoSubmit();
+            }
+        });
+        
+        
+        
     </script>
 
 </body>
