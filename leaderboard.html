@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLOBAL LEADERBOARD | CYBER SECURITY LAB</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #03070d;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(20, 5, 20, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+        }
+
+        h1 {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+            border-bottom: 2px dashed #ff00ff;
+            padding-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 0, 255, 0.3);
+            text-align: left;
+        }
+
+        th {
+            color: #ff00ff;
+            font-size: 1.2em;
+            text-transform: uppercase;
+        }
+
+        tr:hover {
+            background: rgba(255, 0, 255, 0.1);
+        }
+
+        .rank-1 {
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ffd700;
+        }
+
+        .rank-2 {
+            color: #c0c0c0;
+            font-weight: bold;
+        }
+
+        .rank-3 {
+            color: #cd7f32;
+            font-weight: bold;
+        }
+
+        select {
+            background: #000;
+            color: #ff00ff;
+            border: 1px solid #ff00ff;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        #loading {
+            color: #ff00ff;
+            animation: blink 1s infinite;
+            margin: 20px 0;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        a.btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #ff00ff;
+            text-decoration: none;
+            border: 1px solid #ff00ff;
+            padding: 10px 20px;
+            transition: 0.3s;
+        }
+
+        a.btn-back:hover {
+            background: #ff00ff;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>> HALL OF FAME_</h1>
+        <p>Top 10 High Scores - Ujian CBT Cyber Security</p>
+
+        <select id="sesiFilter">
+            <option value="ALL">-- TAMPILKAN SEMUA SESI --</option>
+            <option value="Sesi 1: Firewall Basic">Sesi 1: Firewall Basic</option>
+            <option value="Sesi 2: Proxy Server & Web Filter">Sesi 2: Proxy Server & Web Filter</option>
+            <option value="Sesi 3: Hotspot & Bandwidth Management">Sesi 3: Hotspot & Bandwidth</option>
+        </select>
+
+        <div id="loading">> MENGAMBIL DATA DARI SERVER PUSAT...</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Agent (Nama)</th>
+                    <th>Sektor (Kelas)</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardBody"></tbody>
+        </table>
+
+        <a href="index.html" class="btn-back">
+            < BACK TO MAIN SYSTEM</a>
+    </div>
+
+    <script>
+        const sheetId = '1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY';
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+        let allData = [];
+
+        // Mengambil data menggunakan metode yang sama dengan Dashboard Instruktur
+        Papa.parse(csvUrl, {
+            download: true,
+            header: true,
+            complete: function (results) {
+                document.getElementById('loading').style.display = 'none';
+                allData = results.data.filter(row => row.Nama && row.Skor_Akhir); // Hanya ambil yang tidak kosong
+                renderLeaderboard("ALL");
+            }
+        });
+
+        document.getElementById('sesiFilter').addEventListener('change', function () {
+            renderLeaderboard(this.value);
+        });
+
+        function renderLeaderboard(filter) {
+            const tbody = document.getElementById('leaderboardBody');
+            tbody.innerHTML = '';
+
+            // Filter Data
+            let filtered = allData;
+            if (filter !== "ALL") {
+                filtered = allData.filter(row => row.Sesi === filter);
+            }
+
+            // Urutkan berdasarkan Skor (Tertinggi ke Terendah)
+            filtered.sort((a, b) => parseInt(b.Skor_Akhir) - parseInt(a.Skor_Akhir));
+
+            // Ambil Top 10
+            const top10 = filtered.slice(0, 10);
+
+            if (top10.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Tidak ada data ditemukan.</td></tr>';
+                return;
+            }
+
+            top10.forEach((row, index) => {
+                let rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
+                tbody.innerHTML += `
+                    <tr class="${rankClass}">
+                        <td>#${index + 1}</td>
+                        <td>${row.Nama}</td>
+                        <td>${row.Kelas}</td>
+                        <td>${row.Skor_Akhir}</td>
+                    </tr>
+                `;
+            });
+        }
+    </script>
+</body>
+
+</html>

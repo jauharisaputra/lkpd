@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDENT TRACKER | CYBER SECURITY LAB</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #050b14;
+            color: #00ffcc;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: rgba(5, 15, 30, 0.95);
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+        }
+
+        h1 {
+            margin-top: 0;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 15px;
+            background: #000;
+            border: 2px solid #00ffcc;
+            color: #00ffcc;
+            font-size: 1.2em;
+            font-family: inherit;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #00ffcc;
+            color: #000;
+            font-family: inherit;
+            font-size: 1.2em;
+            padding: 10px 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #00ccaa;
+        }
+
+        .result-box {
+            margin-top: 30px;
+            text-align: left;
+            background: #02060d;
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid #005544;
+            display: none;
+        }
+
+        .module-item {
+            padding: 15px 0;
+            border-bottom: 1px dashed #005544;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-done {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+
+        .status-missing {
+            color: #ff3333;
+            font-weight: bold;
+        }
+
+        #loading {
+            display: none;
+            color: #ffaa00;
+            margin-top: 20px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        a.btn-back {
+            display: block;
+            margin-top: 30px;
+            color: #00ffcc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>> STATUS_CHECKER_</h1>
+        <p>Lacak status pengumpulan tugas dan ujian Anda.</p>
+
+        <input type="text" id="searchInput" placeholder="Masukkan Nama Lengkap Anda..." onkeypress="handleEnter(event)">
+        <br>
+        <button onclick="checkStatus()">SYSTEM SCAN</button>
+
+        <div id="loading">> SEARCHING DATABASES... PLEASE WAIT_</div>
+
+        <div class="result-box" id="resultBox">
+            <h3 style="border-bottom: 1px solid #00ffcc; padding-bottom: 10px;">Hasil Scan untuk: <span
+                    id="studentNameDisplay"></span></h3>
+            <div id="statusList"></div>
+        </div>
+
+        <a href="index.html" class="btn-back">
+            < KEMBALI KE MENU UTAMA</a>
+    </div>
+
+    <script>
+        // DAFTAR DATABASE YANG INGIN DILACAK
+        const databases = [
+            { name: "LKPD Sesi 1 - Firewall (Fisik)", id: "1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY" },
+            { name: "LKPD Sesi 1 - Firewall (Virtual)", id: "106cwQg2pVz34mdDz1TgE-Vu8UzLu-9SwdgLzA2HDVRs" },
+            { name: "Ujian CBT (Sesi 1-3 Gabungan)", id: "1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY" }
+            // Anda bisa tambahkan sheet ID untuk sesi 2, sesi 3, dan essai di sini
+        ];
+
+        function handleEnter(e) { if (e.key === 'Enter') checkStatus(); }
+
+        async function checkStatus() {
+            const nameToSearch = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!nameToSearch) { alert("Masukkan nama terlebih dahulu!"); return; }
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultBox').style.display = 'none';
+            const statusList = document.getElementById('statusList');
+            statusList.innerHTML = '';
+            document.getElementById('studentNameDisplay').innerText = nameToSearch.toUpperCase();
+
+            // Loop untuk memeriksa setiap database
+            for (let db of databases) {
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${db.id}/export?format=csv`;
+                let isFound = false;
+
+                try {
+                    const response = await fetch(csvUrl);
+                    const csvText = await response.text();
+
+                    // Parse data menggunakan PapaParse
+                    const parsed = Papa.parse(csvText, { header: true }).data;
+
+                    // Cek apakah nama siswa ada di kolom "Nama" (kasus-insensitif)
+                    for (let row of parsed) {
+                        if (row.Nama && row.Nama.toLowerCase().includes(nameToSearch)) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                } catch (error) {
+                    console.error("Gagal membaca database:", db.name);
+                }
+
+                // Render hasil
+                const statusHtml = isFound
+                    ? `<span class="status-done">✅ COMPLETED</span>`
+                    : `<span class="status-missing">❌ MISSING / NOT FOUND</span>`;
+
+                statusList.innerHTML += `
+                    <div class="module-item">
+                        <span>${db.name}</span>
+                        ${statusHtml}
+                    </div>
+                `;
+            }
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('resultBox').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
