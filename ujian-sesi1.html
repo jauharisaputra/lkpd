@@ -883,6 +883,134 @@
                 isSubmitted = false;
             }
         }
+         // ==============================================================================
+            // 🚨 MODUL ANTI-CHEAT: CYBER ATTACK EDITION (FIXED LAYOUT) 🚨
+            // ==============================================================================
+
+            // 1. INJEKSI CSS UNTUK EFEK LAYAR MERAH MENGINTIMIDASI
+            const style = document.createElement('style');
+            style.innerHTML = `
+        @keyframes cyberBlink { 0% { background-color: #110000; } 50% { background-color: #ff0000; } 100% { background-color: #110000; } }
+        #cyberAttackOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: #ff0000; animation: cyberBlink 0.3s infinite;
+            z-index: 999999; display: none; flex-direction: column; 
+            justify-content: flex-start; /* Diubah agar bisa digulir jika layar kecil */
+            align-items: center; text-align: center;
+            font-family: 'Share Tech Mono', monospace; border: 15px solid #000; box-sizing: border-box;
+            overflow-y: auto; padding: 40px 20px; /* Tambahan fitur scroll */
+        }
+        .hacker-text { color: #fff; font-size: 3.5em; margin: 0; text-shadow: 0 0 20px #fff; letter-spacing: 5px; }
+        
+        /* Fitur Responsif: Otomatis mengecil di layar laptop/HP */
+        @media (max-height: 768px), (max-width: 768px) {
+            .hacker-text { font-size: 2.2em; }
+            #cyberAttackOverlay p { font-size: 1.2em !important; padding: 15px !important; }
+            #cyberAttackOverlay button { font-size: 1.2em !important; padding: 12px 25px !important; margin-bottom: 40px; }
+        }
+    `;
+            document.head.appendChild(style);
+
+            // 2. INJEKSI HTML OVERLAY PERINGATAN
+            const attackOverlay = document.createElement('div');
+            attackOverlay.id = 'cyberAttackOverlay';
+            attackOverlay.innerHTML = `
+        <div style="font-size: 5em; margin-bottom: 5px;">☠️</div>
+        <h1 class="hacker-text">SECURITY BREACH DETECTED</h1>
+        <h2 style="color: #ff0000; background: #fff; padding: 10px 20px; text-transform: uppercase; font-size: 1.8em; border-radius: 5px; margin: 15px 0;" id="cheatReason">ILLEGAL ACTION</h2>
+        <p style="font-size: 1.5em; color: #fff; max-width: 800px; line-height: 1.6; background: rgba(0,0,0,0.8); padding: 20px; border: 1px solid #ff0000;">
+            Sistem Keamanan Aktif menangkap aktivitas ilegal. Sebagai penalti:<br>
+            <span style="color: #ffaa00; font-weight: bold; font-size: 1.1em;">> WAKTU UJIAN ANDA DIKURANGI 5 MENIT! <br>> SELURUH JAWABAN ANDA TELAH DIKOSONGKAN!</span><br><br>
+            <i style="font-size: 0.8em; color: #ccc;">Aktivitas ini dicatat oleh server. Jika waktu Anda masih tersisa, klik tombol di bawah untuk mengulangi.</i>
+        </p>
+        <button onclick="dismissCyberAttack()" style="margin-top: 20px; margin-bottom: 50px; padding: 15px 40px; font-size: 1.3em; background: #000; color: #ff0000; border: 3px solid #ff0000; cursor: pointer; font-weight: bold; font-family: inherit; transition: 0.3s;" onmouseover="this.style.background='#ff0000'; this.style.color='#000';" onmouseout="this.style.background='#000'; this.style.color='#ff0000';">> SAYA MENGERTI, AMPUNI SAYA_</button>
+    `;
+            document.body.appendChild(attackOverlay);
+
+            // 3. GENERATOR AUDIO ALARM (Web Audio API)
+            let audioCtx, oscillator, alarmInterval;
+            function playHackerAlarm() {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'sawtooth';
+
+                alarmInterval = setInterval(() => {
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    setTimeout(() => oscillator.frequency.setValueAtTime(600, audioCtx.currentTime), 150);
+                }, 300);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                gainNode.gain.value = 0.2;
+                oscillator.start();
+            }
+            function stopHackerAlarm() {
+                if (oscillator) { oscillator.stop(); oscillator.disconnect(); clearInterval(alarmInterval); }
+            }
+
+            // 4. LOGIKA PENYIKSAAN (PENALTI)
+            let isAlerting = false;
+            function triggerCyberPenalty(reason) {
+                if (typeof isSubmitted !== 'undefined' && isSubmitted) return;
+                if (isAlerting) return;
+
+                isAlerting = true;
+
+                document.getElementById('cheatReason').innerText = "> " + reason + " <";
+                document.getElementById('cyberAttackOverlay').style.display = 'flex';
+
+                // Memastikan layar kembali ke posisi paling atas agar tombol terlihat setelah di-scroll
+                document.getElementById('cyberAttackOverlay').scrollTop = 0;
+                playHackerAlarm();
+
+                if (typeof timeLeft !== 'undefined') timeLeft -= 300;
+
+                document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+                document.querySelectorAll('textarea').forEach(t => t.value = "");
+
+                if (typeof timeLeft !== 'undefined' && timeLeft <= 0) {
+                    timeLeft = 0;
+                    setTimeout(() => {
+                        dismissCyberAttack();
+                        alert("⚠️ WAKTU HABIS KARENA PENALTI KECURANGAN! Sistem mensubmit jawaban kosong otomatis.");
+                        if (typeof autoSubmit === "function") autoSubmit();
+                    }, 3500);
+                }
+            }
+
+            window.dismissCyberAttack = function () {
+                document.getElementById('cyberAttackOverlay').style.display = 'none';
+                stopHackerAlarm();
+                setTimeout(() => { isAlerting = false; }, 1000);
+            };
+
+            // 5. DETEKTOR KECURANGAN
+            document.addEventListener('keydown', function (e) {
+                if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 's' || e.key === 'C' || e.key === 'V' || e.key === 'X' || e.key === 'S')) {
+                    e.preventDefault(); triggerCyberPenalty("SHORTCUT KEYBOARD ILEGAL");
+                }
+                if (e.key === 'PrintScreen') { e.preventDefault(); triggerCyberPenalty("SCREENSHOT TERDETEKSI"); }
+                if (e.key === 'F12') { e.preventDefault(); triggerCyberPenalty("DEVTOOLS (F12) TERDETEKSI"); }
+                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.key === 'i' || e.key === 'j' || e.key === 'c')) {
+                    e.preventDefault(); triggerCyberPenalty("INSPECT ELEMENT TERDETEKSI");
+                }
+            });
+
+            document.addEventListener('contextmenu', e => { e.preventDefault(); triggerCyberPenalty("KLIK KANAN TERDETEKSI"); });
+            document.addEventListener('copy', e => { e.preventDefault(); triggerCyberPenalty("TINDAKAN COPY TERDETEKSI"); });
+            document.addEventListener('paste', e => { e.preventDefault(); triggerCyberPenalty("TINDAKAN PASTE TERDETEKSI"); });
+            document.addEventListener('cut', e => { e.preventDefault(); triggerCyberPenalty("TINDAKAN CUT TERDETEKSI"); });
+            document.addEventListener('dragstart', e => { e.preventDefault(); triggerCyberPenalty("DRAG ELEMEN TERDETEKSI"); });
+            document.addEventListener('selectstart', e => { e.preventDefault(); });
+
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) triggerCyberPenalty("BERPINDAH TAB TERDETEKSI");
+            });
+            window.addEventListener('blur', function () {
+                triggerCyberPenalty("MEMBUKA APLIKASI LAIN TERDETEKSI");
+            }); 
+        
     </script>
 
 </body>
