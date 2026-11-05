@@ -107,12 +107,13 @@
             border: 1px solid #ccc;
             padding: 8px 12px;
             text-align: left;
+            word-break: break-word;
+            /* Mencegah kolom meluber */
         }
 
         th {
             background-color: #005544;
             color: #fff;
-            white-space: nowrap;
         }
 
         tr:nth-child(even) {
@@ -138,16 +139,27 @@
             margin-right: 15px;
         }
 
-        /* Tampilan khusus untuk PDF export (menghilangkan background hitam) */
-        .pdf-mode {
-            background: #fff !important;
-            color: #000 !important;
+        /* CSS KHUSUS UNTUK CETAK PDF AGAR TIDAK TERPOTONG */
+        @media print {
+            .table-wrapper {
+                padding: 0;
+                overflow: visible !important;
+            }
+
+            table {
+                width: 100% !important;
+                table-layout: auto !important;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                /* Mencegah baris terpotong antar halaman */
+            }
         }
     </style>
 </head>
 
 <body>
-
     <div class="header">
         <h1>> DATABASE_MONITORING_SYSTEM</h1>
         <p style="color: #aaa; margin-top: 5px;">Secure Instructor Dashboard - Cyber Security Lab</p>
@@ -157,26 +169,35 @@
         <div>
             <a href="index.html" class="btn back-btn">
                 < BACK</a>
-                <select id="dbSelector">
-                    <option value="">-- PILIH DATABASE UNTUK DITAMPILKAN --</option>
-                    <optgroup label="LKPD KELAS 10">
-                        <option value="1L_oLjNJqgZEwF66y1UsftKuW-fNjRBTvji_VLxBUnJo">LKPD Dasar Jaringan Kelas 10</option>
-                    </optgroup>
-                    <optgroup label="LKPD FISIK (REAL DEVICE)">
-                        <option value="1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY">LKPD Sesi 1 - Firewall Fisik</option>
-                        <option value="1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE">LKPD Sesi 2 - Web Proxy Fisik</option>
-                        <option value="1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs">LKPD Sesi 3 - Hotspot Fisik</option>
-                    </optgroup>
-                    <optgroup label="LKPD VIRTUAL (VIRTUALBOX)">
-                        <option value="106cwQg2pVz34mdDz1TgE-Vu8UzLu-9SwdgLzA2HDVRs">LKPD Sesi 1 - Firewall Virtual</option>
-                        <option value="13chVCJmz_XnP4Yla32nVq84-iFCIecZu7sisceFvrB0">LKPD Sesi 2 - Web Proxy Virtual</option>
-                        <option value="1ZDVQNco7djwwzoa8fu3rpQtQQbwVFO3S6p0vHTxTt0s">LKPD Sesi 3 - Hotspot Virtual</option>
-                    </optgroup>
-                    <optgroup label="UJIAN CBT">
-                        <option value="1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY">Nilai Ujian CBT Sesi 1-3</option>
-                        <option value="1syVG1KUWONMeQ33xWWGIZomTS-aZw-tE3eCh4Scs00w">Ujian Essai CBT - Cyber Security</option>
-                    </optgroup>
-                </select>
+                    <select id="dbSelector">
+                        <option value="">-- PILIH DATABASE UNTUK DITAMPILKAN --</option>
+                        <optgroup label="LKPD KELAS 10">
+                            <option value="1L_oLjNJqgZEwF66y1UsftKuW-fNjRBTvji_VLxBUnJo">LKPD Dasar Jaringan Kelas 10
+                            </option>
+                        </optgroup>
+                        <optgroup label="LKPD FISIK (REAL DEVICE)">
+                            <option value="1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY">LKPD Sesi 1 - Firewall Fisik
+                            </option>
+                            <option value="1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE">LKPD Sesi 2 - Web Proxy Fisik
+                            </option>
+                            <option value="1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs">LKPD Sesi 3 - Hotspot Fisik
+                            </option>
+                        </optgroup>
+                        <optgroup label="LKPD VIRTUAL (VIRTUALBOX)">
+                            <option value="106cwQg2pVz34mdDz1TgE-Vu8UzLu-9SwdgLzA2HDVRs">LKPD Sesi 1 - Firewall Virtual
+                            </option>
+                            <option value="13chVCJmz_XnP4Yla32nVq84-iFCIecZu7sisceFvrB0">LKPD Sesi 2 - Web Proxy Virtual
+                            </option>
+                            <option value="1ZDVQNco7djwwzoa8fu3rpQtQQbwVFO3S6p0vHTxTt0s">LKPD Sesi 3 - Hotspot Virtual
+                            </option>
+                        </optgroup>
+                        <optgroup label="UJIAN CBT">
+                            <option value="1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY">Nilai Ujian CBT Sesi 1-3
+                            </option>
+                            <option value="1syVG1KUWONMeQ33xWWGIZomTS-aZw-tE3eCh4Scs00w">Ujian Essai CBT - Cyber
+                                Security</option>
+                        </optgroup>
+                    </select>
         </div>
         <button class="btn btn-export" id="exportBtn" disabled>> EXPORT TO PDF</button>
     </div>
@@ -185,8 +206,8 @@
 
     <div class="table-wrapper" id="printArea">
         <div id="reportTitle"
-            style="display:none; text-align:center; margin-bottom:15px; font-weight:bold; font-family:sans-serif; color:#005544; font-size:1.2em;">
-            LAPORAN DATABASE LKPD</div>
+            style="display:none; text-align:center; margin-bottom: 15px; font-weight:bold; font-family:sans-serif; color:#005544; font-size: 1.2em;">
+            LAPORAN DATABASE</div>
         <table id="dataTable">
             <thead id="tableHead"></thead>
             <tbody id="tableBody"></tbody>
@@ -238,7 +259,6 @@
         });
 
         function renderTable(data) {
-            // Render Header
             const headers = data[0];
             let theadHtml = '<tr>';
             headers.forEach(header => {
@@ -247,18 +267,15 @@
             theadHtml += '</tr>';
             tableHead.innerHTML = theadHtml;
 
-            // Render Body
             let tbodyHtml = '';
             for (let i = 1; i < data.length; i++) {
                 const row = data[i];
-                // Skip baris kosong
                 if (row.length === 1 && !row[0]) continue;
 
                 tbodyHtml += '<tr>';
                 row.forEach(cell => {
-                    // Buat link bisa diklik jika teksnya URL
                     if (cell && cell.toString().startsWith('http')) {
-                        tbodyHtml += `<td><a href="${cell}" target="_blank" style="color:#0056b3;">Buka Tautan</a></td>`;
+                        tbodyHtml += `<td><a href="${cell}" target="_blank" style="color:#0056b3;">[Link]</a></td>`;
                     } else {
                         tbodyHtml += `<td>${cell || ''}</td>`;
                     }
@@ -268,26 +285,25 @@
             tableBody.innerHTML = tbodyHtml;
         }
 
-        // Fungsi Export PDF
+        // Fungsi Export PDF yang Diperbarui
         exportBtn.addEventListener('click', function () {
             const element = document.getElementById('printArea');
-            reportTitle.style.display = 'block'; // Tampilkan judul saat di-PDF
+            reportTitle.style.display = 'block';
 
             const opt = {
-                margin: 0.2,
+                margin: [0.3, 0.3, 0.3, 0.3], // Margin atas, kanan, bawah, kiri
                 filename: reportTitle.innerText + '.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'legal', orientation: 'landscape' }
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 2, useCORS: true, windowWidth: element.scrollWidth }, // Menyesuaikan lebar asli
+                jsPDF: { unit: 'in', format: 'legal', orientation: 'landscape' }, // Kertas Legal Landscape cocok untuk tabel panjang
+                pagebreak: { mode: 'avoid-all' } // Menghindari potongan di tengah baris
             };
 
-            // Export tabel ke PDF
             html2pdf().set(opt).from(element).save().then(() => {
-                reportTitle.style.display = 'none'; // Sembunyikan kembali judul
+                reportTitle.style.display = 'none';
             });
         });
     </script>
-
 </body>
 
 </html>
