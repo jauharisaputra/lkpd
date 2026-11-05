@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UJIAN ESSAI CBT | CYBER SECURITY LAB</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #030a10;
+            color: #00aaff;
+            padding: 20px;
+            line-height: 1.6;
+            margin: 0;
+            background-image: linear-gradient(rgba(0, 170, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 170, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            background: rgba(3, 10, 16, 0.95);
+            padding: 30px;
+            border-radius: 8px;
+            margin: auto;
+            border: 1px solid #00aaff;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.2);
+            position: relative;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #00aaff;
+            text-transform: uppercase;
+            margin-top: 0;
+        }
+
+        h1 {
+            text-align: center;
+            text-shadow: 0 0 10px #00aaff;
+            border-bottom: 2px dashed #00aaff;
+            padding-bottom: 15px;
+        }
+
+        .timer-box {
+            position: sticky;
+            top: 10px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #00aaff;
+            color: #00aaff;
+            padding: 10px 20px;
+            font-size: 1.5em;
+            text-align: center;
+            border-radius: 5px;
+            z-index: 100;
+            font-weight: bold;
+        }
+
+        .timer-box.warning {
+            color: #ff3333;
+            border-color: #ff3333;
+            animation: blink 1s infinite;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            color: #fff;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            background-color: #010408;
+            color: #00aaff;
+            border: 1px solid #005580;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 16px;
+        }
+
+        input:focus,
+        textarea:focus {
+            border: 1px solid #00aaff;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+        }
+
+        input[type="file"] {
+            color: #ccc;
+            margin-top: 8px;
+            margin-bottom: 5px;
+        }
+
+        input[type="file"]::file-selector-button {
+            background: #00aaff;
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .question-box {
+            background: rgba(0, 170, 255, 0.03);
+            border-left: 4px solid #00aaff;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        button.submit-btn {
+            background-color: transparent;
+            color: #00aaff;
+            padding: 15px 20px;
+            border: 2px solid #00aaff;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-size: 20px;
+            width: 100%;
+            font-weight: bold;
+            font-family: inherit;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        button.submit-btn:hover {
+            background-color: #00aaff;
+            color: #000;
+            box-shadow: 0 0 15px #00aaff;
+        }
+
+        #resultScreen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #loadingMsg {
+            display: none;
+            text-align: center;
+            color: #00aaff;
+            margin-top: 20px;
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>EVALUASI ESSAI CBT TERPADU</h1>
+        <p style="text-align:center; color:#aaa; margin-top:-10px;">Analisis Keamanan Jaringan & Konfigurasi MikroTik
+        </p>
+
+        <div class="timer-box" id="timerDisplay">WAKTU TERSISA: 90:00</div>
+
+        <div id="examScreen">
+            <form id="essaiForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+                    <div><label>Nama Lengkap:</label><input type="text" name="Nama" required></div>
+                    <div><label>Kelas:</label><input type="text" name="Kelas" required></div>
+                    <input type="hidden" name="Sesi" value="Ujian Essai CBT - MikroTik">
+                </div>
+
+                <div id="questionsContainer"></div>
+
+                <button type="submit" class="submit-btn" id="btnSubmit">> TRANSMIT JAWABAN ESSAI_</button>
+                <div id="loadingMsg">> ENCRYPTING & UPLOADING DATA... PLEASE WAIT_</div>
+            </form>
+        </div>
+
+        <div id="resultScreen">
+            <h2 style="font-size: 2em; text-shadow: 0 0 20px #00aaff;">> TRANSMISSION COMPLETE_</h2>
+            <p style="color: #ddd; font-size: 1.2em;">Jawaban essai dan lampiran gambar Anda telah sukses direkam ke
+                dalam database instruktur untuk proses penilaian (grading).</p>
+            <a href="index.html"
+                style="display: inline-block; margin-top:30px; color:#00aaff; text-decoration:none; border:1px solid #00aaff; padding:10px 20px; border-radius:4px;">>
+                KEMBALI KE MENU_</a>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdbF_cElEfcvmJu7UxZkAwkmd0psEpeewk9IPlsw703jSRrHr9bMws9Cr9BXKMJspQ/exec';
+        // =========================================================
+
+        const DURASI_MENIT = 90;
+
+        // BANK SOAL ESSAI
+        // type: "text" hanya butuh textarea. type: "image-text" butuh file upload & textarea
+        const bankSoal = [
+            { q: "Jelaskan secara teknis perbedaan mendasar antara rule firewall filter dengan action 'drop' dan 'reject' pada MikroTik!", type: "text", id: "Q1_Text" },
+            { q: "Gambarkan skema topologi jaringan sederhana (1 Router, 1 Switch, 2 Klien) di kertas/buku Anda. Unggah fotonya dan berikan penjelasan singkat mengenai alur distribusinya.", type: "image-text", idImg: "Q2_Image", idText: "Q2_Text" },
+            { q: "Tuliskan langkah atau rule NAT untuk membuat Transparent Web Proxy agar seluruh trafik HTTP klien dipaksa masuk ke port 8080 MikroTik.", type: "text", id: "Q3_Text" },
+            { q: "Sebutkan dan jelaskan secara rinci fungsi dari 3 jenis 'Chain' utama (Input, Forward, Output) pada fitur Firewall Filter!", type: "text", id: "Q4_Text" },
+            { q: "Jika Anda mengatur Max Limit 2M/2M di Simple Queue pada jaringan publik yang sangat sibuk tanpa membedakan Limit At, mengapa kecepatan internet klien masih bisa terasa tidak stabil?", type: "text", id: "Q5_Text" },
+            { q: "Unggah foto/screenshot rule atau menu Web Proxy Access di Winbox yang Anda gunakan untuk memblokir ekstensi file '.mp3', lalu jelaskan parameter apa saja yang diklik.", type: "image-text", idImg: "Q6_Image", idText: "Q6_Text" },
+            { q: "Jelaskan langkah-langkah kerja fungsi DHCP Server dalam mendistribusikan IP Address ke klien (Konsep DORA: Discover, Offer, Request, Acknowledge)!", type: "text", id: "Q7_Text" },
+            { q: "Mengapa urutan (Order) dari rule pada Firewall Filter MikroTik sangat berpengaruh? Berikan satu contoh kasus kesalahan urutan.", type: "text", id: "Q8_Text" },
+            { q: "Apa yang terjadi jika kabel LAN dirakit menggunakan metode Crossover, namun dihubungkan antara PC dan Router modern yang sudah mendukung fitur Auto-MDIX?", type: "text", id: "Q9_Text" },
+            { q: "Dalam fitur Hotspot MikroTik, apa fungsi spesifik dari 'Walled Garden' dan berikan satu contoh skenario penggunaannya di sekolah.", type: "text", id: "Q10_Text" },
+            { q: "Unggah foto hasil crimping konektor RJ-45 yang Anda buat (Standar T568B). Sebutkan secara berurutan warna kabel tersebut dari kiri ke kanan.", type: "image-text", idImg: "Q11_Image", idText: "Q11_Text" },
+            { q: "Tuliskan langkah-langkah atau rule keamanan dasar agar router MikroTik hanya bisa diremote menggunakan Winbox secara eksklusif dari IP Address 192.168.10.2!", type: "text", id: "Q12_Text" },
+            { q: "Jelaskan fungsi utama fitur 'Masquerade' pada Firewall NAT MikroTik dan mengapa itu dibutuhkan klien untuk internetan!", type: "text", id: "Q13_Text" },
+            { q: "Seorang klien berhasil login ke halaman Hotspot, namun mengeluh 'No Internet Access' (Tidak ada koneksi internet). Sebutkan 3 hal pertama yang akan Anda periksa dan evaluasi di dalam Winbox!", type: "text", id: "Q14_Text" },
+            { q: "Bandingkan penggunaan Web Proxy internal MikroTik dengan layanan DNS Filtering. Apa keunggulan dan kelemahan masing-masing?", type: "text", id: "Q15_Text" }
+        ];
+
+        const qContainer = document.getElementById('questionsContainer');
+        const form = document.getElementById('essaiForm');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const loadingText = document.getElementById('loadingMsg');
+        let isSubmitted = false;
+
+        // RENDER SOAL KE HTML
+        bankSoal.forEach((soal, index) => {
+            let qHTML = `<div class="question-box"><div class="question-text"><b>${index + 1}.</b> ${soal.q}</div>`;
+            if (soal.type === "image-text") {
+                qHTML += `<label style="color:#aaa; font-size:0.9em;">📸 Unggah Gambar/Foto Bukti:</label>
+                      <input type="file" accept="image/*" name="${soal.idImg}">
+                      <textarea name="${soal.idText}" rows="3" placeholder="Tulis penjelasan/jawaban di sini..."></textarea>`;
+            } else {
+                qHTML += `<textarea name="${soal.id}" rows="4" placeholder="Tulis jawaban di sini..."></textarea>`;
+            }
+            qHTML += `</div>`;
+            qContainer.innerHTML += qHTML;
+        });
+
+        // SISTEM TIMER
+        let timeLeft = DURASI_MENIT * 60;
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timer = setInterval(() => {
+            if (isSubmitted) { clearInterval(timer); return; }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60); let s = timeLeft % 60;
+            timerDisplay.innerText = `WAKTU TERSISA: ${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+            if (timeLeft <= 300) timerDisplay.classList.add('warning'); // Peringatan 5 menit terakhir
+            if (timeLeft <= 0) {
+                clearInterval(timer); timerDisplay.innerText = "WAKTU HABIS!";
+                alert("WAKTU HABIS! Mensubmit jawaban otomatis.");
+                form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+            }
+        }, 1000);
+
+        // SISTEM KOMPRESI GAMBAR OTOMATIS
+        async function processFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = event => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const c = document.createElement('canvas');
+                        const MAX_WIDTH = 1000;
+                        let scaleSize = 1;
+                        if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
+                        c.width = img.width * scaleSize;
+                        c.height = img.height * scaleSize;
+                        const ctx = c.getContext('2d');
+                        ctx.drawImage(img, 0, 0, c.width, c.height);
+                        const dataUrl = c.toDataURL('image/jpeg', 0.6);
+                        let encoded = dataUrl.replace(/^data:(.*,)?/, '');
+                        resolve({ base64: encoded, mimeType: 'image/jpeg', filename: file.name + ".jpg" });
+                    }
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // PENGIRIMAN DATA (SUBMIT)
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            if (!form.Nama.value || !form.Kelas.value) {
+                alert("Harap lengkapi Nama dan Kelas terlebih dahulu!"); return;
+            }
+
+            isSubmitted = true;
+            btnSubmit.style.display = 'none';
+            loadingText.style.display = 'block';
+
+            const formData = new FormData(form);
+            const payload = {};
+
+            try {
+                for (let [key, value] of formData.entries()) {
+                    if (value instanceof File && value.size > 0) {
+                        payload[key] = await processFile(value);
+                    } else if (!(value instanceof File)) {
+                        payload[key] = value;
+                    }
+                }
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+
+                const result = await response.json();
+                if (result.result === 'success') {
+                    document.getElementById('examScreen').style.display = 'none';
+                    document.getElementById('resultScreen').style.display = 'block';
+                    timerDisplay.style.display = 'none';
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('GAGAL MENGIRIM! Pastikan koneksi stabil. Silakan coba klik transmit lagi.');
+                btnSubmit.style.display = 'block';
+                loadingText.style.display = 'none';
+                isSubmitted = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
