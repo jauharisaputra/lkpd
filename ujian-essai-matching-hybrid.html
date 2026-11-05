@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UJIAN ESSAI CBT (20 SOAL) | CYBER SECURITY LAB</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #050b14;
+            color: #00aaff;
+            padding: 20px;
+            line-height: 1.6;
+            background-image: linear-gradient(rgba(0, 170, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 170, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            background: rgba(5, 15, 30, 0.95);
+            padding: 30px;
+            border-radius: 8px;
+            margin: auto;
+            border: 1px solid #00aaff;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.2);
+            position: relative;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #00aaff;
+            text-transform: uppercase;
+            margin-top: 0;
+        }
+
+        h1 {
+            text-align: center;
+            text-shadow: 0 0 10px #00aaff;
+            border-bottom: 2px dashed #00aaff;
+            padding-bottom: 15px;
+        }
+
+        .timer-box {
+            position: sticky;
+            top: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00aaff;
+            color: #00aaff;
+            padding: 10px 20px;
+            font-size: 1.5em;
+            text-align: center;
+            border-radius: 5px;
+            z-index: 100;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .timer-box.warning {
+            color: #ff0000;
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            animation: blink 1s infinite;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            color: #fff;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            background-color: #02060d;
+            color: #00aaff;
+            border: 1px solid #005580;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 16px;
+        }
+
+        .question-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid #00aaff;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .poin-badge {
+            display: inline-block;
+            background: rgba(0, 170, 255, 0.2);
+            color: #00aaff;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            border: 1px solid #00aaff;
+        }
+
+        button.submit-btn {
+            background-color: transparent;
+            color: #00aaff;
+            padding: 15px 20px;
+            border: 2px solid #00aaff;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-size: 20px;
+            width: 100%;
+            font-weight: bold;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        button.submit-btn:hover {
+            background-color: #00aaff;
+            color: #000;
+            box-shadow: 0 0 15px #00aaff;
+        }
+
+        #resultScreen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .score-display {
+            font-size: 5em;
+            color: #00aaff;
+            text-shadow: 0 0 20px #00aaff;
+            margin: 20px 0;
+        }
+
+        .result-details {
+            font-size: 1.1em;
+            color: #ddd;
+            margin-bottom: 30px;
+            border: 1px dashed #00aaff;
+            padding: 15px;
+            display: inline-block;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #loadingMsg {
+            display: none;
+            text-align: center;
+            color: #00aaff;
+            font-size: 1.2em;
+            margin-top: 20px;
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>EVALUASI AKHIR - ESSAI CBT (20 SOAL)</h1>
+        <p style="text-align:center; color:#aaa;">Sistem Penilaian Otomatis (Keyword Matching) & Validasi Instruktur</p>
+
+        <div class="timer-box" id="timerDisplay">WAKTU TERSISA: 90:00</div>
+
+        <div id="examScreen">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+                <div><label>Nama Lengkap:</label><input type="text" id="inputNama" placeholder="Masukkan Nama..."
+                        required></div>
+                <div><label>Kelas:</label><input type="text" id="inputKelas" placeholder="Contoh: 12 TKJ 1" required>
+                </div>
+            </div>
+
+            <div id="questionsContainer"></div>
+
+            <button class="submit-btn" id="btnSubmit" onclick="manualSubmit()">> SUBMIT JAWABAN ESSAI_</button>
+            <div id="loadingMsg">> MENGEKSPOR DATA & MENGHITUNG SKOR SEMENTARA... PLEASE WAIT_</div>
+        </div>
+
+        <div id="resultScreen">
+            <h2>> TRANSMISSION COMPLETE_</h2>
+            <p>Data Ujian Essai CBT Anda telah berhasil terekam ke dalam server pusat.</p>
+            <div class="score-display" id="finalScoreDisplay">0</div>
+            <div class="result-details">
+                <span style="color: #00ffcc;">Skor di atas adalah <b>SKOR SEMENTARA</b> dari sistem pemindai kata kunci
+                    otomatis.</span><br>
+                <span style="color: #ffaa00; font-size: 0.9em;">Instruktur akan membaca ulang analisis Anda untuk
+                    memvalidasi Skor Akhir.</span>
+            </div><br>
+            <br>
+            <a href="index.html"
+                style="color:#00aaff; text-decoration:none; border:1px solid #00aaff; padding:10px 20px; border-radius:4px; transition:0.3s;">>
+                KEMBALI KE MENU UTAMA_</a>
+        </div>
+
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxo-xXjAGcq6UMcDfTbob9dWw-0QgpstKLsVRxm4wglHtAQFm4_SdNm633FBgbkR1ae/exec'; // PASTE URL WEB APP BARU ANDA DI SINI
+        const DURASI_MENIT = 90;
+
+        // ==============================================================================
+        // BANK SOAL ESSAI - 20 SOAL (Bobot 5 Poin/Soal)
+        // ==============================================================================
+        const bankSoalEssai = [
+            {
+                q: "Jelaskan fungsi utama dari Action Masquerade pada konfigurasi NAT MikroTik!",
+                keywords: ["ip private", "ip publik", "translasi", "internet", "menyembunyikan", "sumber"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Mengapa kita menggunakan fitur Walled Garden pada layanan Hotspot? Berikan contohnya.",
+                keywords: ["tanpa login", "akses langsung", "bypass", "situs tertentu", "belum login", "pengecualian"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Jelaskan perbedaan antara action 'accept' dan 'drop' pada Firewall Filter Rules!",
+                keywords: ["menerima", "mengizinkan", "menolak", "membuang", "memblokir", "diteruskan"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Jelaskan langkah-langkah membatasi bandwidth klien menjadi maksimal 2Mbps menggunakan Simple Queue!",
+                keywords: ["target", "max limit", "upload", "download", "ip klien", "merah"],
+                poinMaks: 5, minMatch: 3
+            },
+            {
+                q: "Mengapa pemblokiran ekstensi file (seperti .exe) pada Web Proxy sering kali gagal jika situsnya menggunakan koneksi HTTPS?",
+                keywords: ["enkripsi", "terenkripsi", "ssl", "tls", "dibaca", "disembunyikan", "aman"],
+                poinMaks: 5, minMatch: 2
+            }
+        ];
+
+        // GENERATOR SOAL DUMMY (Untuk menggenapkan menjadi 20 soal)
+        for (let i = 6; i <= 20; i++) {
+            bankSoalEssai.push({
+                q: `Soal nomor ${i}: Ini adalah placeholder pertanyaan essai analisis ke-${i}. Silakan sesuaikan di kode sumber HTML Anda.`,
+                keywords: ["kunci1", "kunci2", "kunci3"],
+                poinMaks: 5, minMatch: 1
+            });
+        }
+
+        // ==============================================================================
+        // RENDER HTML SOAL
+        // ==============================================================================
+        const qContainer = document.getElementById('questionsContainer');
+        let isSubmitted = false;
+
+        bankSoalEssai.forEach((soal, index) => {
+            qContainer.innerHTML += `
+            <div class="question-box">
+                <div class="poin-badge">Bobot: ${soal.poinMaks} Poin</div>
+                <div class="question-text">${index + 1}. ${soal.q}</div>
+                <textarea id="q_text_${index}" rows="4" placeholder="Ketik jawaban analisis Anda di sini..." required></textarea>
+            </div>
+        `;
+        });
+
+        // ==============================================================================
+        // SISTEM TIMER
+        // ==============================================================================
+        let timeLeft = DURASI_MENIT * 60;
+        const timerDisplay = document.getElementById('timerDisplay');
+
+        const timer = setInterval(() => {
+            if (isSubmitted) { clearInterval(timer); return; }
+
+            timeLeft--;
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+
+            timerDisplay.innerText = `WAKTU TERSISA: ${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (timeLeft <= 300) { timerDisplay.classList.add('warning'); } // Warning 5 menit
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timerDisplay.innerText = "WAKTU HABIS!";
+                autoSubmit();
+            }
+        }, 1000);
+
+        // ==============================================================================
+        // SUBMISSION & AUTO-GRADING LOGIC
+        // ==============================================================================
+        function manualSubmit() {
+            const nama = document.getElementById('inputNama').value.trim();
+            const kelas = document.getElementById('inputKelas').value.trim();
+
+            if (!nama || !kelas) {
+                alert('Akses Ditolak: Mohon lengkapi Nama dan Kelas terlebih dahulu!');
+                return;
+            }
+
+            let formValid = true;
+            for (let i = 0; i < bankSoalEssai.length; i++) {
+                if (document.getElementById(`q_text_${i}`).value.trim() === "") formValid = false;
+            }
+
+            if (!formValid) {
+                alert('Masih ada pertanyaan yang belum dijawab. Silakan periksa kembali!');
+                return;
+            }
+
+            if (confirm("Apakah Anda yakin ingin mengirim jawaban essai sekarang?")) {
+                prosesEvaluasi(nama, kelas);
+            }
+        }
+
+        function autoSubmit() {
+            alert("WAKTU HABIS! Sistem akan mengunci dan mengirimkan jawaban Anda secara otomatis.");
+            let nama = document.getElementById('inputNama').value.trim() || "Anonim (Auto-Submit)";
+            let kelas = document.getElementById('inputKelas').value.trim() || "Tidak Diisi";
+            prosesEvaluasi(nama, kelas);
+        }
+
+        async function prosesEvaluasi(nama, kelas) {
+            isSubmitted = true;
+            document.getElementById('btnSubmit').style.display = 'none';
+            document.getElementById('loadingMsg').style.display = 'block';
+
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(i => i.disabled = true);
+
+            let totalSkorOtomatis = 0;
+            const payload = { "Nama": nama, "Kelas": kelas, "Sesi": "Ujian Essai 20 Soal" };
+
+            try {
+                for (let i = 0; i < bankSoalEssai.length; i++) {
+                    let textAnswer = document.getElementById(`q_text_${i}`).value;
+                    payload[`Jawaban_Q${i + 1}`] = textAnswer;
+
+                    // Kalkulasi Keyword
+                    let matchCount = 0;
+                    let ansLower = textAnswer.toLowerCase();
+                    bankSoalEssai[i].keywords.forEach(kw => {
+                        if (ansLower.includes(kw)) matchCount++;
+                    });
+
+                    let skorSoal = 0;
+                    if (matchCount >= bankSoalEssai[i].minMatch) {
+                        skorSoal = bankSoalEssai[i].poinMaks;
+                    } else if (matchCount > 0) {
+                        skorSoal = Math.round((matchCount / bankSoalEssai[i].minMatch) * bankSoalEssai[i].poinMaks);
+                    }
+                    totalSkorOtomatis += skorSoal;
+                }
+
+                payload["Skor_Sementara"] = totalSkorOtomatis;
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    document.getElementById('examScreen').style.display = 'none';
+                    document.getElementById('resultScreen').style.display = 'block';
+                    document.getElementById('finalScoreDisplay').innerText = totalSkorOtomatis;
+                    timerDisplay.style.display = 'none';
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                console.error(error);
+                alert("TRANSMISSION FAILED: Gagal mengirim essai ke server. Pastikan terkoneksi internet.");
+                document.getElementById('btnSubmit').style.display = 'block';
+                document.getElementById('loadingMsg').style.display = 'none';
+                inputs.forEach(i => i.disabled = false);
+                isSubmitted = false;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
