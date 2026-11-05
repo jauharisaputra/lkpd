@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ & TROUBLESHOOTING | CYBER SECURITY LAB</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #03070d;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(5, 20, 15, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #00ffaa;
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.1);
+        }
+
+        h1 {
+            color: #00ffaa;
+            text-shadow: 0 0 10px #00ffaa;
+            border-bottom: 2px dashed #00ffaa;
+            padding-bottom: 15px;
+            text-align: center;
+        }
+
+        details {
+            background: #0a110d;
+            border: 1px solid #005533;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        details:hover {
+            border-color: #00ffaa;
+        }
+
+        summary {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #00ffaa;
+            outline: none;
+        }
+
+        .answer {
+            margin-top: 15px;
+            color: #ccc;
+            line-height: 1.5;
+            padding-left: 15px;
+            border-left: 2px solid #005533;
+        }
+
+        a.btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #00ffaa;
+            text-decoration: none;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            transition: 0.3s;
+        }
+
+        a.btn-back:hover {
+            background: #00ffaa;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>> HELP_DESK / TROUBLESHOOTING_</h1>
+        <p style="text-align: center; margin-bottom: 30px;">Sistem mencatat error yang sering terjadi. Silakan cari
+            solusi masalah Anda di bawah ini sebelum memanggil Instruktur.</p>
+
+        <details>
+            <summary>[ERR_01] MAC Address MikroTik tidak muncul di tab Neighbors Winbox.</summary>
+            <div class="answer">
+                <strong>Solusi:</strong><br>
+                1. Pastikan kabel LAN dari PC/Laptop tercolok ke port <b>Ether2</b> (bukan port Internet/Ether1) pada
+                MikroTik.<br>
+                2. Pastikan lampu indikator port di MikroTik dan LAN PC menyala berkedip.<br>
+                3. Matikan sementara Windows Firewall atau Antivirus di laptop Anda.<br>
+                4. Cabut pasang kabel, klik tombol <b>Refresh</b> pada Winbox.
+            </div>
+        </details>
+
+        <details>
+            <summary>[ERR_02] Gagal login Winbox (Wrong Username or Password).</summary>
+            <div class="answer">
+                <strong>Solusi:</strong><br>
+                Login default MikroTik adalah Username: <b>admin</b> dan Password: <b>(kosongkan)</b>. Jika masih gagal,
+                artinya router sudah pernah diubah passwordnya oleh kelompok sebelumnya. Silakan lakukan <b>Hard
+                    Reset</b> menggunakan tombol fisik di router (tahan tombol reset sambil mencolokkan kabel power
+                hingga lampu ACT berkedip).
+            </div>
+        </details>
+
+        <details>
+            <summary>[ERR_03] Status DHCP Client selalu "Searching..."</summary>
+            <div class="answer">
+                <strong>Solusi:</strong><br>
+                1. MikroTik Anda tidak menerima koneksi internet. Pastikan kabel internet utama sekolah/lab tercolok ke
+                <b>Ether1</b> MikroTik.<br>
+                2. Periksa apakah kabel internet tersebut aktif (bisa diuji dengan mencolokkannya langsung ke laptop).
+            </div>
+        </details>
+
+        <details>
+            <summary>[ERR_04] Lampu pada LAN Tester mati di nomor tertentu (misal nomor 3 dan 6).</summary>
+            <div class="answer">
+                <strong>Solusi:</strong><br>
+                Proses penjepitan (crimping) Anda gagal. Kabel warna Putih-Hijau (3) dan Hijau (6) kemungkinan tidak
+                mentok menyentuh ujung pin kuningan, atau kulit kabelnya rusak. Anda harus memotong ujung kabel
+                tersebut, meratakan ulang, dan memasang konektor RJ-45 yang baru.
+            </div>
+        </details>
+
+        <details>
+            <summary>[ERR_05] Komputer klien tidak mendapat akses Internet setelah setting Firewall/NAT.</summary>
+            <div class="answer">
+                <strong>Solusi:</strong><br>
+                1. Buka Winbox, periksa menu <b>IP > Firewall > NAT</b>.<br>
+                2. Pastikan Anda telah membuat rule: Chain=srcnat, Out-Interface=ether1 (atau sumber internet), dan
+                Action=masquerade.<br>
+                3. Periksa menu <b>IP > DNS</b>, pastikan "Allow Remote Requests" sudah dicentang.
+            </div>
+        </details>
+
+        <a href="index.html" class="btn-back">
+            < BACK TO MAIN SYSTEM</a>
+    </div>
+</body>
+
+</html>
