@@ -336,20 +336,30 @@
                 Papa.parse(csvText, {
                     header: true,
                     complete: function (results) {
-                        let dataMap = new Map();
+                      let dataMap = new Map();
 
                         for (let row of results.data) {
                             if (row.Nama) {
                                 let nama = row.Nama.trim();
                                 let skor = parseInt(row.Skor_Akhir) || parseInt(row.Skor) || 0;
 
-                                if (!dataMap.has(nama) || dataMap.get(nama) < skor) {
-                                    dataMap.set(nama, skor);
+                                // Jika nama belum ada, siapkan penampung untuk total skor dan jumlah ujian
+                                if (!dataMap.has(nama)) {
+                                    dataMap.set(nama, { totalSkor: 0, jumlahUjian: 0 });
                                 }
+
+                                // Tambahkan skor saat ini ke total skor, dan tambah hitungan jumlah ujian
+                                let rekapSiswa = dataMap.get(nama);
+                                rekapSiswa.totalSkor += skor;
+                                rekapSiswa.jumlahUjian += 1;
                             }
                         }
 
-                        studentData = Array.from(dataMap, ([nama, skor]) => ({ nama, skor }));
+                        // Konversi dataMap ke array studentData sambil menghitung rata-ratanya
+                        studentData = Array.from(dataMap, ([nama, rekap]) => {
+                            let skorRataRata = Math.round(rekap.totalSkor / rekap.jumlahUjian);
+                            return { nama: nama, skor: skorRataRata };
+                        });
                         studentData.sort((a, b) => a.nama.localeCompare(b.nama));
 
                         selectElement.innerHTML = '<option value="">-- PILIH NAMA ANDA --</option>';
