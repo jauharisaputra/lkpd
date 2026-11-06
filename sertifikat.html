@@ -5,22 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLAIM SERTIFIKAT | CYBER SECURITY LAB</title>
+    <!-- Library untuk Parsing CSV & Export PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        /* Font khusus tanda tangan: menggunakan font latin/tulisan tangan dari Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
         body {
             font-family: 'Share Tech Mono', monospace;
             background-color: #03070d;
             color: #fff;
             padding: 20px;
-            margin: 0;
         }
 
         .container {
             max-width: 800px;
-            margin: 20px auto;
+            margin: auto;
             background: rgba(20, 18, 5, 0.9);
             padding: 30px;
             border-radius: 8px;
@@ -43,7 +46,8 @@
             color: #ccc;
         }
 
-        input {
+        /* Ubah input teks menjadi dropdown select */
+        select {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -56,9 +60,10 @@
             text-align: center;
             font-size: 1.2em;
             letter-spacing: 2px;
+            cursor: pointer;
         }
 
-        input:focus {
+        select:focus {
             outline: none;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
@@ -119,8 +124,10 @@
             font-size: 0.9em;
         }
 
-        /* PERBAIKAN DESAIN TEMPLATE SERTIFIKAT */
+        /* PERBAIKAN DESAIN TEMPLATE SERTIFIKAT - KANVAS LEBIH LEBAR DAN LEBIH KECIL PADDINGNYA */
+        /* Menggunakan Hidden Wrapper agar tidak terpotong (posisi 0,0, bukan -9999) */
         #certTemplate {
+            /* Dimensi kaku, menyesuaikan dengan rasio yang lebih aman saat ditarik html2pdf */
             width: 1100px;
             height: 750px;
             background: #050b14;
@@ -138,6 +145,7 @@
             width: 100%;
             height: 100%;
             padding: 40px 60px;
+            /* Lebarkan spasi kanan kiri dalam kotak border */
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -178,6 +186,8 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            text-transform: uppercase;
+            /* Memaksa kapital via CSS sebagai cadangan */
         }
 
         .cert-desc {
@@ -205,12 +215,29 @@
             margin-top: auto;
             padding: 10px 20px 0;
             box-sizing: border-box;
+            align-items: flex-end;
         }
 
         .cert-sign {
             text-align: center;
             font-size: 16px;
             color: #fff;
+            position: relative;
+        }
+
+        /* Pengaturan Tanda Tangan Menggunakan Font (Bukan Gambar) */
+        .ttd-font {
+            font-family: 'Dancing Script', cursive;
+            font-size: 40px;
+            color: #fff;
+            position: absolute;
+            bottom: 30px;
+            /* Jarak dari garis bawah */
+            left: 50%;
+            transform: translateX(-50%) rotate(-5deg);
+            /* Sedikit dimiringkan agar natural */
+            white-space: nowrap;
+            z-index: 1;
         }
 
         .cert-sign-line {
@@ -218,6 +245,8 @@
             border-bottom: 1px solid #00ffcc;
             margin-bottom: 10px;
             height: 50px;
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
@@ -231,8 +260,10 @@
         </div>
 
         <form id="certForm">
-            <label style="text-align:center;">NAMA LENGKAP ATAU NIS:</label>
-            <input type="text" id="inputNama" required placeholder="NAMA / NIS...">
+            <label style="text-align:center;">PILIH NAMA ANDA:</label>
+            <select id="inputNama" required>
+                <option value="">-- MEMUAT DATA SISWA... --</option>
+            </select>
 
             <button type="submit" id="btnCetak">> GENERATE CERTIFICATE_</button>
         </form>
@@ -241,8 +272,8 @@
             < BACK TO MAIN SYSTEM</a>
     </div>
 
-    <!-- WRAPPER TERSEMBUNYI KORDINAT NORMAL -->
-    <!-- Posisi di 0,0 menjamin html2canvas tidak memotong sisi kiri, tapi overflow:hidden menyembunyikannya dari web -->
+    <!-- WRAPPER TERSEMBUNYI KORDINAT NORMAL (0,0) -->
+    <!-- Posisi 0,0 menjamin html2canvas tidak memotong sisi kiri, tapi width 0 & overflow hidden menyembunyikannya dari UI web -->
     <div style="position: absolute; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -1;">
         <div id="certTemplate">
             <div class="cert-inner">
@@ -264,6 +295,9 @@
 
                 <div class="cert-footer">
                     <div class="cert-sign">
+                        <!-- Tanda Tangan Menggunakan Font Goresan Pena -->
+                        <div class="ttd-font">Jauhari Saputra</div>
+
                         <div class="cert-sign-line"></div>
                         <strong>JAUHARI SAPUTRA</strong>
                     </div>
@@ -280,17 +314,12 @@
     <script>
         const cbtDatabaseId = "1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY";
         const kkmSkor = 75;
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${cbtDatabaseId}/export?format=csv`;
+        let studentData = []; // Menyimpan data siswa global untuk form submit
 
-        document.getElementById('certForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const inputNama = document.getElementById('inputNama').value.trim().toLowerCase();
-            const btnCetak = document.getElementById('btnCetak');
-
-            btnCetak.innerText = 'VERIFYING DATA...';
-            btnCetak.disabled = true;
-
-            const csvUrl = `https://docs.google.com/spreadsheets/d/${cbtDatabaseId}/export?format=csv`;
-
+        // Fungsi memuat nama ke dalam dropdown saat halaman diakses
+        window.addEventListener('DOMContentLoaded', async () => {
+            const selectElement = document.getElementById('inputNama');
             try {
                 const response = await fetch(csvUrl);
                 const csvText = await response.text();
@@ -298,63 +327,97 @@
                 Papa.parse(csvText, {
                     header: true,
                     complete: function (results) {
-                        let dataDitemukan = false;
-                        let skorTertinggi = 0;
-                        let namaAsli = "";
+                        // Kumpulkan nama unik dan nilai tertingginya
+                        let dataMap = new Map();
 
                         for (let row of results.data) {
-                            if (row.Nama && row.Nama.toLowerCase() === inputNama) {
-                                dataDitemukan = true;
-                                namaAsli = row.Nama;
+                            if (row.Nama) {
+                                let nama = row.Nama.trim();
                                 let skor = parseInt(row.Skor_Akhir) || parseInt(row.Skor) || 0;
-                                if (skor > skorTertinggi) skorTertinggi = skor;
+
+                                if (!dataMap.has(nama) || dataMap.get(nama) < skor) {
+                                    dataMap.set(nama, skor);
+                                }
                             }
                         }
 
-                        if (!dataDitemukan) {
-                            alert("Sistem tidak menemukan nama Anda di database kelulusan. Pastikan pengetikan nama sudah benar.");
-                            resetButton();
-                        } else if (skorTertinggi >= kkmSkor) {
-                            // Suntik data ke template
-                            document.getElementById('displayNama').innerText = namaAsli.toUpperCase();
-                            document.getElementById('displaySkor').innerText = skorTertinggi;
+                        studentData = Array.from(dataMap, ([nama, skor]) => ({ nama, skor }));
 
-                            const date = new Date();
-                            document.getElementById('displayDate').innerText = `CYBER-${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}-${Math.floor(Math.random() * 1000)}`;
+                        // Urutkan nama secara alfabetis
+                        studentData.sort((a, b) => a.nama.localeCompare(b.nama));
 
-                            const element = document.getElementById('certTemplate');
-
-                            // Eksekusi Pembuatan PDF 
-                            const opt = {
-                                margin: 0,
-                                filename: `Sertifikat_CyberLab_${namaAsli.toUpperCase()}.pdf`,
-                                image: { type: 'jpeg', quality: 1 },
-                                html2canvas: {
-                                    scale: 2,
-                                    useCORS: true,
-                                    windowWidth: 1100,
-                                    windowHeight: 750,
-                                    x: 0, // Mengunci render dari kordinat X 0
-                                    y: 0, // Mengunci render dari kordinat Y 0
-                                    scrollX: 0,
-                                    scrollY: 0
-                                },
-                                jsPDF: { unit: 'px', format: [1100, 750], orientation: 'landscape' }
-                            };
-
-                            html2pdf().set(opt).from(element).save().then(() => {
-                                alert(`Verifikasi Berhasil!\nNama: ${namaAsli}\nSkor: ${skorTertinggi}\n\nSertifikat Anda telah berhasil diunduh.`);
-                                resetButton();
-                            });
-
-                        } else {
-                            alert(`Verifikasi Gagal.\nSkor akhir Anda (${skorTertinggi}) masih berada di bawah standar minimum (${kkmSkor}). Silakan ajukan Ujian Remedial.`);
-                            resetButton();
-                        }
+                        // Buat daftar opsi
+                        selectElement.innerHTML = '<option value="">-- PILIH NAMA ANDA --</option>';
+                        studentData.forEach(siswa => {
+                            let option = document.createElement('option');
+                            // Value disimpan huruf kecil untuk pencocokan nanti, text ditampilkan KAPITAL
+                            option.value = siswa.nama.toLowerCase();
+                            option.textContent = siswa.nama.toUpperCase();
+                            selectElement.appendChild(option);
+                        });
                     }
                 });
             } catch (error) {
-                alert("Gagal terhubung ke server database. Periksa koneksi internet Anda.");
+                selectElement.innerHTML = '<option value="">GAGAL MEMUAT DATABASE</option>';
+            }
+        });
+
+        // Logika verifikasi dan ekspor PDF
+        document.getElementById('certForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const inputNamaValue = document.getElementById('inputNama').value;
+            const btnCetak = document.getElementById('btnCetak');
+
+            if (!inputNamaValue) {
+                alert("Silakan pilih nama Anda dari daftar terlebih dahulu.");
+                return;
+            }
+
+            btnCetak.innerText = 'VERIFYING DATA...';
+            btnCetak.disabled = true;
+
+            // Cari data siswa di array global yang sudah di-*fetch* di awal
+            const siswaTerpilih = studentData.find(s => s.nama.toLowerCase() === inputNamaValue);
+
+            if (!siswaTerpilih) {
+                alert("Kesalahan sistem: Data siswa tidak ditemukan.");
+                resetButton();
+            } else if (siswaTerpilih.skor >= kkmSkor) {
+                // Suntik data ke template dan paksa huruf KAPITAL
+                document.getElementById('displayNama').innerText = siswaTerpilih.nama.toUpperCase();
+                document.getElementById('displaySkor').innerText = siswaTerpilih.skor;
+
+                const date = new Date();
+                document.getElementById('displayDate').innerText = `CYBER-${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}-${Math.floor(Math.random() * 1000)}`;
+
+                const element = document.getElementById('certTemplate');
+
+                // Eksekusi Pembuatan PDF 
+                // KUNCI: Margin dihilangkan (0), ukuran kanvas disinkronkan tepat 1100x750. 
+                const opt = {
+                    margin: 0,
+                    filename: `Sertifikat_CyberLab_${siswaTerpilih.nama.toUpperCase()}.pdf`,
+                    image: { type: 'jpeg', quality: 1 },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        windowWidth: 1100,
+                        windowHeight: 750,
+                        x: 0, // Mengunci render dari kordinat X 0 agar tidak terpotong
+                        y: 0, // Mengunci render dari kordinat Y 0
+                        scrollX: 0,
+                        scrollY: 0
+                    },
+                    jsPDF: { unit: 'px', format: [1100, 750], orientation: 'landscape' }
+                };
+
+                html2pdf().set(opt).from(element).save().then(() => {
+                    alert(`Verifikasi Berhasil!\nNama: ${siswaTerpilih.nama.toUpperCase()}\nSkor: ${siswaTerpilih.skor}\n\nSertifikat Anda telah berhasil diunduh.`);
+                    resetButton();
+                });
+
+            } else {
+                alert(`Verifikasi Gagal.\nSkor akhir Anda (${siswaTerpilih.skor}) masih berada di bawah standar minimum (${kkmSkor}). Silakan ajukan Ujian Remedial.`);
                 resetButton();
             }
 
