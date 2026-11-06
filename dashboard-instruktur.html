@@ -100,15 +100,15 @@
             border-collapse: collapse;
             font-family: sans-serif;
             font-size: 0.85em;
+            white-space: nowrap;
+            /* Mencegah teks turun/vertikal */
         }
 
         th,
         td {
             border: 1px solid #ccc;
-            padding: 8px 12px;
+            padding: 10px 15px;
             text-align: left;
-            word-break: break-word;
-            /* Mencegah kolom meluber */
         }
 
         th {
@@ -139,7 +139,6 @@
             margin-right: 15px;
         }
 
-        /* CSS KHUSUS UNTUK CETAK PDF AGAR TIDAK TERPOTONG */
         @media print {
             .table-wrapper {
                 padding: 0;
@@ -147,13 +146,11 @@
             }
 
             table {
-                width: 100% !important;
-                table-layout: auto !important;
+                width: auto !important;
             }
 
             tr {
                 page-break-inside: avoid;
-                /* Mencegah baris terpotong antar halaman */
             }
         }
     </style>
@@ -164,7 +161,6 @@
         <h1>> DATABASE_MONITORING_SYSTEM</h1>
         <p style="color: #aaa; margin-top: 5px;">Secure Instructor Dashboard - Cyber Security Lab</p>
     </div>
-
     <div class="controls">
         <div>
             <a href="index.html" class="btn back-btn">
@@ -176,36 +172,23 @@
                             </option>
                         </optgroup>
                         <optgroup label="LKPD FISIK (REAL DEVICE)">
-                            <option value="1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY">LKPD Sesi 1 - Firewall Fisik
+                            <option value="1nDsWB40j9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY">LKPD Sesi 1 - Firewall Fisik
                             </option>
-                            <option value="1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE">LKPD Sesi 2 - Web Proxy Fisik
+                            <option value="1DU_VLDSTESGEUoscniklwu_saDYgRA99r_8UhzzfnTE">LKPD Sesi 2 - Web Proxy Fisik
                             </option>
                             <option value="1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs">LKPD Sesi 3 - Hotspot Fisik
-                            </option>
-                        </optgroup>
-                        <optgroup label="LKPD VIRTUAL (VIRTUALBOX)">
-                            <option value="106cwQg2pVz34mdDz1TgE-Vu8UzLu-9SwdgLzA2HDVRs">LKPD Sesi 1 - Firewall Virtual
-                            </option>
-                            <option value="13chVCJmz_XnP4Yla32nVq84-iFCIecZu7sisceFvrB0">LKPD Sesi 2 - Web Proxy Virtual
-                            </option>
-                            <option value="1ZDVQNco7djwwzoa8fu3rpQtQQbwVFO3S6p0vHTxTt0s">LKPD Sesi 3 - Hotspot Virtual
                             </option>
                         </optgroup>
                         <optgroup label="UJIAN CBT">
                             <option value="1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY">Nilai Ujian CBT Sesi 1-3
                             </option>
-                            <option value="1syVG1KUWONMeQ33xWWGIZomTS-aZw-tE3eCh4Scs00w">Ujian Essai CBT - Cyber
-                                Security</option>
-                                <!-- KARTU UJIAN ESSAI MATCHING HYBRID -->
-                            <option value="1DCGmZG7eHfTWK5ta9Aup8P63l9Pn98ko1oaIqtI1D9k">Ujian Essai Matching Hybrid - Cyber Security</option>
+                         
                         </optgroup>
                     </select>
         </div>
         <button class="btn btn-export" id="exportBtn" disabled>> EXPORT TO PDF</button>
     </div>
-
     <div id="loading">> MENGAKSES DATABASE GOOGLE SHEET... HARAP TUNGGU_</div>
-
     <div class="table-wrapper" id="printArea">
         <div id="reportTitle"
             style="display:none; text-align:center; margin-bottom: 15px; font-weight:bold; font-family:sans-serif; color:#005544; font-size: 1.2em;">
@@ -227,19 +210,15 @@
         dbSelector.addEventListener('change', function () {
             const sheetId = this.value;
             const sheetNameText = this.options[this.selectedIndex].text;
-
             tableHead.innerHTML = '';
             tableBody.innerHTML = '';
             exportBtn.disabled = true;
             reportTitle.style.display = 'none';
-
             if (!sheetId) return;
 
             loading.style.display = 'block';
 
-            // Membaca Sheet sebagai CSV
             const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
-
             Papa.parse(csvUrl, {
                 download: true,
                 header: false,
@@ -273,7 +252,6 @@
             for (let i = 1; i < data.length; i++) {
                 const row = data[i];
                 if (row.length === 1 && !row[0]) continue;
-
                 tbodyHtml += '<tr>';
                 row.forEach(cell => {
                     if (cell && cell.toString().startsWith('http')) {
@@ -287,18 +265,21 @@
             tableBody.innerHTML = tbodyHtml;
         }
 
-        // Fungsi Export PDF yang Diperbarui
         exportBtn.addEventListener('click', function () {
             const element = document.getElementById('printArea');
             reportTitle.style.display = 'block';
 
+            // Dimensi tabel asli ditarik untuk mendefinisikan kanvas PDF
+            const elementWidth = element.scrollWidth;
+            const elementHeight = element.scrollHeight;
+
             const opt = {
-                margin: [0.3, 0.3, 0.3, 0.3], // Margin atas, kanan, bawah, kiri
+                margin: [20, 20, 20, 20],
                 filename: reportTitle.innerText + '.pdf',
                 image: { type: 'jpeg', quality: 1 },
-                html2canvas: { scale: 2, useCORS: true, windowWidth: element.scrollWidth }, // Menyesuaikan lebar asli
-                jsPDF: { unit: 'in', format: 'legal', orientation: 'landscape' }, // Kertas Legal Landscape cocok untuk tabel panjang
-                pagebreak: { mode: 'avoid-all' } // Menghindari potongan di tengah baris
+                html2canvas: { scale: 2, useCORS: true, windowWidth: elementWidth },
+                jsPDF: { unit: 'px', format: [elementWidth + 40, Math.max(elementHeight + 40, 800)], orientation: 'landscape' },
+                pagebreak: { mode: 'avoid-all' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
