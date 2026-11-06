@@ -182,7 +182,7 @@
         <h1>EVALUASI AKHIR - ESSAI CBT (20 SOAL)</h1>
         <p style="text-align:center; color:#aaa;">Sistem Penilaian Otomatis (Keyword Matching) & Validasi Instruktur</p>
 
-        <div class="timer-box" id="timerDisplay">WAKTU TERSISA: 90:00</div>
+        <div class="timer-box" id="timerDisplay">WAKTU TERSISA: 60:00</div>
 
         <div id="examScreen">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
@@ -218,11 +218,9 @@
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxo-xXjAGcq6UMcDfTbob9dWw-0QgpstKLsVRxm4wglHtAQFm4_SdNm633FBgbkR1ae/exec'; // PASTE URL WEB APP BARU ANDA DI SINI
-        const DURASI_MENIT = 90;
+        const DURASI_MENIT = 60;
 
-        // ==============================================================================
-        // BANK SOAL ESSAI - 20 SOAL (Bobot 5 Poin/Soal)
-        // ==============================================================================
+       // Konfigurasi utuh 20 soal essai nyata untuk menggantikan script generator dummy yang ada pada file BANK SOAL ESSAI.pdf[cite: 1].
         const bankSoalEssai = [
             {
                 q: "Jelaskan fungsi utama dari Action Masquerade pada konfigurasi NAT MikroTik!",
@@ -248,18 +246,83 @@
                 q: "Mengapa pemblokiran ekstensi file (seperti .exe) pada Web Proxy sering kali gagal jika situsnya menggunakan koneksi HTTPS?",
                 keywords: ["enkripsi", "terenkripsi", "ssl", "tls", "dibaca", "disembunyikan", "aman"],
                 poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Jelaskan perbedaan utama antara IP Address statis dan IP Address dinamis (DHCP) pada jaringan komputer!",
+                keywords: ["manual", "tetap", "otomatis", "berubah", "server", "klien"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Apa fungsi dari DNS (Domain Name System) Server dan bagaimana jika jaringan tidak memiliki DNS?",
+                keywords: ["domain", "ip address", "menerjemahkan", "nama", "angka", "diingat"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Mengapa disarankan untuk menonaktifkan layanan (services) seperti Telnet dan FTP pada MikroTik jika tidak digunakan?",
+                keywords: ["keamanan", "hacker", "port", "celah", "meretas", "menyusup", "enkripsi"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Jelaskan cara kerja Transparent Proxy pada router MikroTik!",
+                keywords: ["membelokkan", "otomatis", "port 80", "redirect", "tanpa setting", "browser"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Apa fungsi dari fitur IP Binding pada layanan Hotspot MikroTik?",
+                keywords: ["mac address", "bypass", "tanpa login", "diblokir", "statis", "spesifik"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Sebutkan tujuan dari pembuatan file backup (.backup) secara rutin pada router MikroTik!",
+                keywords: ["mengembalikan", "rusak", "error", "konfigurasi", "reset", "cadangan"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Jelaskan perbedaan penggunaan kabel UTP tipe Straight dan tipe Crossover!",
+                keywords: ["berbeda", "sama", "perangkat", "switch", "router", "komputer", "urutan"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Bagaimana cara melakukan pengujian konektivitas dasar dari router ke internet menggunakan terminal MikroTik?",
+                keywords: ["ping", "google.com", "8.8.8.8", "reply", "terminal", "terhubung"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Apa yang dimaksud dengan MAC Address, dan apa perbedaannya dengan IP Address?",
+                keywords: ["fisik", "permanen", "pabrik", "logika", "software", "berubah"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Jelaskan fungsi dari NTP (Network Time Protocol) Client pada router MikroTik!",
+                keywords: ["waktu", "jam", "tanggal", "sinkronisasi", "server", "akurat"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Mengapa kita sering perlu mengganti port default Winbox (8291) pada router yang dipublikasikan ke internet?",
+                keywords: ["keamanan", "brute force", "serangan", "default", "ditebak", "mencegah"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Apa fungsi dari fitur Address List pada Firewall MikroTik?",
+                keywords: ["mengelompokkan", "grup", "banyak ip", "satu rule", "aturan", "mempermudah"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Jelaskan konsep dasar dari VLAN (Virtual Local Area Network) pada konfigurasi jaringan!",
+                keywords: ["memecah", "logik", "satu fisik", "broadcast", "segmen", "switch", "keamanan"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Pada Simple Queue, apa bedanya pengaturan Limit At dan Max Limit?",
+                keywords: ["garansi", "minimal", "dijamin", "maksimal", "batas atas", "tertinggi"],
+                poinMaks: 5, minMatch: 2
+            },
+            {
+                q: "Jelaskan bagaimana fitur Scheduler di MikroTik dapat membantu pengelolaan jaringan di sekolah/kantor!",
+                keywords: ["otomatis", "waktu", "terjadwal", "script", "menjalankan", "rutin", "jam kerja"],
+                poinMaks: 5, minMatch: 2
             }
         ];
-
-        // GENERATOR SOAL DUMMY (Untuk menggenapkan menjadi 20 soal)
-        for (let i = 6; i <= 20; i++) {
-            bankSoalEssai.push({
-                q: `Soal nomor ${i}: Ini adalah placeholder pertanyaan essai analisis ke-${i}. Silakan sesuaikan di kode sumber HTML Anda.`,
-                keywords: ["kunci1", "kunci2", "kunci3"],
-                poinMaks: 5, minMatch: 1
-            });
-        }
-
         // ==============================================================================
         // RENDER HTML SOAL
         // ==============================================================================
