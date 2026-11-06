@@ -225,20 +225,7 @@
             position: relative;
         }
 
-        /* Pengaturan Tanda Tangan Menggunakan Font (Bukan Gambar) */
-        .ttd-font {
-            font-family: 'Dancing Script', cursive;
-            font-size: 40px;
-            color: #fff;
-            position: absolute;
-            bottom: 30px;
-            /* Jarak dari garis bawah */
-            left: 50%;
-            transform: translateX(-50%) rotate(-5deg);
-            /* Sedikit dimiringkan agar natural */
-            white-space: nowrap;
-            z-index: 1;
-        }
+       
 
         .cert-sign-line {
             width: 250px;
@@ -247,6 +234,40 @@
             height: 50px;
             position: relative;
             z-index: 2;
+        }
+      
+    /* KUNCI: Menghilangkan latar putih dan menyatukan goresan tinta langsung ke sertifikat */
+   
+
+/* PENGATURAN AREA TANDA TANGAN */
+        .cert-sign { text-align: center; position: relative; }
+        .cert-sign-line { width: 250px; border-bottom: 1px solid #00ffcc; margin-bottom: 5px; height: 50px; position: relative; z-index: 2; margin-left: auto; margin-right: auto; }
+        
+        .ttd-img { 
+            position: absolute; 
+            bottom: 45px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            max-height: 80px; 
+            z-index: 1; 
+            /* TRIK CSS: Memaksa warna goresan gambar menjadi Putih Bersih */
+            filter: brightness(0) invert(1); 
+             mix-blend-mode: multiply; 
+        }
+        
+        .cert-sign-name {
+            font-family: 'Share Tech Mono', monospace; /* Kembali ke font Cyber formal */
+            font-size: 22px;
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+        
+        .cert-sign-role {
+            font-size: 14px;
+            color: #aaa;
+            letter-spacing: 4px;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -295,12 +316,15 @@
 
                 <div class="cert-footer">
                     <div class="cert-sign">
-                        <!-- Tanda Tangan Menggunakan Font Goresan Pena -->
-                        <div class="ttd-font">Jauhari Saputra</div>
-
+                        <!-- Tanda Tangan Menggunakan Gambar Tanda Tangan Instruktur Jauhari Saputra-->
+                       <!-- tampilkan nama Jauhari Saputra di bawah tanda tangan -->
+<img src="ttd-jauhari2.png" alt="Tanda Tangan Jauhari Saputra" style="width: 250px; height: auto; margin-bottom: 5px;">
                         <div class="cert-sign-line"></div>
-                        <strong>JAUHARI SAPUTRA</strong>
+                        <div class="ttd-font">Jauhari Saputra</div>
+                        <strong>INSTRUCTOR</strong>
                     </div>
+
+                       
                     <div class="cert-sign" style="text-align: right;">
                         <div style="font-size: 15px; margin-top: 30px; color: #00ffcc;">ID: <span
                                 id="displayDate"></span></div>
