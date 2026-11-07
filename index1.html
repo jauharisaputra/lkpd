@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBER SECURITY LAB | Portal Praktikum</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap');
+
+    body {
+      font-family: 'Share Tech Mono', monospace;
+      background-color: #050b14;
+      color: #00ffcc;
+      padding: 0;
+      margin: 0;
+      line-height: 1.6;
+      background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .header {
+      background: rgba(0, 255, 204, 0.1);
+      border-bottom: 2px solid #00ffcc;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5em;
+      text-shadow: 0 0 10px #00ffcc;
+      letter-spacing: 2px;
+    }
+
+    p.subtitle {
+      color: #aaa;
+      margin: 5px 0 0 0;
+    }
+
+    .container {
+      max-width: 1000px;
+      padding: 40px 20px;
+      margin: auto;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax (300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .module-card {
+      background: rgba(5, 15, 30, 0.9);
+      border: 1px solid #005544;
+      border-radius: 8px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card:hover {
+      border-color: #00ffcc;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+      transform: translateY(-5px);
+    }
+
+    .module-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 255, 204, 0.1);
+      color: #00ffcc;
+      padding: 3px 8px;
+      font-size: 0.8em;
+      border-radius: 4px;
+      border: 1px solid #005544;
+    }
+
+    .module-card h3 {
+      margin-top: 0;
+      color: #fff;
+      border-bottom: 1px dashed #005544;
+      padding-bottom: 10px;
+    }
+
+    .module-card p {
+      color: #bbb;
+      font-size: 0.9em;
+      margin-bottom: 20px;
+      height: 60px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+    }
+
+    .btn {
+      display: block;
+      text-align: center;
+      background: transparent;
+      color: #00ffcc;
+      text-decoration: none;
+      padding: 10px;
+      border: 1px solid #00ffcc;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: 0.3s;
+      text-transform: uppercase;
+      font-size: 0.9em;
+    }
+
+    .btn:hover {
+      background: #00ffcc;
+      color: #000;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    .btn-ujian {
+      border-color: #ff0055;
+      color: #ff0055;
+    }
+
+    .btn-ujian:hover {
+      background: #ff0055;
+      color: #fff;
+      box-shadow: 0 0 10px #ff0055;
+      border-color: #ff0055;
+    }
+
+    /* STYLING UNTUK PROFIL PENGEMBANG */
+    .developer-profile {
+      margin-top: 50px;
+      background: rgba(0, 255, 204, 0.05);
+      border: 1px solid #005544;
+      padding: 25px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      transition: 0.3s;
+    }
+
+    .developer-profile:hover {
+      border-color: #00ffcc;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+    }
+
+    .dev-img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 2px dashed #00ffcc;
+      object-fit: cover;
+      padding: 5px;
+    }
+
+    .dev-info h4 {
+      margin: 0 0 5px 0;
+      color: #00ffcc;
+      font-size: 1.4em;
+    }
+
+    .dev-info.role {
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.95em;
+      margin: 0 0 10px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #005544;
+    }
+
+    .dev-info p {
+      color: #aaa;
+      font-size: 0.9em;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* STYLING UNTUK MENU INSTRUKTUR */
+    .instructor-panel {
+      margin-top: 40px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed #555;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .instructor-panel h4 {
+      margin-top: 0;
+      color: #888;
+    }
+
+    #dbAccessBtn {
+      background: #222;
+      color: #888;
+      border: 1px solid #444;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    #dbAccessBtn:hover {
+      border-color: #00ffcc;
+      color: #00ffcc;
+    }
+
+    .hidden-links {
+      display: none;
+      margin-top: 15px;
+      background: #02060d;
+      padding: 15px;
+      border: 1px solid #00ffcc;
+      border-radius: 4px;
+      text-align: left;
+    }
+
+    .hidden-links a {
+      display: block;
+      color: #00ffcc;
+      text-decoration: none;
+      padding: 8px 0;
+      border-bottom: 1px solid #005544;
+    }
+
+    .hidden-links a:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>[ CYBER_SECURITY_LAB ]</h1>
+    <p class="subtitle">Portal Praktikum Jaringan - Sistem LKPD & CBT Terintegrasi</p>
+  </div>
+  <div class="container">
+    <!-- PENGUMUMAN / INFO -->
+    <div
+      style="background: rgba(0,0,0,0.6); padding: 15px; border-left: 4px solid #00ffcc; margin-bottom: 30px; font-size: 0.9em;">
+      <span style="color:#00ffcc; font-weight:bold;">> SYSTEM_LOG:</span> Pilih modul yang ditugaskan oleh instruktur.
+      Pastikan Anda menyelesaikan tugas praktik sebelum mengikuti Ujian CBT.
+    </div>
+
+    <div class="module-grid">
+      <!-- MODUL 0 (DASAR KELAS 10) -->
+      <div class="module-card">
+        <span class="module-badge"
+          style="background: rgba(100, 200, 255, 0.1); color: #64c8ff; border-color: rgba(100, 200, 255, 0.3);">KELAS 10
+          - DASAR</span>
+        <h3>Dasar Jaringan</h3>
+        <p>Membuat kabel LAN, pengujian alat crimping, dan login dasar ke MikroTik.</p>
+        <div class="btn-group">
+          <a href="lkpd-kelas10-dasar.html" class="btn" style="border-color:#64c8ff; color:#64c8ff;">> AKSES LKPD </a>
+        </div>
+      </div>
+
+      
+
+      <!-- MODUL 1 (FISIK) -->
+      <div class="module-card">
+        <span class="module-badge"
+          style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 01 -
+          FISIK</span>
+        <h3>RouterBoard Basic</h3>
+        <p>Simulasi pemblokiran file dan perakitan koneksi menggunakan PC dan Mikrotik fisik secara langsung.</p>
+        <div class="btn-group">
+          <a href="lkpd-sesi1-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD
+            FISIK_</a>
+          <a href="ujian-sesi1.html" class="btn btn-ujian">> UJIAN CBT SESI 1_</a>
+        </div>
+      </div>
+
+      <!-- MODUL 2 (FISIK) -->
+      <div class="module-card">
+        <span class="module-badge"
+          style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 02 -
+          FISIK</span>
+        <h3>Web Proxy Server</h3>
+        <p>Konfigurasi Transparent Proxy dan pembatasan akses ke situs web (domain) serta file ekstensi spesifik.</p>
+        <div class="btn-group">
+          <a href="lkpd-sesi2-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD
+            FISIK_</a>
+          <a href="ujian-sesi2.html" class="btn btn-ujian">> UJIAN CBT SESI 2_</a>
+        </div>
+      </div>
+
+      <!-- MODUL 3 (FISIK) -->
+      <div class="module-card">
+        <span class="module-badge"
+          style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border-color: rgba(255, 170, 0, 0.3);">SESI 03-
+          FISIK</span>
+        <h3>Hotspot & Bandwidth</h3>
+        <p>Membangun sistem autentikasi user (Login Page) dan membatasi kecepatan internet klien menggunakan Simple
+          Queue.</p>
+        <div class="btn-group">
+          <a href="lkpd-sesi3-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD
+            FISIK_</a>
+          <a href="ujian-sesi3.html" class="btn btn-ujian">> UJIAN CBT SESI 3_</a>
+        </div>
+      </div>
+    </div>
+
+   
+
+      <!-- KARTU REMEDIAL & SUSULAN (BARU) -->
+      <div class="module-card" style="border-color: #ff9900; box-shadow: 0 0 15px rgba(255, 153, 0, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(255, 153, 0, 0.1); color: #ff9900; border-color: rgba(255, 153, 0, 0.3);">RECOVERY</span>
+        <h3 style="color: #ff9900;">Portal Remedial & Susulan</h3>
+        <p>Jalur akses khusus bagi siswa yang harus mengulang evaluasi Ujian Essai atau Ujian CBT akibat nilai yang
+          belum memenuhi standar.</p>
+        <a href="remedial.html" class="btn" style="border-color:#ff9900; color:#ff9900;">> AKSES REMEDIAL_</a>
+      </div>
+    </div>
+
+    <!-- RESOURCE & SUPPORT CENTER -->
+    <h2 class="section-title" style="border-left-color: #ffff00; color: #ffff00; margin-top: 50px;">> RESOURCE & SUPPORT
+      CENTER</h2>
+    <div class="module-grid">
+      <!-- KARTU E-LIBRARY -->
+      <div class="module-card" style="border-color: #ffff00; box-shadow: 0 0 15px rgba(255, 255, 0, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(255, 255, 0, 0.1); color: #ffff00; border-color: rgba(255, 255, 0, 0.3);">DATA
+          CENTER</span>
+        <h3 style="color: #ffff00;">E-Library (Modul Teori)</h3>
+        <p>Akses materi prasyarat, buku panduan dasar jaringan, slide presentasi, dan modul PDF MikroTik.</p>
+        <a href="elibrary.html" class="btn" style="border-color:#ffff00; color:#ffff00;">> BUKA PERPUSTAKAAN_</a>
+      </div>
+
+      <!-- KARTU VIDEO TUTORIAL -->
+      <div class="module-card" style="border-color: #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(255, 51, 102, 0.1); color: #ff3366; border-color: rgba(255, 51, 102, 0.3);">MEDIA
+          SERVER</span>
+        <h3 style="color: #ff3366;">Video Tutorial</h3>
+        <p>Tonton demonstrasi visual perakitan kabel LAN (Crimping) dan pengenalan alat sebelum menyentuh perangkat
+          keras.</p>
+        <a href="tutorial.html" class="btn" style="border-color:#ff3366; color:#ff3366;">> TONTON VIDEO_</a>
+      </div>
+
+      <!-- KARTU FAQ & TROUBLESHOOTING -->
+      <div class="module-card" style="border-color: #00ffaa; box-shadow: 0 0 15px rgba(0, 255, 170, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(0, 255, 170, 0.1); color: #00ffaa; border-color: rgba(0, 255, 170, 0.3);">HELP
+          DESK</span>
+        <h3 style="color: #00ffaa;">Troubleshooting & FAQ</h3>
+        <p>Mengalami error? Temukan solusi mandiri untuk masalah MAC Address, DHCP, dan Winbox yang sering terjadi.</p>
+        <a href="faq.html" class="btn" style="border-color:#00ffaa; color:#00ffaa;">> CARI SOLUSI_</a>
+      </div>
+
+      <!-- KARTU GLOSARIUM (BARU) -->
+      <div class="module-card" style="border-color: #aa00ff; box-shadow: 0 0 15px rgba(170, 0, 255, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(170, 0, 255, 0.1); color: #aa00ff; border-color: rgba(170, 0, 255, 0.3);">DICTIONARY</span>
+        <h3 style="color: #aa00ff;">Glosarium Keamanan</h3>
+        <p>Kamus istilah teknis (DHCP, Winbox, MAC Address, Proxy) untuk memperkuat pemahaman prasyarat.</p>
+        <a href="glosarium.html" class="btn" style="border-color:#aa00ff; color:#aa00ff;">> BUKA KAMUS_</a>
+      </div>
+    </div>
+
+    <!-- STUDENT HUB & GAMIFICATION -->
+    <h2 class="section-title" style="border-left-color: #ff00ff; color: #ff00ff; margin-top: 50px;">> STUDENT HUB &
+      GAMIFICATION</h2>
+    <div class="module-grid">
+      <!-- KARTU LEADERBOARD -->
+      <div class="module-card" style="border-color: #ff00ff; box-shadow: 0 0 15px rgba(255, 0, 255, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(255, 0, 255, 0.1); color: #ff00ff; border-color: rgba(255, 0, 255, 0.3);">HALL OF
+          FAME</span>
+        <h3 style="color: #ff00ff;">Global Leaderboard</h3>
+        <p>Pantau Top 10 skor tertinggi Ujian CBT secara real-time. Buktikan siapa hacker terbaik di angkatan ini!</p>
+        <a href="leaderboard.html" class="btn" style="border-color:#ff00ff; color:#ff00ff;">> VIEW LEADERBOARD_</a>
+      </div>
+
+      <!-- KARTU STUDENT TRACKER -->
+      <div class="module-card" style="border-color: #00ffcc; box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(0, 255, 204, 0.1); color: #00ffcc; border-color: rgba(0, 255, 204, 0.3);">STATUS
+          CHECKER</span>
+        <h3 style="color: #00ffcc;">Student Tracker</h3>
+        <p>Ragu tugasmu sudah terkirim? Masukkan namamu di sini untuk melacak status pengumpulan seluruh modul LKPD dan
+          Ujian.</p>
+        <a href="tracker.html" class="btn">> CEK STATUS TUGAS_</a>
+      </div>
+
+      <!-- KARTU JADWAL & DEADLINE (BARU) -->
+      <div class="module-card" style="border-color: #00ccff; box-shadow: 0 0 15px rgba(0, 204, 255, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(0, 204, 255, 0.1); color: #00ccff; border-color: rgba(0, 204, 255, 0.3);">TIMELINE</span>
+        <h3 style="color: #00ccff;">Jadwal & Deadline</h3>
+        <p>Papan informasi kalender terintegrasi yang menampilkan tenggat waktu pengerjaan untuk setiap Modul Praktikum
+          dan Ujian.</p>
+        <a href="jadwal.html" class="btn" style="border-color:#00ccff; color:#00ccff;">> CEK JADWAL_</a>
+      </div>
+
+      <!-- KARTU FORUM DISKUSI (BARU) -->
+      <div class="module-card" style="border-color: #00ff55; box-shadow: 0 0 15px rgba(0, 255, 85, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(0, 255, 85, 0.1); color: #00ff55; border-color: rgba(0, 255, 85, 0.3);">COMMUNITY</span>
+        <h3 style="color: #00ff55;">Forum Diskusi Interaktif</h3>
+        <p>Tautan menuju grup komunikasi kelas (WhatsApp/Discord) guna memfasilitasi tanya jawab real-time.</p>
+        <a href="forum.html" class="btn" style="border-color:#00ff55; color:#00ff55;">> GABUNG FORUM_</a>
+      </div>
+
+      <!-- KARTU SERTIFIKAT (BARU) -->
+      <div class="module-card" style="border-color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);">
+        <span class="module-badge"
+          style="background: rgba(255, 215, 0, 0.1); color: #ffd700; border-color: rgba(255, 215, 0, 0.3);">ACHIEVEMENT</span>
+        <h3 style="color: #ffd700;">Klaim Sertifikat</h3>
+        <p>Generate sertifikat otomatis bagi siswa yang status seluruh tugasnya sudah diverifikasi selesai pada Student
+          Tracker.</p>
+        <a href="sertifikat.html" class="btn" style="border-color:#ffd700; color:#ffd700;">> KLAIM SERTIFIKAT_</a>
+      </div>
+    </div>
+
+    <!-- PROFIL PENGEMBANG -->
+    <div class="developer-profile">
+      <img src="foto profil.png" alt="Foto Profil Jauhari Saputra" class="dev-img">
+      <div class="dev-info">
+        <h4>> JAUHARI SAPUTRA</h4>
+        <p class="role">IT Professional | Kepala Program TKJ | Pengembang Teknologi Pendidikan</p>
+        <p>Mahasiswa S.Kom Informatika Universitas Siber Asia dengan prestasi akademis unggul (IPK 3.95). Berpengalaman
+          mengintegrasikan teknologi pendidikan seperti Sistem CBT Anti-Curang dan E-Rapor Digital. Memiliki
+          spesialisasi di bidang Infrastruktur Jaringan, Keamanan Siber (Penetration Testing), dan Pengembangan Web.
+          Turut aktif sebagai penerjemah trilingual (Jepang-Inggris-Indonesia) dalam misi kemanusiaan internasional.</p>
+      </div>
+    </div>
+
+    <!-- HALAMAN DASHBOARD INSTRUKTUR mengarah ke dashboard-instruktur.html-->
+    <div style="margin-top: 30px; text-align: center;">
+      <a href="dashboard-instruktur.html" class="btn" style="border-color:#00ffcc; color:#00ffcc;">> DASHBOARD
+        INSTRUKTUR_</a>
+    </div>
+
+    <!-- PANEL KHUSUS INSTRUKTUR -->
+    <div class="instructor-panel">
+      <h4>> INSTRUCTOR_AREA</h4>
+      <p style="font-size: 0.85em; color: #666;">Area ini dibatasi hanya untuk staf pengajar. Sistem akan meminta kode
+        otorisasi.</p>
+      <button id="dbAccessBtn">> ACCESS DATABASES</button>
+      <div class="hidden-links" id="dbLinks">
+        <!-- Link disembunyikan sesuai script dashboard -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script Proteksi Menu Instruktur -> Redirect ke Dashboard
+    document.getElementById('dbAccessBtn').addEventListener('click', function () {
+      var password = prompt("ENTER OVERRIDE PASSCODE:");
+      if (password === "admin123") {
+        window.location.href = "dashboard-instruktur.html";
+      } else if (password !== null) {
+        alert("ACCESS DENIED. INVALID PASSCODE.");
+      }
+    });
+  </script>
+</body>
+
+</html>

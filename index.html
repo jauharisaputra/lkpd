@@ -274,7 +274,8 @@
         <div class="btn-group">
           <a href="lkpd-sesi1-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD
             FISIK_</a>
-          <a href="ujian-sesi1.html" class="btn btn-ujian">> UJIAN CBT SESI 1_</a>
+          <a href="#" onclick="verifikasiCBT(event, 1, '1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY', 'ujian-sesi1.html')"
+            class="btn btn-ujian">> UJIAN CBT SESI 1_</a>
         </div>
       </div>
 
@@ -288,7 +289,8 @@
         <div class="btn-group">
           <a href="lkpd-sesi2-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD
             FISIK_</a>
-          <a href="ujian-sesi2.html" class="btn btn-ujian">> UJIAN CBT SESI 2_</a>
+        <a href="#" onclick="verifikasiCBT(event, 2, '1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE', 'ujian-sesi2.html')"
+          class="btn btn-ujian">> UJIAN CBT SESI 2_</a>
         </div>
       </div>
 
@@ -303,7 +305,8 @@
         <div class="btn-group">
           <a href="lkpd-sesi3-fisik.html" class="btn" style="border-color:#ffaa00; color:#ffaa00;">> AKSES LKPD
             FISIK_</a>
-          <a href="ujian-sesi3.html" class="btn btn-ujian">> UJIAN CBT SESI 3_</a>
+          <a href="#" onclick="verifikasiCBT(event, 3, '1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs', 'ujian-sesi3.html')"
+            class="btn btn-ujian">> UJIAN CBT SESI 3_</a>
         </div>
       </div>
     </div>
@@ -462,7 +465,127 @@
         alert("ACCESS DENIED. INVALID PASSCODE.");
       }
     });
+    
   </script>
+  <!-- MODAL VERIFIKASI CBT BERBASIS DROPDOWN -->
+  <div id="cbtModal"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(3px);">
+    <div
+      style="background: #050b14; border: 1px solid #ff0055; padding: 30px; border-radius: 8px; max-width: 450px; width: 90%; text-align: center; box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);">
+      <h2 style="color: #ff0055; margin-top: 0; text-shadow: 0 0 10px #ff0055;">> SYSTEM_OVERRIDE</h2>
+      <p style="color: #bbb; font-size: 0.9em; margin-bottom: 25px;">Sistem perlu memverifikasi data Praktik <strong
+          style="color:#00ffcc;" id="sesiLabel"></strong> Anda sebelum membuka akses ujian.</p>
+  
+      <label
+        style="color:#00ffcc; display:block; text-align:left; margin-bottom:8px; font-weight:bold; font-size:0.9em;">>
+        PILIH IDENTITAS (Siswa yang Selesai LKPD):</label>
+      <select id="namaDropdown"
+        style="width: 100%; padding: 12px; background: #02060d; color: #fff; border: 1px solid #00ffcc; border-radius: 4px; margin-bottom: 25px; font-family: inherit; font-size: 1em; cursor: pointer;">
+        <option value="">-- MEMUAT DATABASE... --</option>
+      </select>
+  
+      <div style="display: flex; gap: 15px;">
+        <button onclick="closeModal()"
+          style="flex: 1; padding: 12px; background: transparent; color: #aaa; border: 1px solid #555; border-radius: 4px; cursor: pointer; font-family: inherit; transition: 0.3s;">BATAL</button>
+        <button id="btnLanjut" onclick="prosesVerifikasi()"
+          style="flex: 1; padding: 12px; background: #ff0055; color: #fff; border: 1px solid #ff0055; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: inherit; box-shadow: 0 0 10px rgba(255, 0, 85, 0.5); transition: 0.3s;">VERIFIKASI</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <script>
+    
+    
+// =========================================================
+        // MODUL VERIFIKASI AKSES CBT (VERSI DROPDOWN DATABASE)
+        // =========================================================
+        let currentTargetUrl = "";
+        let currentSesi = "";
+
+        function verifikasiCBT(event, sesi, lkpdSheetId, targetUrl) {
+          event.preventDefault();
+
+        currentSesi = sesi;
+        currentTargetUrl = targetUrl;
+
+        var modal = document.getElementById('cbtModal');
+        var dropdown = document.getElementById('namaDropdown');
+        var btnLanjut = document.getElementById('btnLanjut');
+        var sesiLabel = document.getElementById('sesiLabel');
+
+        // Munculkan popup modal ke layar
+        modal.style.display = 'flex';
+        sesiLabel.innerText = "Sesi " + sesi;
+        dropdown.innerHTML = '<option value="">-- MENGHUBUNGKAN KE DATABASE... --</option>';
+        dropdown.disabled = true;
+        btnLanjut.disabled = true;
+        btnLanjut.innerText = "MEMUAT...";
+
+        var csvUrl = `https://docs.google.com/spreadsheets/d/${lkpdSheetId}/export?format=csv`;
+
+        // Ambil data dari Google Sheet LKPD
+        Papa.parse(csvUrl, {
+          download: true,
+        header: true,
+        complete: function(results) {
+          let namaList = [];
+
+        // Kumpulkan nama unik yang sudah submit LKPD
+        for (var i = 0; i < results.data.length; i++) {
+                if (results.data[i]["Nama"]) {
+          let namaTrim = results.data[i]["Nama"].trim();
+        if (namaTrim !== "" && !namaList.includes(namaTrim)) {
+          namaList.push(namaTrim);
+                    }
+                }
+            }
+
+            // Urutkan secara alfabetis
+            namaList.sort((a, b) => a.localeCompare(b));
+
+            // Masukkan nama-nama tersebut ke opsi dropdown
+            if (namaList.length > 0) {
+          dropdown.innerHTML = '<option value="">-- KLIK UNTUK MEMILIH NAMA --</option>';
+                namaList.forEach(nama => {
+          let option = document.createElement('option');
+        option.value = nama.toLowerCase();
+        option.textContent = nama.toUpperCase(); // Memaksa nama jadi HURUF KAPITAL semua
+        dropdown.appendChild(option);
+                });
+        dropdown.disabled = false;
+        btnLanjut.disabled = false;
+                btnLanjut.innerText = "> VERIFIKASI & MULAI UJIAN_";
+            } else {
+          dropdown.innerHTML = '<option value="">-- DATABASE LKPD MASIH KOSONG --</option>';
+        btnLanjut.innerText = "TIDAK ADA DATA";
+            }
+        },
+        error: function(err) {
+          dropdown.innerHTML = '<option value="">GAGAL MEMUAT DATABASE</option>';
+        alert("Gagal membaca database. Pastikan koneksi internet aktif.");
+        }
+    });
+}
+
+        function closeModal() {
+          document.getElementById('cbtModal').style.display = 'none';
+}
+
+        function prosesVerifikasi() {
+    var dropdown = document.getElementById('namaDropdown');
+        var selectedName = dropdown.options[dropdown.selectedIndex].text;
+
+        if (dropdown.value === "") {
+          alert("Silakan pilih nama Anda dari daftar terlebih dahulu!");
+        return;
+    }
+
+        // Karena opsi namanya ditarik langsung dari database LKPD, akses otomatis tervalidasi
+        alert(`AKSES DITERIMA.\nData LKPD Sesi ${currentSesi} atas nama ${selectedName} telah diverifikasi.\nMengalihkan ke Ujian CBT...`);
+        window.location.href = currentTargetUrl;
+}
+    </script>
+  
 </body>
 
 </html>
