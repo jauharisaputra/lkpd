@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI GRADING DASHBOARD | CYBER LAB</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        body { font-family: 'Share Tech Mono', monospace; background-color: #050505; color: #fff; padding: 20px; margin: 0; }
+        .container { max-width: 1200px; margin: auto; }
+        h1 { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; border-bottom: 1px dashed #ff00ff; padding-bottom: 10px; }
+        
+        .control-panel { background: rgba(255, 0, 255, 0.05); border: 1px solid #ff00ff; padding: 20px; border-radius: 5px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
+        input[type="password"], select { background: #111; color: #fff; border: 1px solid #ff00ff; padding: 10px; font-family: inherit; outline: none; border-radius: 3px; min-width: 250px; }
+        button { background: transparent; color: #ff00ff; border: 1px solid #ff00ff; padding: 10px 20px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.3s; border-radius: 3px; }
+        button:hover { background: #ff00ff; color: #000; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #0a0a0a; }
+        th, td { border: 1px solid #333; padding: 12px; text-align: left; vertical-align: top; }
+        th { background: #1a001a; color: #ff00ff; }
+        .student-row:hover { background: #111; }
+        
+        .ai-result { margin-top: 10px; padding: 10px; background: rgba(0, 255, 204, 0.1); border-left: 3px solid #00ffcc; display: none; color: #00ffcc; font-size: 0.9em; }
+        .btn-ai { border-color: #00ffcc; color: #00ffcc; width: 100%; margin-bottom: 5px; }
+        .btn-ai:hover { background: #00ffcc; color: #000; }
+        .btn-sheet { border-color: #ffaa00; color: #ffaa00; width: 100%; font-size: 0.8em; }
+        .btn-sheet:hover { background: #ffaa00; color: #000; }
+        
+        /* Auth Overlay */
+        #authOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #03070d; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    </style>
+</head>
+<body>
+
+    <!-- LAYER PROTEKSI INSTRUKTUR -->
+    <div id="authOverlay">
+        <h2 style="color: #ff00ff;">> SYSTEM_LOCKED</h2>
+        <p>Masukkan Passcode Instruktur untuk mengakses AI Grader:</p>
+        <input type="password" id="adminPasscode" placeholder="Passcode..." style="text-align: center; margin-bottom: 15px;">
+        <button onclick="checkAuth()">> UNLOCK_</button>
+    </div>
+
+    <div class="container" style="display: none;" id="mainContent">
+        <h1>> AI_GRADING_NODE [MIND_CORE_AKTIF]</h1>
+        
+        <div class="control-panel">
+            <div>
+                <label style="display:block; font-size:0.8em; margin-bottom:5px; color:#ff00ff;">GEMINI API KEY:</label>
+                <input type="password" id="geminiApiKey" placeholder="AQ.Ab8RN6LK9NTRx40BtbiZBymKh0j5WAjYAd5tmoh92LUcqWzsaA">
+            </div>
+            <div>
+                <label style="display:block; font-size:0.8em; margin-bottom:5px; color:#ff00ff;">PILIH DATABASE LKPD:</label>
+                <select id="dbSelector">
+                    <option value="">-- PILIH LKPD FISIK --</option>
+                    <option value="1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY">Sesi 1 - Firewall Fisik</option>
+                    <option value="1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE">Sesi 2 - Web Proxy Fisik</option>
+                    <option value="1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs">Sesi 3 - Hotspot Fisik</option>
+                </select>
+            </div>
+            <div style="margin-top: 20px;">
+                <button onclick="loadDatabase()">> SCAN_DATABASE</button>
+            </div>
+        </div>
+
+        <div id="statusMsg" style="color: #ffaa00; margin-bottom: 15px;"></div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">IDENTITAS</th>
+                    <th width="45%">JAWABAN TEKS (ANALISIS)</th>
+                    <th width="15%">BUKTI GAMBAR</th>
+                    <th width="25%">EVALUASI AI</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr><td colspan="4" style="text-align:center; color:#666;">Silakan pilih database dan klik SCAN_DATABASE.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const sheetLinks = {
+            "1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY": "https://docs.google.com/spreadsheets/d/1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY/edit",
+            "1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE": "https://docs.google.com/spreadsheets/d/1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE/edit",
+            "1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs": "https://docs.google.com/spreadsheets/d/1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs/edit"
+        };
+
+        function checkAuth() {
+            if (document.getElementById('adminPasscode').value === "admin123") {
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                alert("ACCESS DENIED");
+            }
+        }
+
+        function loadDatabase() {
+            const dbId = document.getElementById('dbSelector').value;
+            const tbody = document.getElementById('tableBody');
+            const statusMsg = document.getElementById('statusMsg');
+            
+            if (!dbId) return alert("Pilih database terlebih dahulu!");
+            
+            statusMsg.innerText = "> MENGUNDUH DATA DARI SATELLITE...";
+            tbody.innerHTML = "";
+
+            Papa.parse(`https://docs.google.com/spreadsheets/d/${dbId}/export?format=csv`, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    const data = results.data;
+                    let count = 0;
+
+                    data.forEach((row, index) => {
+                        // Hanya tampilkan yang belum diberi Skor_Akhir
+                        if (row.Nama && (!row.Skor_Akhir || row.Skor_Akhir.trim() === "")) {
+                            count++;
+                            const tr = document.createElement('tr');
+                            tr.className = "student-row";
+                            
+                            // Ekstrak teks dan link
+                            let textAnswers = "";
+                            let imageLinks = "";
+                            for (let key in row) {
+                                if (key.includes("Timestamp") || key.includes("Nama") || key.includes("Kelas") || key === "Skor_Akhir") continue;
+                                if (row[key].startsWith("http")) {
+                                    imageLinks += `<a href="${row[key]}" target="_blank" style="color:#00aaff;">[Lihat Gambar ${key}]</a><br>`;
+                                } else if (row[key].trim() !== "") {
+                                    textAnswers += `<b>${key}:</b> ${row[key]}<br><br>`;
+                                }
+                            }
+
+                            // Stringify data untuk prompt AI
+                            const aiData = encodeURIComponent(textAnswers);
+
+                            tr.innerHTML = `
+                                <td><b>${row.Nama}</b><br><span style="color:#888;">${row.Kelas}</span></td>
+                                <td style="font-size: 0.9em; color:#ddd;">${textAnswers}</td>
+                                <td style="font-size: 0.85em;">${imageLinks || "Tidak ada gambar"}</td>
+                                <td>
+                                    <button class="btn-ai" onclick="evaluateWithAI(this, '${aiData}')">> ANALISIS DENGAN AI</button>
+                                    <button class="btn-sheet" onclick="window.open('${sheetLinks[dbId]}', '_blank')">> INPUT SKOR KE SHEET</button>
+                                    <div class="ai-result"></div>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        }
+                    });
+
+                    if (count === 0) tbody.innerHTML = "<tr><td colspan='4' style='text-align:center;'>Semua tugas sudah dinilai.</td></tr>";
+                    statusMsg.innerText = `> ITEM DITEMUKAN: ${count} TUGAS BELUM DINILAI.`;
+                },
+                error: function() {
+                    statusMsg.innerText = "> GAGAL MENGHUBUNGI DATABASE.";
+                }
+            });
+        }
+
+        async function evaluateWithAI(btnElement, encodedData) {
+            const apiKey = document.getElementById('geminiApiKey').value;
+            if (!apiKey) return alert("Masukkan Gemini API Key terlebih dahulu!");
+
+            const resultBox = btnElement.parentElement.querySelector('.ai-result');
+            const studentAnswers = decodeURIComponent(encodedData);
+            
+            btnElement.innerText = "MEMPROSES...";
+            btnElement.disabled = true;
+            resultBox.style.display = "block";
+            resultBox.innerText = "AI sedang mengevaluasi parameter teknis...";
+
+            const promptText = `Anda adalah Asisten Instruktur Jaringan Komputer (MikroTik). Evaluasi jawaban siswa berikut terkait praktik jaringan. Berikan skor (0-100) dan alasan analisis singkat mengapa skor tersebut diberikan. 
+            Jawab WAJIB dalam format JSON murni seperti ini: {"skor": 85, "alasan": "Pemahaman NAT sudah baik..."}
+            
+            Jawaban Siswa:
+            ${studentAnswers}`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptText }] }],
+                        generationConfig: { response_mime_type: "application/json" }
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.error) throw new Error(data.error.message);
+
+                const aiReply = JSON.parse(data.candidates[0].content.parts[0].text);
+                
+                resultBox.innerHTML = `
+                    <div style="font-size: 2em; color: #fff; margin-bottom: 5px;">${aiReply.skor}<span style="font-size: 0.4em; color: #00ffcc;">/100</span></div>
+                    <div><b>Analisis AI:</b> ${aiReply.alasan}</div>
+                `;
+                btnElement.style.display = "none";
+
+            } catch (error) {
+                resultBox.innerText = "ERROR: " + error.message;
+                btnElement.innerText = "> COBA LAGI";
+                btnElement.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
