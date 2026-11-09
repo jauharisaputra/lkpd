@@ -32,8 +32,9 @@
             text-shadow: 0 0 10px #00ffcc;
         }
 
-        input[type="text"] {
-            width: 80%;
+        /* Modifikasi desain agar cocok untuk Dropdown */
+        select {
+            width: 100%;
             padding: 15px;
             background: #000;
             border: 2px solid #00ffcc;
@@ -43,6 +44,13 @@
             text-align: center;
             margin-bottom: 20px;
             border-radius: 4px;
+            cursor: pointer;
+            appearance: none;
+        }
+
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
         }
 
         button {
@@ -117,7 +125,10 @@
         <h1>> STATUS_CHECKER_</h1>
         <p>Lacak status pengumpulan tugas dan ujian Anda.</p>
 
-        <input type="text" id="searchInput" placeholder="Masukkan Nama Lengkap Anda..." onkeypress="handleEnter(event)">
+        <!-- Input diganti menjadi Dropdown -->
+        <select id="searchInput">
+            <option value="">-- MENGUMPULKAN DATA DARI SERVER... --</option>
+        </select>
         <br>
         <button onclick="checkStatus()">SYSTEM SCAN</button>
 
@@ -134,30 +145,74 @@
     </div>
 
     <script>
-        // DAFTAR DATABASE YANG INGIN DILACAK
+        // DAFTAR DATABASE YANG DILACAK
         const databases = [
             { name: "LKPD Sesi 1 - Firewall (Fisik)", id: "1nDsWB4oj9c6ITF2kONDEINZWyn3E35JYs7Y0tO5EMsY" },
             { name: "LKPD Sesi 2 - Web Proxy (Fisik)", id: "1DU_VLdSTESGEUoscnIklwu_saDYgRA99r_8UhzzfnTE" },
-            { name: "LKPD Sesi 3 - Hotspot & Bandwidth (Fisik)", id: "1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs" },
+            { name: "LKPD Sesi 3 - Hotspot (Fisik)", id: "1NWvz8KHYSxr2PqEY6n0tzBFHFkYiEVZKGivAQz4Wujs" },
             { name: "Ujian CBT (Sesi 1-3 Gabungan)", id: "1c4GFsP_kqJ5NlRNgq3P0Fto5cpMY8bdvG99KRVbrdyY" }
-           
-           
-            // Anda bisa tambahkan sheet ID untuk sesi 2, sesi 3, dan essai di sini
         ];
 
-        function handleEnter(e) { if (e.key === 'Enter') checkStatus(); }
+        // 1. Script Fetching Data untuk mengisi Dropdown Nama secara Real-time
+        window.addEventListener('DOMContentLoaded', async () => {
+            const selectElement = document.getElementById('searchInput');
+            let allNames = new Set();
 
+            try {
+                // Menarik data dari seluruh database secara bersamaan (paralel)
+                const fetchPromises = databases.map(db => {
+                    return new Promise((resolve) => {
+                        const csvUrl = `https://docs.google.com/spreadsheets/d/${db.id}/export?format=csv`;
+                        Papa.parse(csvUrl, {
+                            download: true,
+                            header: true,
+                            complete: function (results) {
+                                results.data.forEach(row => {
+                                    if (row.Nama && row.Nama.trim() !== "") {
+                                        // Mengubah jadi lowercase agar aman saat pengecekan duplikat
+                                        allNames.add(row.Nama.trim().toLowerCase());
+                                    }
+                                });
+                                resolve();
+                            },
+                            error: function () { resolve(); } // Tetap resolve jika 1 db gagal agar tidak macet
+                        });
+                    });
+                });
+
+                await Promise.all(fetchPromises);
+                let sortedNames = Array.from(allNames).sort();
+
+                if (sortedNames.length > 0) {
+                    selectElement.innerHTML = '<option value="">-- KLIK UNTUK MEMILIH NAMA --</option>';
+                    sortedNames.forEach(nama => {
+                        let option = document.createElement('option');
+                        option.value = nama;
+                        option.textContent = nama.toUpperCase(); // Memaksa nama jadi KAPITAL di layar
+                        selectElement.appendChild(option);
+                    });
+                } else {
+                    selectElement.innerHTML = '<option value="">-- DATABASE MASIH KOSONG --</option>';
+                }
+            } catch (error) {
+                selectElement.innerHTML = '<option value="">-- GAGAL MEMUAT DATA --</option>';
+            }
+        });
+
+        // 2. Fungsi Scan Status (Diperbarui menyesuaikan format Select/Dropdown)
         async function checkStatus() {
-            const nameToSearch = document.getElementById('searchInput').value.trim().toLowerCase();
-            if (!nameToSearch) { alert("Masukkan nama terlebih dahulu!"); return; }
+            const dropdown = document.getElementById('searchInput');
+            const nameToSearch = dropdown.value; // Value sudah dalam bentuk lowercase
+            const displayName = dropdown.options[dropdown.selectedIndex].text; // Mengambil nama versi KAPITAL
+
+            if (!nameToSearch) { alert("Pilih nama Anda terlebih dahulu!"); return; }
 
             document.getElementById('loading').style.display = 'block';
             document.getElementById('resultBox').style.display = 'none';
             const statusList = document.getElementById('statusList');
             statusList.innerHTML = '';
-            document.getElementById('studentNameDisplay').innerText = nameToSearch.toUpperCase();
+            document.getElementById('studentNameDisplay').innerText = displayName;
 
-            // Loop untuk memeriksa setiap database
             for (let db of databases) {
                 const csvUrl = `https://docs.google.com/spreadsheets/d/${db.id}/export?format=csv`;
                 let isFound = false;
@@ -166,12 +221,9 @@
                     const response = await fetch(csvUrl);
                     const csvText = await response.text();
 
-                    // Parse data menggunakan PapaParse
                     const parsed = Papa.parse(csvText, { header: true }).data;
-
-                    // Cek apakah nama siswa ada di kolom "Nama" (kasus-insensitif)
                     for (let row of parsed) {
-                        if (row.Nama && row.Nama.toLowerCase().includes(nameToSearch)) {
+                        if (row.Nama && row.Nama.toLowerCase().trim() === nameToSearch) {
                             isFound = true;
                             break;
                         }
@@ -180,7 +232,6 @@
                     console.error("Gagal membaca database:", db.name);
                 }
 
-                // Render hasil
                 const statusHtml = isFound
                     ? `<span class="status-done">✅ COMPLETED</span>`
                     : `<span class="status-missing">❌ MISSING / NOT FOUND</span>`;
